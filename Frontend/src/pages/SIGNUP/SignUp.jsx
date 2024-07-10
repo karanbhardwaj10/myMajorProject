@@ -1,4 +1,3 @@
-// import * from 'react';
 import {
   Box,
   TextField,
@@ -8,10 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-// import TextField from '@mui/material/TextField';
 import Autocomplete from "@mui/material/Autocomplete";
 import signUpImage from "../../assets/SignUpPageImg.jpg";
-// import test4 from "../../assets/test4.jpg";
 import Grid from "@mui/material/Grid";
 
 const Occupation = [
@@ -34,7 +31,6 @@ function MyForm() {
         display: "flex",
         justifyContent: "space-between",
         minHeight: "90vh",
-        overflow: "hidden",
         flexDirection: "row",
         alignItems: "center",
       }}
@@ -180,10 +176,11 @@ function MyForm() {
 
       <div
         style={{
+          width: "50%",
           display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "end",
-          // overflow: "hidden",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden",
         }}
       >
         <img
