@@ -1,5 +1,6 @@
 import Navbar from "../../Shared/Components/Header";
 import Footer from "../../Shared/Components/Footer";
+import QnA from "../QnA/QnA";
 const Homepage = () => {
   return (
     <>
@@ -7,11 +8,12 @@ const Homepage = () => {
       display:'flex',
       flexDirection:'column',
       height:'100vh',
-      width:'100vw',
+      width:'100%',
       justifyContent:'space-between'
     }}>
 
       <Navbar />
+      <QnA/>
       <Footer />
     </div>
     </>
