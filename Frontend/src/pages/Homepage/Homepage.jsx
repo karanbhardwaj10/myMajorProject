@@ -1,6 +1,7 @@
 import Navbar from "../../Shared/Components/Header";
 import Footer from "../../Shared/Components/Footer";
 import QnA from "../QnA/QnA";
+import NewsLetter from "../NewsLetter/NewsLetter";
 const Homepage = () => {
   return (
     <>
@@ -14,6 +15,7 @@ const Homepage = () => {
 
       <Navbar />
       <QnA/>
+      <NewsLetter/>
       <Footer />
     </div>
     </>
