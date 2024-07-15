@@ -1,6 +1,6 @@
 import { useRoutes } from "react-router-dom";
 import SignIn from "./src/pages/SIGNIN/SignIn";
-import SignUp from "./src/pages/SIGNUP/SignUp";
+import SignUp from "./src/pages/SignUp/SignUp";
 import Homepage from "./src/pages/Homepage/Homepage";
 
 const MyRoutes = () => {
