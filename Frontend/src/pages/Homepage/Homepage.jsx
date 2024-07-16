@@ -1,7 +1,7 @@
 import Navbar from "../../Shared/Components/Header";
 import Footer from "../../Shared/Components/Footer";
 import QnA from "../QnA/QnA";
-import InfitneCarousel from "../../Shared/Components/infiniteCarousel/InfitneCarousel";
+import InfiniteCarousel from "../../Shared/Components/infiniteCarousel/InfiniteCarousel";
 const Homepage = () => {
   return (
     <>
@@ -15,7 +15,9 @@ const Homepage = () => {
         }}
       >
         <Navbar />
-        <InfitneCarousel />
+        <div style={{ margin: '20px 0' }}>
+        <InfiniteCarousel />
+      </div>
         <QnA />
         <Footer />
       </div>
