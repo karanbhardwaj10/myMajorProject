@@ -1,11 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-// import test6 from "../../../assets/test6.jpg";
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import CustomTextField from "../CustomTextField";
 
 const formFields = [
@@ -38,7 +37,7 @@ const FieldRow = ({ fields }) => (
           marginRight: index !== fields.length - 1 ? "10px" : "0",
         }}
       >
-        <CustomTextField {...field} />
+        <CustomTextField {...field} name={field.id} />
       </div>
     ))}
   </div>
@@ -54,16 +53,52 @@ FieldRow.propTypes = {
     })
   ).isRequired,
 };
-const AddressOne = () => {
+const AddressOne = ({ onAddAddress }) => {
   const [forms, setForms] = useState([formFields]);
-
+  // eslint-disable-next-line no-unused-vars
+  const [submittedAddresses, setSubmittedAddresses] = useState([]);
+  const [newAddress, setNewAddress] = useState(null);
   const addNewForm = () => {
     setForms([...forms, formFields]);
   };
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission
+    // Collect form data
+    const form = event.target;
+    // console.log(form.value, "event");
+    const formData = new FormData(form);
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+    // console.log(formData, "formdata");
+    const newAddedAddress = {
+      addressType: "Home", // You might want to add a field for this in your form
+      customerName: formData.get("Name"),
+      customerAddress: formData.get("Address"),
+      city: formData.get("City"),
+    };
+    let finalAns=[]
+    finalAns.push(newAddedAddress)
+    // console.log(newAddedAddress,"new address");
+    // Add the new address to the submitted addresses
+    setNewAddress(finalAns);
+
+    // setSubmittedAddresses([...submittedAddresses, newAddress]);
+
+    // Reset the form
+    event.target.reset();
   };
+
+  // The functional form is generally safer when the new state depends on the previous state. It ensures that you’re working with the most recent state, even if multiple state updates are queued.
+  useEffect(() => {
+    if (newAddress) {
+      console.log(newAddress,"form given json");
+      setSubmittedAddresses((prevAddresses) => [...prevAddresses, newAddress]);
+    }
+    // console.log(submittedAddresses, "submitted addresses");
+    onAddAddress(newAddress)
+  }, [newAddress]);
   return (
     <div
       style={{
@@ -72,18 +107,17 @@ const AddressOne = () => {
         minHeight: "100%",
         overflow: "auto",
         alignItems: "flex-start",
-        marginLeft:'30px'
+        marginLeft: "30px",
       }}
     >
       <Box
         component="form"
         onSubmit={handleSubmit}
-       
         style={{
           width: "50%",
           padding: "20px",
           maxHeight: "100%",
-          overflow:'auto'
+          overflow: "auto",
         }}
         noValidate
         autoComplete="off"
@@ -95,7 +129,7 @@ const AddressOne = () => {
           }}
         >
           <Typography
-            style={{marginTop:'15px'}}
+            style={{ marginTop: "15px" }}
             variant="h6"
             fontSize="x-large"
             fontWeight="bold"
@@ -104,10 +138,12 @@ const AddressOne = () => {
             Shipping Information
           </Typography>
 
-          <Tooltip  placement="left"  title="Add New Address">
-          <IconButton onClick={addNewForm}  aria-label="add to shopping cart">
-            <ControlPointIcon style={{ fontSize: "35px",color: "#1b2833" }} />
-          </IconButton>
+          <Tooltip placement="left" title="Add New Address">
+            <IconButton onClick={addNewForm} aria-label="add to shopping cart">
+              <ControlPointIcon
+                style={{ fontSize: "35px", color: "#1b2833" }}
+              />
+            </IconButton>
           </Tooltip>
         </div>
         <Divider
@@ -116,17 +152,13 @@ const AddressOne = () => {
           }}
           flexItem
         />
-
-        {/* {formFields.map((row, index) => (
-          <FieldRow key={index} fields={row} />
-        ))} */}
-          {forms.map((fields, formIndex) => (
-            <React.Fragment key={formIndex}>
-              {fields.map((row, index) => (
-                <FieldRow key={index} fields={row} />
-              ))}
-            </React.Fragment>
-          ))}
+        {forms.map((fields, formIndex) => (
+          <React.Fragment key={formIndex}>
+            {fields.map((row, index) => (
+              <FieldRow key={index} fields={row} />
+            ))}
+          </React.Fragment>
+        ))}
         <Button
           style={{
             width: "100%",
@@ -170,4 +202,8 @@ const AddressOne = () => {
     </div>
   );
 };
+AddressOne.propTypes = {
+  onAddAddress: PropTypes.func.isRequired,
+}; 
 export default AddressOne;
+ 

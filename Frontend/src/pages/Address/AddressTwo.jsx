@@ -1,15 +1,9 @@
+
 import { Grid } from "@mui/material";
 import CustomAddressTwo from "../../Shared/Components/AddressTwo/CustomAddressTwo";
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 
-
-const addressFields = [
-  [{
-    addressType: "Home",
-    customerName: "Karan",
-    customerAddress: "B-2/194 Yamauna Vihar Delhi-110053",
-  }],
-];
 const AddressRow = ({ fields }) => (
   <div
     style={{
@@ -45,15 +39,43 @@ AddressRow.propTypes = {
     })
   ).isRequired,
 };
-const AddressTwo = () => {
+
+const AddressTwo = ({ sharedState }) => {
+  // eslint-disable-next-line no-unused-vars
+  const [newAddress, setNewAddress] = useState([]);
+  // setNewAddress([...newAddress, sharedState]);
+  useEffect(() => {
+  
+    if (sharedState) {
+      setNewAddress(prevAddresses => {
+        // Check if sharedState is already in the array
+        if (!prevAddresses.includes(sharedState)) {
+          return [...prevAddresses, sharedState];
+        }
+        return prevAddresses;
+      });
+    }
+    console.log(sharedState,"shared state");
+  }, [sharedState]);
+  console.log(newAddress, "new address");
   return (
     <>
-      <Grid  >
-        {addressFields.map((row, index) => ( 
-          <AddressRow    fields={row} key={index} />
+      <Grid>
+        <div></div>
+        {newAddress.map((row, index) => (
+          <AddressRow fields={row} key={index} />
+          // <div key={index}>
+          //   {JSON.stringify(row)}
+          // </div> 
+            
         ))}
       </Grid>
     </>
   );
 };
+AddressTwo.propTypes = {
+  // this was required
+  sharedState: PropTypes.array,
+};
+
 export default AddressTwo;
