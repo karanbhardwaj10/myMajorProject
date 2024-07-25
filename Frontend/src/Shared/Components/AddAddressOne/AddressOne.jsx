@@ -59,7 +59,9 @@ const AddressOne = ({ onAddAddress }) => {
   const [submittedAddresses, setSubmittedAddresses] = useState([]);
   const [newAddress, setNewAddress] = useState(null);
   const addNewForm = () => {
-    setForms([...forms, formFields]);
+    if (formFields.length <= 1) {
+      setForms([...forms, formFields]);
+    }
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -78,12 +80,11 @@ const AddressOne = ({ onAddAddress }) => {
       customerAddress: formData.get("Address"),
       city: formData.get("City"),
     };
-    let finalAns=[]
-    finalAns.push(newAddedAddress)
+    let finalAns = [];
+    finalAns.push(newAddedAddress);
     // console.log(newAddedAddress,"new address");
     // Add the new address to the submitted addresses
     setNewAddress(finalAns);
-
     // setSubmittedAddresses([...submittedAddresses, newAddress]);
 
     // Reset the form
@@ -93,11 +94,11 @@ const AddressOne = ({ onAddAddress }) => {
   // The functional form is generally safer when the new state depends on the previous state. It ensures that you’re working with the most recent state, even if multiple state updates are queued.
   useEffect(() => {
     if (newAddress) {
-      console.log(newAddress,"form given json");
+      console.log(newAddress, "form given json");
       setSubmittedAddresses((prevAddresses) => [...prevAddresses, newAddress]);
     }
     // console.log(submittedAddresses, "submitted addresses");
-    onAddAddress(newAddress)
+    onAddAddress(newAddress);
   }, [newAddress]);
   return (
     <div
@@ -152,13 +153,15 @@ const AddressOne = ({ onAddAddress }) => {
           }}
           flexItem
         />
-        {forms.map((fields, formIndex) => (
-          <React.Fragment key={formIndex}>
-            {fields.map((row, index) => (
-              <FieldRow key={index} fields={row} />
-            ))}
-          </React.Fragment>
-        ))}
+        {forms.length <= 1
+          ? forms.map((fields, formIndex) => (
+              <React.Fragment key={formIndex}>
+                {fields.map((row, index) => (
+                  <FieldRow key={index} fields={row} />
+                ))}
+              </React.Fragment>
+            ))
+          : JSON.stringify()}
         <Button
           style={{
             width: "100%",
@@ -204,6 +207,5 @@ const AddressOne = ({ onAddAddress }) => {
 };
 AddressOne.propTypes = {
   onAddAddress: PropTypes.func.isRequired,
-}; 
+};
 export default AddressOne;
- 
