@@ -1,6 +1,7 @@
 import Navbar from "../../Shared/Components/Header";
 import Footer from "../../Shared/Components/Footer";
 import QnA from "../QnA/QnA";
+import ProductType from "../Products/ProductType";
 const Homepage = () => {
   return (
     <>
@@ -13,6 +14,7 @@ const Homepage = () => {
     }}>
 
       <Navbar />
+      <ProductType/>
       <QnA/>
       <Footer />
     </div>
