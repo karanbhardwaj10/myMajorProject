@@ -11,14 +11,15 @@ const ProductType = () => {
     { title: "Coming Soon", img: test12, price: 1799 },
   ];
   return (
-    <Container>
+    <Container style={{marginLeft:'250px'}}>
       {/* <h1>Product Type</h1> */}
-      <Grid  container spacing={10}>
+      <Grid container spacing={15} >
         {products.map((product, index) => (
           <Grid
             display={"flex"}
             justifyContent={"space-between"}
             className="zoomProductType"
+            style={{paddingLeft:'0px'}}
             item
             xs={12}
             sm={7}
