@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import CustomTextField from "../CustomTextField";
-
+import CustomPriceDetails from "../PriceDetails/CustomPriceDetails";
 const formFields = [
   [{ id: "Name", label: "Full name" }],
   [
@@ -68,12 +68,7 @@ const AddressOne = ({ onAddAddress }) => {
     // Handle form submission
     // Collect form data
     const form = event.target;
-    // console.log(form.value, "event");
     const formData = new FormData(form);
-    // for (let [key, value] of formData.entries()) {
-    //   console.log(key, value);
-    // }
-    // console.log(formData, "formdata");
     const newAddedAddress = {
       addressType: "Home", // You might want to add a field for this in your form
       customerName: formData.get("Name"),
@@ -82,7 +77,6 @@ const AddressOne = ({ onAddAddress }) => {
     };
     let finalAns = [];
     finalAns.push(newAddedAddress);
-    // console.log(newAddedAddress,"new address");
     // Add the new address to the submitted addresses
     setNewAddress(finalAns);
     // setSubmittedAddresses([...submittedAddresses, newAddress]);
@@ -181,21 +175,21 @@ const AddressOne = ({ onAddAddress }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          height:'600px',
           overflow: "hidden",
         }}
       >
         {/* <Divider style={{
           marginRight:'40px'
         }} orientation="vertical" flexItem /> */}
-        <Divider
+        {/* <Divider
           style={{
-            marginRight: "40px",
+            marginRight: "20px",
           }}
           orientation="vertical"
           flexItem
-        >
-          LEFT
-        </Divider>
+        /> */}
+        <CustomPriceDetails />
         {/* <img
           src={test6}
           alt="SignUp Page"
