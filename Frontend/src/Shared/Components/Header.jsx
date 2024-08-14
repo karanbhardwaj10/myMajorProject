@@ -10,13 +10,31 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartCheckoutSharpIcon from "@mui/icons-material/ShoppingCartCheckoutSharp";
+import { Link } from "react-router-dom";
+
 const pages = ["Products", "Blog", "About Us", "Contact Us"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  {
+    name: "profile",
+    path: "/profile",
+  },
+  {
+    name: "Account",
+    path: "/account",
+  },
+  {
+    name: "HomePage",
+    path: "/",
+  },
+  {
+    name: "Logout",
+    path: "/logout",
+  },
+];
 // const iconData = [
 //   { Icon: FavoriteIcon, alt: "wishlist" },
 //   { Icon: SearchSharpIcon, alt: "search" },
@@ -50,29 +68,36 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar style={{ backgroundColor: "#1b2833" }} position="static">
-      <Container maxWidth="xl">
+      <Container maxWidth="xxl">
         <Toolbar disableGutters>
-          <LocalMallIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            // href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+          <LocalMallIcon sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "start",
             }}
           >
-            CoolName+
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              // href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                // display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              CoolName+
+            </Typography>
+          </div>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
+          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
+          {/* <Typography
             variant="h5"
             noWrap
             component="a"
@@ -89,7 +114,7 @@ function ResponsiveAppBar() {
             }}
           >
             LOGO
-          </Typography>
+          </Typography> */}
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
             {pages.map((page) => (
               <Button
@@ -143,11 +168,16 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <Link
+                to={settings.path}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Link>
             </Menu>
           </Box>
         </Toolbar>

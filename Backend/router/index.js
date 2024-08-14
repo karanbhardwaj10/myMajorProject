@@ -1,10 +1,16 @@
 import { userSignup, userLogin } from "../controller/index.js";
 import { userSignUpConfig } from "../config/userConfig.js";
 import { validationHandler } from "../middleware/errorHandler.js";
+import { authenticateJwt } from "../middleware/authenticateJWT.js";
 
 const router = (app) => {
-  app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
-  app.get("/signIn", userLogin);
+  app.post(
+    "/signUp",
+    validationHandler(userSignUpConfig),
+    authenticateJwt,
+    userSignup
+  );
+  app.get("/signIn", authenticateJwt, userLogin);
 };
 
 // const userSignConfig = [

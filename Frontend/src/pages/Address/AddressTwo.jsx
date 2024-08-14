@@ -64,10 +64,6 @@ const AddressTwo = ({ sharedState }) => {
         <div></div>
         {newAddress.map((row, index) => (
           <AddressRow fields={row} key={index} />
-          // <div key={index}>
-          //   {JSON.stringify(row)}
-          // </div> 
-            
         ))}
       </Grid>
     </>
