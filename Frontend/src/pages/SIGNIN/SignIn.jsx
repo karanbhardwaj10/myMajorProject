@@ -7,6 +7,8 @@ import test6 from "../../assets/test6.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import CustomTextField from "../../Shared/Components/CustomTextField";
 import { getSignedInUser } from "./state/signInActions";
+import CustomPopup from "../../Shared/Components/CustomPopup/CustomPopup";
+import { useState } from "react";
 
 const formFields = [
   [{ id: "username", label: "Username", name: "username" }],
@@ -41,6 +43,7 @@ FieldRow.propTypes = {
 };
 const SignInForm = () => {
   const navigate = useNavigate();
+  const [modalVal, setModal] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -144,10 +147,13 @@ const SignInForm = () => {
           <Typography
             style={{ marginTop: "8px", marginRight: "25px", color: "gray" }}
             gutterBottom
+            onClick={() => {
+              setModal(true);
+            }}
           >
             Terms & Conditions{" "}
           </Typography>
-
+          {modalVal && <CustomPopup onClose={()=>{setModal(false)}} />}
           <Typography style={{ marginTop: "8px", color: "gray" }} gutterBottom>
             Privacy Policy{" "}
           </Typography>
