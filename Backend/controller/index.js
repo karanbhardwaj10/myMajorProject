@@ -7,7 +7,7 @@ export const userSignup = async (req, res) => {
   const {
     firstName,
     lastName,
-    age,
+    // age,
     occupation,
     gender,
     Email,
@@ -20,7 +20,7 @@ export const userSignup = async (req, res) => {
     const newInquiry = new inquiryModelSchema({
       firstName,
       lastName,
-      age,
+      // age,
       occupation,
       gender,
       Email,

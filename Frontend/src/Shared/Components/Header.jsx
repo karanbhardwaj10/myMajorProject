@@ -17,6 +17,27 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartCheckoutSharpIcon from "@mui/icons-material/ShoppingCartCheckoutSharp";
 const pages = ["Products", "Blog", "About Us", "Contact Us"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const icons = [
+  {
+    component: SearchSharpIcon,
+    title: "Search",
+    alt: "search",
+    style: { marginRight: "20px", color: "white" },
+  },
+  {
+    component: FavoriteIcon,
+    title: "Wishlist",
+    alt: "wishlist",
+    style: { marginRight: "20px", color: "white" },
+  },
+  {
+    component: ShoppingCartCheckoutSharpIcon,
+    title: "Checkout",
+    alt: "checkout",
+    style: { marginRight: "20px", color: "white" },
+  },
+  { component: Avatar, title: "Settings", alt: "Remy Sharp", style: {} }, // Avatar for Settings
+];
 // const iconData = [
 //   { Icon: FavoriteIcon, alt: "wishlist" },
 //   { Icon: SearchSharpIcon, alt: "search" },
@@ -102,7 +123,7 @@ function ResponsiveAppBar() {
             ))}
           </Box>
           <Box>
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <IconButton sx={{ p: 0 }}>
               <div style={{ marginTop: "10px" }}>
                 <Tooltip title="Search">
                   <SearchSharpIcon
@@ -124,7 +145,7 @@ function ResponsiveAppBar() {
                 </Tooltip>
               </div>
               <Tooltip title="Settings">
-                <Avatar alt="Remy Sharp" />
+                <Avatar onClick={handleOpenUserMenu} alt="Remy Sharp" />
               </Tooltip>
             </IconButton>
             <Menu

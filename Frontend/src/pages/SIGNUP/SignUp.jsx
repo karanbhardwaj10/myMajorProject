@@ -2,46 +2,96 @@ import {
   Box,
   TextField,
   Button,
-  FormControlLabel,
   Checkbox,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Autocomplete from "@mui/material/Autocomplete";
 import signUpImage from "../../assets/SignUpPageImg.jpg";
 import Grid from "@mui/material/Grid";
+import { signUpFields, Occupation, gender } from "./state/signUpVars";
+import CustomTextField from "../../Shared/Components/CustomTextField";
+import { useState } from "react";
+import { getSignedUpUser } from "./state/signUpActions";
 
-const Occupation = [
-  { label: "IT" },
-  { label: "Business" },
-  { label: "Student" },
-  { label: "NA" },
-];
-const gender = [{ label: "Male" }, { label: "Female" }, { label: "Other" }];
+const FieldRow = ({ fields }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: "10px",
+      marginTop: "10px",
+    }}
+  >
+    {fields.map((field) => (
+      <div key={field.id} style={{ flex: 1, marginRight: "10px" }}>
+        <CustomTextField {...field} />
+      </div>
+    ))}
+  </div>
+);
+FieldRow.propTypes = {
+  fields: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string,
+      fullWidth: PropTypes.bool,
+      // Add any other field properties you expect
+    })
+  ).isRequired,
+};
 function MyForm() {
-  const handleSubmit = (event) => {
+  const [occupationVal, setOccupation] = useState(null);
+  const [genderVal, setGender] = useState(null);
+  const [checked, setChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const signUpFrom = new FormData(event.target);
+    const requestBody = {
+      firstName: signUpFrom.get("firstName"),
+      lastName: signUpFrom.get("lastName"),
+      Email: signUpFrom.get("Email"),
+      userName: signUpFrom.get("userName"),
+      passWord: signUpFrom.get("passWord"),
+      occupation: occupationVal,
+      gender: genderVal,
+    };
     // Handle form submission logic here
-    console.log("Form submitted");
+    if(checked === true){
+      await getSignedUpUser(requestBody)
+      navigate('/');
+    }
+    else{
+      console.error('some error')
+    }
+    console.log("Form submitted", requestBody,checked);
   };
 
+  // const rows = [signUpFields];
   return (
     <div
       style={{
         display: "flex",
         justifyContent: "space-between",
-        minHeight: "90vh",
-        flexDirection: "row",
+        minHeight: "100vh",
+        overflow: "hidden",
         alignItems: "center",
       }}
     >
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{
-          "& .MuiTextField-root": { m: 1, width: "350px" },
+        sx={{ "& .MuiTextField-root": { width: "100%" } }}
+        style={{
+          width: "50%",
+          padding: "20px",
+          //   overflowY: "auto",
+          maxHeight: "100vh",
         }}
-        style={{ width: "50%" }}
         noValidate
         autoComplete="off"
       >
@@ -61,57 +111,20 @@ function MyForm() {
               >
                 Sign up to create your account
               </Typography>
-              <div>
-                <TextField
-                  required
-                  id="firstname"
-                  label="First Name"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="lastname"
-                  label="Last Name"
-                  variant="outlined"
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  minwidth: "100%",
-                }}
-              >
-                <TextField
-                  required
-                  id="email"
-                  label="Email"
-                  type="email"
-                  variant="outlined"
-                  style={{
-                    width: "100%",
-                    marginLeft: "8px",
-                  }}
-                />
-              </div>
-              <div>
-                <TextField
-                  required
-                  id="username"
-                  label="username"
-                  type="username"
-                  variant="outlined"
-                />
-                <TextField
-                  required
-                  id="password"
-                  label="password"
-                  type="password"
-                  variant="outlined"
-                />
+              <div style={{ width: "45rem" }}>
+                {signUpFields.map((row, index) => (
+                  <FieldRow key={`row-${index}`} fields={row} />
+                ))}
               </div>
               <div style={{ display: "flex", marginTop: "10px" }}>
                 <Autocomplete
+                  onChange={(event, newOccupationVal) =>
+                    setOccupation(
+                      newOccupationVal ? newOccupationVal.label : null
+                    )
+                  }
+                  fullWidth
+                  style={{ marginRight: "5px" }}
                   disablePortal
                   id="Occupation"
                   options={Occupation}
@@ -120,11 +133,16 @@ function MyForm() {
                   )}
                 />
                 <Autocomplete
+                  style={{ marginLeft: "5px", marginRight: "10px" }}
+                  onChange={(event, newGenderVal) =>
+                    setGender(newGenderVal ? newGenderVal.label : null)
+                  }
+                  fullWidth
                   disablePortal
-                  id="Age"
+                  id="gender"
                   options={gender}
                   renderInput={(params) => (
-                    <TextField {...params} label="Age" />
+                    <TextField {...params} label="Gender" />
                   )}
                 />
               </div>
@@ -134,22 +152,32 @@ function MyForm() {
                   width: "100%",
                 }}
               >
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label="I agree to the terms and conditions"
+                <Checkbox
                   style={{
-                    display: "flex",
-                    width: "100%",
-                    marginLeft: "1px",
+                    marginTop: "5px",
                     marginBottom: "5px",
                   }}
+                  checked={checked}
+                  onChange={(event, checkedVal) =>
+                    setChecked(checkedVal)
+                  }
                 />
+                <Typography
+                  style={{
+                    marginLeft: "5px",
+                    marginTop: "10px",
+                    marginBottom: "5px",
+                  }}
+                  variant="h6"
+                >
+                  Sign up to create your account
+                </Typography>
               </div>
               <div>
                 <Button
                   style={{
                     width: "98%",
-                    marginLeft: "8px",
+                    marginTop: "10px",
                     backgroundColor: "#1b2833",
                   }}
                   type="submit"
@@ -190,7 +218,6 @@ function MyForm() {
             marginLeft: "100px",
             width: "600px",
             height: "500px",
-            // objectFit: "cover",
           }}
         />
       </div>

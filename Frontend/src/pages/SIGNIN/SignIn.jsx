@@ -43,8 +43,7 @@ const SignInForm = () => {
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
+    const formData = new FormData(event.target);
     const userSignInInfo = {
       userName: formData.get("username"),
       passWord: formData.get("password"),
