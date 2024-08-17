@@ -50,7 +50,7 @@ const Footer = () => {
         <Grid item xs={6}>
           <div
             style={{
-              backgroundColor: "#1b2833",
+              backgroundColor: "#005685",
               height: "300px",
               width: "100%",
               border: "2px solid grey",
@@ -89,7 +89,7 @@ const Footer = () => {
         <Grid item xs={6}>
           <div
             style={{
-              backgroundColor: "#1b2833",
+              backgroundColor: "#005685",
               height: "300px",
               width: "94%",
               border: "2px solid grey",
