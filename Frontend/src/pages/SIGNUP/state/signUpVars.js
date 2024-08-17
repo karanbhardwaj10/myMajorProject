@@ -20,6 +20,6 @@ export const signUpFields = [
   [{ id: "Email", label: "Email", name: "Email" }],
   [
     { id: "userName", label: "Username", name: "userName" },
-    { id: "passWord", label: "Password", name: "passWord" },
+    { id: "passWord", label: "Password", type: "password", name: "passWord" },
   ],
 ];
