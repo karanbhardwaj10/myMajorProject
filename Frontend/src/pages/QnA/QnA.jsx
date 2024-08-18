@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
 import CustomAccordian from "../../Shared/Components/CustomAccordian";
 import { Stack } from "@mui/material";
-import QnAData from "./State/QnAData";
+import QnAData from './State/QnAData'
 
 const QnARow = ({ fields }) => (
-  <Stack spacing={2}>
+    <Stack spacing={2}>
     {fields.map((field, index) => (
       <CustomAccordian
         key={index}
@@ -43,7 +43,12 @@ const QnA = () => {
           marginBottom: "50px",
         }}
       >
-        <Typography align="center" color={"grey"} variant="h5" gutterBottom>
+        <Typography
+          align="center"
+          color={"grey"}
+          variant="h5"
+          gutterBottom
+        >
           FAQ
         </Typography>
 
@@ -51,13 +56,13 @@ const QnA = () => {
           style={{ marginBottom: "50px" }}
           variant="h4"
           gutterBottom
-          fontFamily={"poppins"}
+          fontFamily={"sans-serif"}
           align="center"
         >
           See if we can answer your query here
         </Typography>
 
-        <Box>
+        <Box >
           <QnARow fields={QnAData} />
         </Box>
       </div>

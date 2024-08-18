@@ -8,15 +8,14 @@ import { Typography } from "@mui/material";
 const CustomAccordian = ({ AccordionTitle, AccordianDetails }) => {
   // const disableSquare='false';
   return (
-    <Accordion style={{borderRadius:'5px'}}>
-      <AccordionSummary 
-      // style={{borderRadius:'10px'}}
+    <Accordion square={false}>
+      <AccordionSummary
         expandIcon={<ExpandCircleDownOutlinedIcon htmlColor="#1b2833" />}
       >
-        <Typography variant="h6" fontFamily={'poppins'} gutterBottom>{AccordionTitle}</Typography>
+        <Typography variant="h6" gutterBottom>{AccordionTitle}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography color={"grey"}   gutterBottom>{AccordianDetails}</Typography>
+        <Typography color={"grey"}  gutterBottom>{AccordianDetails}</Typography>
       </AccordionDetails>
     </Accordion>
   );
