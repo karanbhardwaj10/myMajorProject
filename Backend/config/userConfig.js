@@ -11,12 +11,12 @@ export const userSignUpConfig = [
         required: true,
         from: "body",
       },
-    {
-      name: "age",
-      dataType: "number",
-      required: true,
-      from: "body",
-    },
+    // {
+    //   name: "age",
+    //   dataType: "number",
+    //   required: true,
+    //   from: "body",
+    // },
     {
       name: "occupation",
       dataType: "string",

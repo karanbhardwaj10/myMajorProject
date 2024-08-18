@@ -3,8 +3,13 @@ import { userSignUpConfig } from "../config/userConfig.js";
 import { validationHandler } from "../middleware/errorHandler.js";
 
 const router = (app) => {
-  app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
-  app.get("/signIn", userLogin);
+  app.post(
+    "/signUp",
+    validationHandler(userSignUpConfig),
+    // authenticateJwt,
+    userSignup
+  );
+  app.post("/signIn", userLogin);
 };
 
 // const userSignConfig = [

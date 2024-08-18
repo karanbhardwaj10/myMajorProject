@@ -4,13 +4,17 @@ import GoogleIcon from "@mui/icons-material/Google";
 import IconButton from "@mui/material/IconButton";
 // import SigninPageImg from "../../assets/SigninPageImg.jpg";
 import test6 from "../../assets/test6.jpg";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomTextField from "../../Shared/Components/CustomTextField";
-
+import { getSignedInUser } from "./state/signInActions";
+import CustomPopup from "../../Shared/Components/CustomPopup/CustomPopup";
+import { useState } from "react";
+import { termsAndConditions } from "./state/signInVars";
+import Tooltip from "@mui/material/Tooltip";
+import CustomAlert from "../../Shared/Components/CustomAlert/CustomAlert";
 const formFields = [
-  [{ id: "username", label: "Username" }],
-  [{ id: "password", label: "Password", type: "password" }],
+  [{ id: "username", label: "Username", name: "username" }],
+  [{ id: "password", label: "Password", type: "password", name: "password" }],
 ];
 const FieldRow = ({ fields }) => (
   <div
@@ -40,9 +44,32 @@ FieldRow.propTypes = {
   ).isRequired,
 };
 const SignInForm = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [termsModalOpen, setTermsModalOpen] = useState(false);
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission
+    const formData = new FormData(event.target);
+    const userSignInInfo = {
+      userName: formData.get("username"),
+      passWord: formData.get("password"),
+    };
+    const userSignIn = await getSignedInUser(userSignInInfo);
+    console.log(userSignIn, "userSignIn");
+
+    try {
+      if (userSignIn.status === 200) {
+        <CustomAlert
+          alertMessage={userSignIn.data.message}
+          severity={"success"}
+        />;
+        navigate("/"); // Navigate to the home page
+      }
+    } catch (error) {
+      console.log(error);
+
+      <CustomAlert alertMessage={error.message} severity={"error"} />;
+    }
   };
   return (
     <div
@@ -83,7 +110,9 @@ const SignInForm = () => {
             fontSize: "20px",
           }}
         >
-          <Link to="/signIn">Forgot Password ?</Link>
+          <Tooltip placement="left-start" title="Coming Soon 😃">
+            <Link to="/signIn">Forgot Password ?</Link>
+          </Tooltip>
         </div>
         <Button
           style={{
@@ -105,10 +134,18 @@ const SignInForm = () => {
             fontSize: "20px",
           }}
         >
-          <Typography style={{marginTop:'8px'}}  gutterBottom>Don&apos;t have an account ?  <Link to="/signUp" style={{marginRight:'10px'}}>SignUp</Link> or Signin with google</Typography>
+          <Typography style={{ marginTop: "8px" }} gutterBottom>
+            Don&apos;t have an account ?{" "}
+            <Link to="/signUp" style={{ marginRight: "10px" }}>
+              SignUp
+            </Link>{" "}
+            or Signin with google
+          </Typography>
 
           <IconButton color="primary" aria-label="add to shopping cart">
-            <GoogleIcon style={{ margin: "0px",padding:'0px' }} />
+            <Tooltip placement="right-start" title="Coming Soon 😃">
+              <GoogleIcon style={{ margin: "0px", padding: "0px" }} />
+            </Tooltip>
           </IconButton>
         </div>
         <div
@@ -118,13 +155,45 @@ const SignInForm = () => {
             marginTop: "20px",
             marginBottom: "20px",
             fontSize: "20px",
-            borderTop:'2px solid lightgrey'
+            borderTop: "2px solid lightgrey",
           }}
         >
-          <Typography style={{marginTop:'8px', marginRight:'25px', color:'gray'}}  gutterBottom>Terms & Conditions </Typography>
-
-          <Typography style={{marginTop:'8px',color:'gray'}}  gutterBottom>Privacy Policy </Typography>
-
+          <Typography
+            style={{ marginTop: "8px", marginRight: "25px", color: "gray" }}
+            gutterBottom
+            onClick={() => {
+              setTermsModalOpen(true);
+            }}
+          >
+            Terms & Conditions{" "}
+          </Typography>
+          {termsModalOpen && (
+            <CustomPopup
+              content={termsAndConditions}
+              heading={"Terms & Conditions"}
+              onClose={() => {
+                setTermsModalOpen(false);
+              }}
+            />
+          )}
+          <Typography
+            style={{ marginTop: "8px", color: "gray" }}
+            gutterBottom
+            onClick={() => {
+              setPrivacyModalOpen(true);
+            }}
+          >
+            Privacy Policy{" "}
+          </Typography>
+          {privacyModalOpen && (
+            <CustomPopup
+              content={termsAndConditions}
+              heading={"Privacy Policy"}
+              onClose={() => {
+                setPrivacyModalOpen(false);
+              }}
+            />
+          )}
         </div>
       </Box>
 
