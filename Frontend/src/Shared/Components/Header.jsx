@@ -194,6 +194,7 @@ function ResponsiveAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
+    </>
   );
 }
 
