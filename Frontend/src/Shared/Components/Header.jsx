@@ -19,6 +19,27 @@ import { useEffect } from "react";
 import '../Styles/HeaderStyle.css'
 const pages = ["Products", "Blog", "About Us", "Contact Us"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const icons = [
+  {
+    component: SearchSharpIcon,
+    title: "Search",
+    alt: "search",
+    style: { marginRight: "20px", color: "white" },
+  },
+  {
+    component: FavoriteIcon,
+    title: "Wishlist",
+    alt: "wishlist",
+    style: { marginRight: "20px", color: "white" },
+  },
+  {
+    component: ShoppingCartCheckoutSharpIcon,
+    title: "Checkout",
+    alt: "checkout",
+    style: { marginRight: "20px", color: "white" },
+  },
+  { component: Avatar, title: "Settings", alt: "Remy Sharp", style: {} }, // Avatar for Settings
+];
 // const iconData = [
 //   { Icon: FavoriteIcon, alt: "wishlist" },
 //   { Icon: SearchSharpIcon, alt: "search" },
@@ -91,93 +112,88 @@ function ResponsiveAppBar() {
               CoolName+
             </Typography>
 
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              // href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              LOGO
-            </Typography>
-            <Box
-              sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
-            >
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
-            <Box>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <div style={{ marginTop: "10px" }}>
-                  <Tooltip title="Search">
-                    <SearchSharpIcon
-                      style={{ marginRight: "20px", color: "white" }}
-                      alt="search"
-                    />
-                  </Tooltip>
-                  <Tooltip title="Wishlist">
-                    <FavoriteIcon
-                      style={{ marginRight: "20px", color: "white" }}
-                      alt="wishlist"
-                    />
-                  </Tooltip>
-                  <Tooltip title="Checkout">
-                    <ShoppingCartCheckoutSharpIcon
-                      style={{ marginRight: "20px", color: "white" }}
-                      alt="checkout"
-                    />
-                  </Tooltip>
-                </div>
-                <Tooltip title="Settings">
-                  <Avatar alt="Remy Sharp" />
-                </Tooltip>
-              </IconButton>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            // href="#app-bar-with-responsive-menu"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            LOGO
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      <div className="progress-container">
-        <div className="progress-bar" id="myBar"></div>
-      </div>
-      </AppBar>
+                {page}
+              </Button>
+            ))}
+          </Box>
+          <Box>
+            <IconButton sx={{ p: 0 }}>
+              <div style={{ marginTop: "10px" }}>
+                <Tooltip title="Search">
+                  <SearchSharpIcon
+                    style={{ marginRight: "20px", color: "white" }}
+                    alt="search"
+                  />
+                </Tooltip>
+                <Tooltip title="Wishlist">
+                  <FavoriteIcon
+                    style={{ marginRight: "20px", color: "white" }}
+                    alt="wishlist"
+                  />
+                </Tooltip>
+                <Tooltip title="Checkout">
+                  <ShoppingCartCheckoutSharpIcon
+                    style={{ marginRight: "20px", color: "white" }}
+                    alt="checkout"
+                  />
+                </Tooltip>
+              </div>
+              <Tooltip title="Settings">
+                <Avatar onClick={handleOpenUserMenu} alt="Remy Sharp" />
+              </Tooltip>
+            </IconButton>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
     </>
   );
 }
