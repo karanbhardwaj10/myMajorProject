@@ -1,57 +1,49 @@
-// import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import XIcon from '@mui/icons-material/X';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-const Footer = () => {
-  // can we do array of objects and then iterate over it ?
-  // const Footer = [
-  //   {
-  //     company: [
-  //       "About",
-  //       "Privacy Policy",
-  //       "Terms&Conditions",
-  //       "Partners",
-  //       "Contact",
-  //     ],
-  //   },
-  //   { resources: ["Blog", "Tools", "Support"] },
-  //   { Product: ["Home", "Career", "Teams"] },
-  // ];
+import XIcon from "@mui/icons-material/X";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { Box, Typography, Tooltip } from "@mui/material";
+import { Link } from "react-router-dom";
 
-  // const footer = {
-  //   company: [
-  //     "About",
-  //     "Privacy Policy",
-  //     "Terms&Conditions",
-  //     "Partners",
-  //     "Contact",
-  //   ],
-  //   resources: ["Blog", "Tools", "Support"],
-  //   Product: ["Home", "Career", "Teams"],
-  // };
-  const company = [
-    "About",
-    "Privacy Policy",
-    "Terms&Conditions",
-    "Partners",
-    "Contact",
+const Footer = () => {
+  const sections = {
+    Company: [
+      "About",
+      "Privacy Policy",
+      "Terms & Conditions",
+      "Partners",
+      "Contact",
+    ],
+    Resources: ["Blog", "Tools", "Support"],
+    Product: ["Home", "Career", "Teams"],
+  };
+  const socialMedia = [
+    {
+      name: "Instagram",
+      IconComponent: InstagramIcon,
+      tooltip: "Instagram",
+      path: "/SignIn",
+    },
+    { name: "X", IconComponent: XIcon, tooltip: "X", path: "/SignUp" },
+    {
+      name: "LinkedIn",
+      IconComponent: LinkedInIcon,
+      tooltip: "LinkedIn",
+      path: "https://www.linkedin.com/in/karan-bhardwaj-265103151/",
+    },
   ];
-  const resources = ["Blog", "Tools", "Support"];
-  const Product = ["Home", "Career", "Teams"];
   return (
-    <div>
+    <Box  height={"100%"} >
+    {/* <Box display={'flex'} height={"100%"} justifyContent={"center"}> */}
       <Grid container spacing={2} sx={{ flexGrow: 1 }}>
         <Grid item xs={6}>
-          <div
-            style={{
+          <Box
+            sx={{
               backgroundColor: "#005685",
-              height: "300px",
+              height: "100%",
               width: "100%",
               border: "2px solid grey",
               display: "flex",
@@ -60,111 +52,115 @@ const Footer = () => {
               padding: "20px",
             }}
           >
-            <div>
-              <div style={{ marginBottom: "20px", width: "80%" }}>
-                <Typography color="white" variant="h7">
-                  <LocalMallIcon /> CoolName+
+            <Box>
+              <Box sx={{ marginBottom: "20px", width: "80%" }}>
+                <Typography
+                  color="white"
+                  variant="subtitle1"
+                  display="flex"
+                  alignItems="center"
+                >
+                  <LocalMallIcon sx={{ marginRight: "8px" }} /> CoolName+
                 </Typography>
-              </div>
-              <div style={{ width: "80%" }}>
+              </Box>
+              <Box sx={{ width: "80%" }}>
                 <Typography variant="h6" color="white">
                   Style Flows Here: Your Ultimate Fashion Destination! Explore
                   Trendsetting Collections, Shop the Latest Looks, and Let Your
                   Fashion Flow with Us!
                 </Typography>
-              </div>
-              <div style={{ marginTop: "20px", width: "80%" }}>
-                <Typography color="white" variant="h7">
-                  <EmailOutlinedIcon /> slimShady@gmail.com
+              </Box>
+              <Box sx={{ marginTop: "20px", width: "80%" }}>
+                <Typography
+                  color="white"
+                  variant="subtitle1"
+                  display="flex"
+                  alignItems="center"
+                >
+                  <EmailOutlinedIcon sx={{ marginRight: "8px" }} />
+                  slimShady@gmail.com
                 </Typography>
-              </div>
-            </div>
-            <div style={{ width: "80%" }}>
+              </Box>
+            </Box>
+            <Box sx={{ width: "80%" }}>
               <Typography color="white" variant="body2">
                 © 2024 All rights reserved.
               </Typography>
-            </div>
-          </div>
+            </Box>
+          </Box>
         </Grid>
-        <Grid item xs={6}>
-          <div
-            style={{
+        <Grid item xs={12} md={6}>
+          <Box
+            sx={{
               backgroundColor: "#005685",
-              height: "300px",
+              height: "100%",
               width: "94%",
               border: "2px solid grey",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
               padding: "20px",
+              overflow: "hidden",
             }}
           >
-            <div
-              style={{
+            <Box
+              sx={{
                 display: "flex",
                 flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              <div style={{ marginBottom: "20px", width: "80%" }}>
-                {company.map((valCompany, index) => (
-                  <Typography color="white" key={index}>
-                    {valCompany}
-                  </Typography>
-                ))}
-              </div>
-
-              <div style={{ width: "80%" }}>
-                <div style={{ marginBottom: "20px", width: "80%" }}>
-                  {resources.map((valResources, index) => (
-                    <Typography color="white" key={index}>
-                      {valResources}
+              {Object.entries(sections).map(
+                ([sectionTitle, items], sectionIndex) => (
+                  <Box key={sectionIndex} sx={{ width: "30%" }}>
+                    <Typography
+                      variant="h6"
+                      color="white"
+                      sx={{ marginBottom: "10px" }}
+                    >
+                      {sectionTitle}
                     </Typography>
-                  ))}
-                </div>
-              </div>
-              <div style={{ width: "80%" }}>
-                <div style={{ marginBottom: "20px", width: "80%" }}>
-                  {Product.map((valResources, index) => (
-                    <Typography color="white" key={index}>
-                      {valResources}
-                    </Typography>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div
-              style={{
+                    {items.map((item, itemIndex) => (
+                      <Typography
+                        color="white"
+                        key={itemIndex}
+                        sx={{ marginBottom: "5px" }}
+                      >
+                        {item}
+                      </Typography>
+                    ))}
+                  </Box>
+                )
+              )}
+            </Box>
+            <Box
+              sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
               }}
             >
-              {/* <div> */}
               <Typography color="white">© 2024 All rights reserved.</Typography>
-              {/* </div> */}
-              <div>
-                <IconButton >
-                  <Tooltip title="Instagram">
-                    <InstagramIcon style={{color:'white'}}  alt="Remy Sharp" />
-                  </Tooltip>
-                </IconButton>
-                <IconButton>
-                  <Tooltip title="X">
-                    <XIcon style={{color:'white'}} alt="Remy Sharp" />
-                  </Tooltip>
-                </IconButton>
-                <IconButton>
-                  <Tooltip title="LinkedIn">
-                    <LinkedInIcon style={{color:'white'}} alt="Remy Sharp" />
-                  </Tooltip>
-                </IconButton>
-              </div>
-            </div>
-          </div>
+              <Box>
+                {socialMedia.map(({ name, IconComponent, tooltip, path }) => (
+                  <IconButton key={name}>
+                    <Tooltip title={tooltip}>
+                      <Link
+                        to={path}
+                        style={{ textDecoration: "none", color: "black" }}
+                      >
+                        <IconComponent style={{ color: "white" }} />
+                      </Link>
+                    </Tooltip>
+                  </IconButton>
+                ))}
+              </Box>
+            </Box>
+          </Box>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };
 export default Footer;
