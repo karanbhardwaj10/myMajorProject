@@ -1,9 +1,10 @@
 import CustomProductView from "../../Shared/Components/customProductView/CustomProductView";
-import { Grid, Container, Box } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import test8 from "../../assets/test8.jpg";
 import test11 from "../../assets/test11.jpg";
 import test12 from "../../assets/test12.jpg";
 import { Link } from "react-router-dom";
+
 const ProductType = () => {
   const products = [
     {
@@ -12,7 +13,7 @@ const ProductType = () => {
       price: "Rs. " + 1999 + "*",
       path: "/men",
       discountPercentage: "Heavy Discounts",
-      isProduct: true,
+      // isProduct: false,
     },
     {
       title: "W o m e n",
@@ -29,42 +30,42 @@ const ProductType = () => {
       discountPercentage: "Heavy Discounts",
     },
   ];
-  console.log(products[1].imgVal);
   return (
-    <Container  style={{ marginLeft: "250px" }}>
-      {/* <h1>Product Type</h1> */}
-      <Grid  container spacing={15} marginTop={2}>
+    <Container
+      maxWidth="xl"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        display={"flex"}
+        flexDirection={"row"}
+        width={"88%"}
+        height={"640px"}
+        justifyContent={"space-around"}
+        alignItems={"start"}
+      >
         {products.map((product, index) => (
-          <Grid
-            display={"flex"}
-            justifyContent={"start"}
-            // flexDirection={"column"}
-            style={{ padding: "0px" }}
-            item
-            xs={12}
-            sm={7}
-            md={6}
-            lg={4}
-            key={index}
-          >
-            <Box>
-              <Link
-                to={product.path}
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <CustomProductView
-                  discountPercentage={product.discountPercentage}
-                  title={product.title}
-                  imgVal={product.imgVal}
-                  price={product.price}
-                  isProduct={product.isProduct}
-                />
-              </Link>
-            </Box>
-          </Grid>
+          <Box key={index}>
+            <Link
+              to={product.path}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <CustomProductView
+                discountPercentage={product.discountPercentage}
+                title={product.title}
+                imgVal={product.imgVal}
+                price={product.price}
+                isProduct={product.isProduct}
+              />
+            </Link>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Container>
   );
 };
+
 export default ProductType;

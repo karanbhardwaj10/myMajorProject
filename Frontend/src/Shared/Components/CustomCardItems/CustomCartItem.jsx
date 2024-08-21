@@ -36,7 +36,7 @@ const CustomCartItem = () => {
       display={"flex"}
       justifyContent={"center"}
       alignItems={"cneter"}
-      width={"70rem"}
+      width={"65%"}
       marginTop={5}
       height={"20rem"}
       marginLeft={2}
@@ -75,7 +75,7 @@ const CustomCartItem = () => {
                     typoRow[0].id === "stockAvailability" ? (
                       <Typography>
                         {typoRow[0].value}
-                        <Button>
+                        <Button sx={{paddingLeft:'0px'}}>
                           <WhereToVoteIcon htmlColor="green" />
                         </Button>
                       </Typography>
@@ -108,7 +108,7 @@ const CustomCartItem = () => {
                   }}
                 > */}
                 <RemoveIcon
-                  sx={{ margin: "6px 6px 6px 0px" ,  }}
+                  sx={{ margin: "6px 6px 6px 0px" }}
                   onClick={() => {
                     quantity === 0 ? setQuantity(0) : setQuantity(quantity - 1);
                   }}
