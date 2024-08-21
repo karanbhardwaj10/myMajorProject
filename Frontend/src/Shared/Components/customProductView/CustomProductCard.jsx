@@ -9,7 +9,7 @@ const CustomProductCard = ({
   imgWidth,
   boxHeight
 }) => (
-  <Box height={boxHeight} display={'flex'} justifyContent={"center"} marginLeft="1px" marginTop="1px">
+  <Box height={boxHeight}position={"relative"} display={'flex'} justifyContent={"center"} marginLeft="1px" marginTop="1px">
     <img
       height={imgHeight}
       width={imgWidth}
