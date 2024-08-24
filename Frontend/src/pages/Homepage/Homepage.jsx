@@ -21,9 +21,10 @@ const Homepage = () => {
         <Navbar />
         <CustomCartItem />
         <ProductType />
+        <WebInfo />
+        <NewsLetter />
         <QnA />
-        <NewsLetter/>
-      <Footer />
+        <Footer />
       </div>
     </>
   );
