@@ -4,6 +4,7 @@ import QnA from "../QnA/QnA";
 import ProductType from "../Products/ProductType";
 import CustomCartItem from "../../Shared/Components/CustomCardItems/CustomCartItem";
 
+import NewsLetter from "../NewsLetter/NewsLetter";
 const Homepage = () => {
   return (
     <>
@@ -20,7 +21,8 @@ const Homepage = () => {
         <CustomCartItem />
         <ProductType />
         <QnA />
-        <Footer />
+        <NewsLetter/>
+      <Footer />
       </div>
     </>
   );
