@@ -26,7 +26,11 @@ const Homepage = () => {
         <ProductType />
         <WebInfo />
         <NewsLetter />
-        <QnA />
+        <div style={{ flex: 1, overflow: "auto" }}>
+          <CustomPaymentCard />
+          <AddressDetails />
+          <QnA />
+        </div>
         <Footer />
       </div>
     </>
