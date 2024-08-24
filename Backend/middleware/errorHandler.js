@@ -25,4 +25,8 @@ export const validationHandler = (config) => (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
 };
+// export const findUser=(req,res,next)=>{
+//   const {userName,password}=req.body;
+// }

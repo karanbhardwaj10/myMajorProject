@@ -1,6 +1,7 @@
 import { userSignup, userLogin } from "../controller/index.js";
 import { userSignUpConfig } from "../config/userConfig.js";
 import { validationHandler } from "../middleware/errorHandler.js";
+import { authenticateJwt } from "../middleware/authenticateJWT.js";
 
 const router = (app) => {
   app.post(

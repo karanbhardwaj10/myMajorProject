@@ -1,9 +1,12 @@
 import { inquiryModelSchema } from "../db/index.js";
 import { hashPassword, verifyPassword } from "../utils/passWordUtils.js";
+import jwt from "jsonwebtoken";
 
 // Use Postman to Test
+
+const SecretKey = "SECr3t";
+
 export const userSignup = async (req, res) => {
-  console.log("5", req.body);
   const {
     firstName,
     lastName,
@@ -14,9 +17,18 @@ export const userSignup = async (req, res) => {
     userName,
     passWord,
   } = req.body;
-  const hashedPassword = await hashPassword(passWord);
-  console.log(hashedPassword);
+
   try {
+    // Check if the user already exists
+    const existingUser = await inquiryModelSchema.findOne({ userName });
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" }); // 409 Conflict status code for existing user
+    }
+
+    // Hash the password
+    const hashedPassword = await hashPassword(passWord);
+
+    // Create a new user inquiry
     const newInquiry = new inquiryModelSchema({
       firstName,
       lastName,
@@ -27,9 +39,15 @@ export const userSignup = async (req, res) => {
       userName,
       passWord: hashedPassword,
     });
-    console.log(newInquiry);
+
+    // Save the new user inquiry
     await newInquiry.save();
-    res.status(201).json(newInquiry);
+
+    // Generate a JWT token
+    const token = jwt.sign({ userName }, SecretKey, { expiresIn: "1h" });
+
+    // Respond with the new user and token
+    res.status(201).json({ newInquiry, token });
   } catch (error) {
     console.error("Error saving inquiry:", error);
     res.status(500).json({ error: "Error saving inquiry" });
@@ -37,6 +55,8 @@ export const userSignup = async (req, res) => {
 };
 
 export const userLogin = async (req, res) => {
+
+  console.log(jwt);
 
   try {
     const { userName, passWord } = req.body;
@@ -59,14 +79,18 @@ export const userLogin = async (req, res) => {
         .json({ message: "User password data is corrupted" });
     }
 
+    
     const isPasswordValid = await verifyPassword(passWord, user.passWord);
-
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
-
+    const token = jwt.sign({ username: user.userName }, SecretKey, {
+      expiresIn: "1h",
+    });
     // Proceed with login (e.g., generate a token)
-    res.status(200).json({ message: "Login successful" });
+    if(userName && passWord){
+      res.status(200).json({ message: "Login successful", token });
+    }
   } catch (error) {
     console.error("Login error:", error.response);
     res.status(500).json({ message: "An unexpected error occurred" });

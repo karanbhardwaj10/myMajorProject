@@ -220,7 +220,7 @@ const SignInForm = () => {
         autoComplete="off"
       >
         <Typography style={{ marginBottom: "50px" }} variant="h4" gutterBottom>
-          Sign in to your account
+          SignIn to your account
         </Typography>
 
         {formFields.map((row, index) => (
@@ -233,6 +233,7 @@ const SignInForm = () => {
             marginTop: "20px",
             marginBottom: "20px",
             fontSize: "20px",
+           
           }}
         >
           <Tooltip placement="left-start" title="Coming Soon 😃">

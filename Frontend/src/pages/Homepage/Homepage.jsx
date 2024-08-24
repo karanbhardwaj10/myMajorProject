@@ -6,6 +6,9 @@ import CustomCartItem from "../../Shared/Components/CustomCardItems/CustomCartIt
 
 import NewsLetter from "../NewsLetter/NewsLetter";
 import WebInfo from "../WebInfo/WebInfo";
+import AddressDetails from "../Address/AddressDetails";
+import CustomPaymentCard from "../../Shared/Components/AddPaymentCards/CustomPaymentCard";
+
 const Homepage = () => {
   return (
     <>
