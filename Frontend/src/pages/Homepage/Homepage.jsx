@@ -5,6 +5,7 @@ import ProductType from "../Products/ProductType";
 import CustomCartItem from "../../Shared/Components/CustomCardItems/CustomCartItem";
 
 import NewsLetter from "../NewsLetter/NewsLetter";
+import WebInfo from "../WebInfo/WebInfo";
 const Homepage = () => {
   return (
     <>

@@ -5,8 +5,7 @@ import PropTypes from "prop-types";
 import ExpandCircleDownOutlinedIcon from '@mui/icons-material/ExpandCircleDownOutlined';
 import { Typography } from "@mui/material";
 
-const CustomAccordian = ({ AccordionTitle, AccordianDetails }) => {
-  // const disableSquare='false';
+const CustomAccordian = ({ AccordionTitle, AccordianDetails  }) => {
   return (
     <Accordion style={{borderRadius:'5px'}}>
       <AccordionSummary 
