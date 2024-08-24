@@ -73,7 +73,7 @@ const CustomCartItem = () => {
                   <div key={typoRow[0].id}>
                     {typoRow[0].id === "deliveryAvailability" ||
                     typoRow[0].id === "stockAvailability" ? (
-                      <Typography>
+                      <Typography marginTop={'5px'}>
                         {typoRow[0].value}
                         <Button sx={{paddingLeft:'0px'}}>
                           <WhereToVoteIcon htmlColor="green" />
@@ -122,7 +122,10 @@ const CustomCartItem = () => {
                     display: "flex",
                     alignItems: "center",
                     "& .MuiInputBase-input": {
-                      textAlign: "center", // Centers the text horizontally
+                      textAlign: "center",
+                      fontWeight:'bold',
+                      fontFamily:'sans',
+                      // color:'#005685' // Centers the text horizontally
                     },
                     height: "30px",
                     width: "40px", // Adjust the height as needed
