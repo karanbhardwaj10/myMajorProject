@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-import CustomTextField from "../CustomTextField";
+import CustomTextField from "../CustomTextField/CustomTextField";
 import CustomPriceDetails from "../PriceDetails/CustomPriceDetails";
 const formFields = [
   [{ id: "Name", label: "Full name" }],

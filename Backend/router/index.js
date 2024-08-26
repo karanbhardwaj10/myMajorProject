@@ -4,12 +4,7 @@ import { validationHandler } from "../middleware/errorHandler.js";
 import { authenticateJwt } from "../middleware/authenticateJWT.js";
 
 const router = (app) => {
-  app.post(
-    "/signUp",
-    validationHandler(userSignUpConfig),
-    // authenticateJwt,
-    userSignup
-  );
+  app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
   app.post("/signIn", userLogin);
 };
 

@@ -1,20 +1,14 @@
-import {
-  Box,
-  TextField,
-  Button,
-  Checkbox,
-  Typography,
-} from "@mui/material";
-import { Link ,useNavigate } from "react-router-dom";
+import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Autocomplete from "@mui/material/Autocomplete";
 import signUpImage from "../../assets/SignUpPageImg.jpg";
 import Grid from "@mui/material/Grid";
 import { signUpFields, Occupation, gender } from "./state/signUpVars";
-import CustomTextField from "../../Shared/Components/CustomTextField";
-import { useState } from "react";
-import { getSignedUpUser } from "./state/signUpActions";
-
+import CustomTextField from "../../Shared/Components/CustomTextField/CustomTextField";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { newUser } from "./features/signUpSlice";
 const FieldRow = ({ fields }) => (
   <div
     style={{
@@ -42,11 +36,15 @@ FieldRow.propTypes = {
     })
   ).isRequired,
 };
-function MyForm() {
+function SignupForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const [userSignUpVal, setUserSignUpVal] = useState({});
   const [occupationVal, setOccupation] = useState(null);
   const [genderVal, setGender] = useState(null);
   const [checked, setChecked] = useState(false);
-  const navigate = useNavigate();
+  const status = useSelector((state) => state.signUpSliceVal.status);
+  const allData = useSelector((state) => state.signUpSliceVal.allData);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,18 +58,17 @@ function MyForm() {
       occupation: occupationVal,
       gender: genderVal,
     };
-    // Handle form submission logic here
-    if(checked === true){
-      await getSignedUpUser(requestBody)
-      navigate('/');
+    // setUserSignUpVal(requestBody);
+    if (checked === true) {
+      dispatch(newUser(requestBody));
     }
-    else{
-      console.error('some error')
-    }
-    console.log("Form submitted", requestBody,checked);
   };
-
-  // const rows = [signUpFields];
+  useEffect(() => {
+    if (status && status === 201) {
+      localStorage.setItem("token", allData.allData.token);
+      navigate("/");
+    }
+  }, [status]);
   return (
     <div
       style={{
@@ -158,9 +155,7 @@ function MyForm() {
                     marginBottom: "5px",
                   }}
                   checked={checked}
-                  onChange={(event, checkedVal) =>
-                    setChecked(checkedVal)
-                  }
+                  onChange={(event, checkedVal) => setChecked(checkedVal)}
                 />
                 <Typography
                   style={{
@@ -225,4 +220,4 @@ function MyForm() {
   );
 }
 
-export default MyForm;
+export default SignupForm;

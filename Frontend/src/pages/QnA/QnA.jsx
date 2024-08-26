@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
-import CustomAccordian from "../../Shared/Components/CustomAccordian";
+import CustomAccordian from "../../Shared/Components/CustomAccordian/CustomAccordian";
 import { Stack } from "@mui/material";
 import QnAData from "./State/QnAData";
 

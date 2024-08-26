@@ -45,7 +45,7 @@ const WebInfo = () => {
               </Typography>
               <Typography
                 align="center"
-                paragraph="true"
+                // paragraph={'true'}
                 color={"grey"}
                 variant="h7"
                 gutterBottom
@@ -79,7 +79,7 @@ const WebInfo = () => {
                 color={"grey"}
                 variant="h7"
                 gutterBottom
-                paragraph="true"
+                // paragraph="true"
               >
                 Shopping with no extra charges – savor the liberty of
                 complimentary shipping on every order.
@@ -110,7 +110,7 @@ const WebInfo = () => {
                 color={"grey"}
                 variant="h7"
                 gutterBottom
-                paragraph="true"
+                // paragraph="true"
               >
                 With our hassle-free Easy Returns, changing your mind has never
                 been more convenient.
@@ -141,7 +141,7 @@ const WebInfo = () => {
                 color={"grey"}
                 variant="h7"
                 gutterBottom
-                paragraph="true"
+                // paragraph="true"
               >
                 Stay in the loop with our Order Tracking feature - from checkout
                 to your doorstep.

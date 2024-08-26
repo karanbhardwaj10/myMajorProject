@@ -5,14 +5,14 @@ import IconButton from "@mui/material/IconButton";
 // import SigninPageImg from "../../assets/SigninPageImg.jpg";
 import test6 from "../../assets/test6.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import CustomTextField from "../../Shared/Components/CustomTextField";
+import CustomTextField from "../../Shared/Components/CustomTextField/CustomTextField";
 import CustomPopup from "../../Shared/Components/CustomPopup/CustomPopup";
 import { useState, useEffect } from "react";
 import { termsAndConditions } from "./state/signInVars";
 import Tooltip from "@mui/material/Tooltip";
 import CustomAlert from "../../Shared/Components/CustomAlert/CustomAlert";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, resetStatus } from "../../features/sigInSlice";
+import { getUser, resetStatus } from "./features/sigInSlice";
 const formFields = [
   [{ id: "username", label: "Username", name: "username" }],
   [{ id: "password", label: "Password", type: "password", name: "password" }],
@@ -50,53 +50,18 @@ const SignInForm = () => {
   const dispatch = useDispatch();
   const [termsModalOpen, setTermsModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
-  function handleAlertClose() {
-    if (status !== 200) {
-      console.log("isnide the handlealertclose in signin form");
 
-      dispatch(resetStatus());
-    }
-  }
-  // Get userName and status from the Redux state
-  // const { userName, status } = useSelector((state) => ({
-  //   userName: state.signInVal?.user?.userName || "", // Safe access with default value
-  //   status: state.signInVal?.status || "",           // Safe access with default value
-  // }));
   const userNameVal = useSelector(
-    (state) => state.signInVal.user.userName || "username not found"
+    (state) => state.signInSliceVal.user.userName || "username not found"
   );
 
   const status = useSelector(
-    (state) => state.signInVal.status || "status not found"
+    (state) => state.signInSliceVal.status || "status not found"
   );
   const alldata = useSelector(
-    (state) => state.signInVal.alldata || "all data not found"
+    (state) => state.signInSliceVal.allData || "all data not found"
   );
 
-  // useEffect(() => {
-  //   const signInUser = async () => {
-  //     if (userSigninVal.userName && userSigninVal.passWord) {
-  //       console.log(userSigninVal, "use state");
-  //       // Dispatch the async thunk to handle sign-in
-  //       dispatch(
-  //         getUser({
-  //           userName: userSigninVal.userName,
-  //           passWord: userSigninVal.passWord,
-  //         })
-  //       );
-  //       navigateToHome();
-  //     }
-  //   };
-
-  //   signInUser();
-  // }, [userSigninVal, dispatch, navigateToHome]);
-
-  // function navigateToHome() {
-  //   if (status && status === 200) {
-  //     navigate("/");
-  //     // dispatch(resetStatus());
-  //   }
-  // }
   useEffect(() => {
     const signInUser = async () => {
       if (userSigninVal.userName && userSigninVal.passWord) {
@@ -108,16 +73,19 @@ const SignInForm = () => {
             passWord: userSigninVal.passWord,
           })
         );
-  
+
         if (status && status === 200) {
+          console.log(alldata, "all data from use effect");
+
+          localStorage.setItem("token", alldata.token);
           navigate("/");
           // dispatch(resetStatus());
         }
       }
     };
-  
+
     signInUser();
-  }, [userSigninVal, dispatch, status, navigate]);
+  }, [userSigninVal, dispatch, status, navigate, alldata]);
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -130,72 +98,7 @@ const SignInForm = () => {
     });
   };
 
-  console.log(userNameVal, status, alldata, "status and username");
-
-  // const navigate = useNavigate();
-  // const [userSigninVal, setUserSigninVal] = useState({});
-  // const getUserDetails = useSelector((state) => state.signinReducer);
-  // const { userName, status } = useSelector((state) => ({
-  //   userName: state.signinSlice.user.userName,
-  //   status: state.signInVal.status,
-  // }));
-  // const dispatch = useDispatch();
-  // const [termsModalOpen, setTermsModalOpen] = useState(false);
-  // const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
-  // useEffect(() => {
-  //   const signInUser = async () => {
-  //     if (userSigninVal.userName && userSigninVal.passWord) {
-  //       // const userSignIn = await getSignedInUser(userSigninVal);
-  //       dispatch(
-  //         userSignInReducer({
-  //           userName: userSigninVal.userName,
-  //           passWord: userSigninVal.passWord,
-  //         })
-  //       );
-  //       dispatch(
-  //         getUser({
-  //           userName: userSigninVal.userName,
-  //           passWord: userSigninVal.passWord,
-  //         })
-  //       );
-  //       // console.log(userSignIn.userName, "userSignIn");
-  //     }
-  //   };
-
-  //   signInUser();
-  // }, [userSigninVal, dispatch]);
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const formData = new FormData(event.target);
-  //   const userName = formData.get("username");
-  //   const passWord = formData.get("password");
-
-  //   setUserSigninVal({
-  //     userName,
-  //     passWord,
-  //   });
-
-  //   console.log(getUserDetails, "selector of userSignInReducer of createslice and",userName,passWord,'selector from async thunk');
-
-  //   // const userSignIn = await getSignedInUser(userSigninVal);
-  //   // dispatch(userSignInReducer({ userSigninVal }));
-  //   // console.log(userSignIn, "userSignIn");
-
-  //   // try {
-  //   //   if (userSignIn.status === 200) {
-  //   //     <CustomAlert
-  //   //       alertMessage={userSignIn.data.message}
-  //   //       severity={"success"}
-  //   //     />;
-  //   //     navigate("/"); // Navigate to the home page
-  //   //   }
-  //   // } catch (error) {
-  //   //   setUserSigninVal({});
-  //   //   console.log(error);
-
-  //   //   <CustomAlert alertMessage={error.message} severity={"error"} />;
-  //   // }
-  // };
+  console.log(userNameVal, status, "status and username");
   return (
     <div
       style={{
@@ -233,7 +136,6 @@ const SignInForm = () => {
             marginTop: "20px",
             marginBottom: "20px",
             fontSize: "20px",
-           
           }}
         >
           <Tooltip placement="left-start" title="Coming Soon 😃">

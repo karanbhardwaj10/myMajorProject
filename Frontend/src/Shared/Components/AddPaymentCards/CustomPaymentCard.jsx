@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import CustomTextField from "../CustomTextField";
+import CustomTextField from "../CustomTextField/CustomTextField";
 
 const paymentFormFields = [
   [{ id: "Name", label: "Card Holder name" }],

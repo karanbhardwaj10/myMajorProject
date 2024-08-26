@@ -1,5 +1,5 @@
-import Navbar from "../../Shared/Components/Header";
-import Footer from "../../Shared/Components/Footer";
+import Navbar from "../../Shared/Components/HeaderComponent/Header";
+import Footer from "../../Shared/Components/FooterComponent/Footer";
 import QnA from "../QnA/QnA";
 import ProductType from "../Products/ProductType";
 import CustomCartItem from "../../Shared/Components/CustomCardItems/CustomCartItem";
@@ -26,11 +26,11 @@ const Homepage = () => {
         <ProductType />
         <WebInfo />
         <NewsLetter />
-        <div style={{ flex: 1, overflow: "auto" }}>
+        {/* <div style={{ flex: 1, overflow: "auto" }}> */}
           <CustomPaymentCard />
           <AddressDetails />
           <QnA />
-        </div>
+        {/* </div> */}
         <Footer />
       </div>
     </>

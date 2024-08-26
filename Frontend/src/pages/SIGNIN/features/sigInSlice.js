@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getSignedInUser } from "../pages/SIGNIN/state/signInActions";
+import { getSignedInUser } from "../state/signInActions";
 
 const initialSignInVal = {
   loading: false,
@@ -20,14 +20,21 @@ export const getUser = createAsyncThunk(
         return {
           userName: data.userName,
           status: response.errStatusCode,
+          allData: response.data,
         };
       }
       return {
         userName: data.userName,
         status: response.status,
-        allData: response.status === 200 ? response.data.message : response,
+        allData: response.data,
         // Any other relevant data
       };
+      // return {
+      //   userName: data.userName,
+      //   status: response.status,
+      //   allData: response.status === 200 ? response.data.message : response,
+      //   // Any other relevant data
+      // };
     } catch (error) {
       console.log(error, "async thunk error");
       return rejectWithValue(error.message);
@@ -36,12 +43,12 @@ export const getUser = createAsyncThunk(
 );
 
 export const signinSlice = createSlice({
-  name: "signInVal",
+  name: "signInSliceVal",
   initialState: initialSignInVal,
   reducers: {
     resetStatus: (state) => {
-      state.status = ""; 
-      console.log(state.status,"after reset state val");
+      state.status = "";
+      console.log(state.status, "after reset state val");
       // Reset status to an empty string
     },
   },
@@ -55,10 +62,8 @@ export const signinSlice = createSlice({
         console.log("inside fullfilled");
         state.user.userName = action.payload.userName;
         state.status = action.payload.status; // Assuming you want to store the status code
-        // state.allData = action.payload.allData;
-        // console.log(state.allData, "state.alldata");
-        // console.log(action.payload.allData, "all data of response");
-        console.log(state.status, "status value from state ");
+        state.allData = action.payload.allData;
+        console.log(state.allData, "status value from state ");
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;

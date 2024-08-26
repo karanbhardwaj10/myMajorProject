@@ -4,20 +4,20 @@ import PropTypes from "prop-types";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/system";
 
-const CustomAlert = ({ alertMessage, severity, variant ,handleAlertClose}) => {
+const CustomAlert = ({ alertMessage, severity, variant, handleAlertClose }) => {
   // const [statusVal, setStatusVal] = useState(" ");
   // const statusVal = useSelector(
-  //   (state) => state.signInVal.status || "status not found"
+  //   (state) => state.signInSliceVal.status || "status not found"
   // );
   // setStatusVal(
-  //   useSelector((state) => state.signInVal.status || "status not found")
+  //   useSelector((state) => state.signInSliceVal.status || "status not found")
   // );
   // function handleAlertClose(statusVal) {
   //   console.log(statusVal);
   // }
-  
+
   return (
-    <Box >
+    <Box>
       <Alert
         style={{
           height: "45px",
@@ -46,7 +46,7 @@ CustomAlert.propTypes = {
   alertMessage: PropTypes.string,
   severity: PropTypes.string,
   variant: PropTypes.string,
-  handleAlertClose:PropTypes.func
+  handleAlertClose: PropTypes.func,
 };
 
 export default CustomAlert;
