@@ -1,11 +1,13 @@
-import { userSignup, userLogin } from "../controller/index.js";
+import { userSignup, userLogin, userAddress } from "../controller/index.js";
 import { userSignUpConfig } from "../config/userConfig.js";
 import { validationHandler } from "../middleware/errorHandler.js";
 import { authenticateJwt } from "../middleware/authenticateJWT.js";
+import { addressConfig } from "../config/addressConfig.js";
 
 const router = (app) => {
   app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
   app.post("/signIn", userLogin);
+  app.post("/addAddress",validationHandler(addressConfig),userAddress)
 };
 
 // const userSignConfig = [

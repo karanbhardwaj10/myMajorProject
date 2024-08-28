@@ -3,7 +3,7 @@ import Footer from "../../Shared/Components/FooterComponent/Footer";
 import QnA from "../QnA/QnA";
 import ProductType from "../Products/ProductType";
 import CustomCartItem from "../../Shared/Components/CustomCardItems/CustomCartItem";
-
+import LandingComponent from "../LandingComponent/LandingComponent";
 import NewsLetter from "../NewsLetter/NewsLetter";
 import WebInfo from "../WebInfo/WebInfo";
 import AddressDetails from "../Address/AddressDetails";
@@ -22,14 +22,15 @@ const Homepage = () => {
         }}
       >
         <Navbar />
+        <LandingComponent />
         <CustomCartItem />
         <ProductType />
         <WebInfo />
         <NewsLetter />
         {/* <div style={{ flex: 1, overflow: "auto" }}> */}
-          <CustomPaymentCard />
-          <AddressDetails />
-          <QnA />
+        <CustomPaymentCard />
+        <AddressDetails />
+        <QnA />
         {/* </div> */}
         <Footer />
       </div>

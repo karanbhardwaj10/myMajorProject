@@ -41,11 +41,11 @@ const ResponsiveAppBar = () => {
   }
   return (
 
-    <AppBar position="static" sx={{ backgroundColor: "#005685" }}> 
+    <AppBar position="static"  sx={{ backgroundColor: "#005685", }}> 
 
-      <Container maxWidth="xl">
+      <Container maxWidth="xxl" sx={{padding:'0px',margin:'0px'}}>
         <Toolbar disableGutters>
-          <Box display={"flex"} onClick={handleTitleClick}>
+          <Box display={"flex"}   onClick={handleTitleClick}>
             <Button style={{color:'white'}}>
               <LocalMallIcon
                 sx={{ display: { xs: "none", md: "flex" }, mr: 1,  }}
