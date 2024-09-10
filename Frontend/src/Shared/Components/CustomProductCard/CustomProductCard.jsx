@@ -19,6 +19,8 @@ const CustomProductCard = ({
     />
     <Box
       position="absolute"
+      display={"flex"}
+    
       top={10}
       left={10}
       bgcolor="white"

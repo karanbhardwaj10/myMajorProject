@@ -11,6 +11,7 @@ import {
   Button,
   Tooltip,
   MenuItem,
+  getLinearProgressUtilityClass,
 } from "@mui/material";
 import {
   LocalMall as LocalMallIcon,
@@ -37,37 +38,56 @@ const ResponsiveAppBar = () => {
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
   function handleTitleClick() {
-    navigate('/');
+    console.log("inside the navigate");
+
+    navigate("/");
+  }
+  function navigateToCheckout() {
+    navigate("/Checkout");
+  }
+  function handleNavbarClick(event) {
+    const targetId = event.target.id;
+    console.log(targetId);
+  
+    if (targetId === "Products") {
+      console.log("inside targetid if");
+  navigate('/')
+      setTimeout(() => {
+        var elmntToView = document.getElementById("ProductsTypes");
+        console.log(elmntToView, "element to view");
+        if (elmntToView) {
+          elmntToView.scrollIntoView();
+        }
+      }, 100); // Small delay (100ms) to ensure the component is rendered
+    }
   }
   return (
-
-    <AppBar position="static" sx={{ backgroundColor: "#005685" }}> 
-
-      <Container maxWidth="xl">
+    <AppBar position="static" sx={{ backgroundColor: "#005685" }}>
+      <Container maxWidth="xxl">
         <Toolbar disableGutters>
           <Box display={"flex"} onClick={handleTitleClick}>
-            <Button style={{color:'white'}}>
+            <Button style={{ color: "white" }}>
               <LocalMallIcon
-                sx={{ display: { xs: "none", md: "flex" }, mr: 1,  }}
+                sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
               />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                sx={{
+                  mt: 0.5,
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                CoolName+
+              </Typography>
             </Button>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              sx={{
-                mt:0.5,
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              CoolName+
-            </Typography>
           </Box>
 
           <Typography
@@ -91,8 +111,9 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
             {pages.map((page) => (
               <Button
+                id={page}
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={handleNavbarClick}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
@@ -106,12 +127,18 @@ const ResponsiveAppBar = () => {
                 <SearchSharpIcon sx={{ marginRight: "20px", color: "white" }} />
               </IconButton>
             </Tooltip>
+
             <Tooltip title="Wishlist">
-              <IconButton sx={{ p: 0 }}>
+              <IconButton
+                sx={{ p: 0 }}
+                onClick={() => {
+                  navigate("/Wishlist");
+                }}
+              >
                 <FavoriteIcon sx={{ marginRight: "20px", color: "white" }} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Checkout">
+            <Tooltip title="Checkout" onClick={navigateToCheckout}>
               <IconButton sx={{ p: 0 }}>
                 <ShoppingCartCheckoutSharpIcon
                   sx={{ marginRight: "20px", color: "white" }}

@@ -1,4 +1,4 @@
-import { Typography, Grid, Checkbox, Tooltip } from "@mui/material";
+import { Box,Typography, Grid, Checkbox, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import TripOriginIcon from "@mui/icons-material/TripOrigin";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -10,7 +10,7 @@ const CustomAddressTwo = ({
   customerAddress,
   ...props
 }) => (
-  <div>
+  <Box>
     <Grid
       border="1px solid grey"
       borderRadius="5px"
@@ -40,16 +40,16 @@ const CustomAddressTwo = ({
       </Grid>
       <Grid item>
         <Tooltip title="Check Delivery status for this address">
-          <div
+          <Box
             style={{ marginRight: "50px", marginTop: "10px" }}
             className="bounce"
           >
             <LocalShippingIcon />
-          </div>
+          </Box>
         </Tooltip>
       </Grid>
     </Grid>
-  </div>
+  </Box>
 );
 CustomAddressTwo.propTypes = {
   label: PropTypes.string,

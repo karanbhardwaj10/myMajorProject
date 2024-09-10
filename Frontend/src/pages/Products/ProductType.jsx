@@ -32,6 +32,7 @@ const ProductType = () => {
   ];
   return (
     <Container
+    id="ProductsTypes"
       maxWidth="xl"
       style={{
         display: "flex",
@@ -54,6 +55,8 @@ const ProductType = () => {
               style={{ textDecoration: "none", color: "black" }}
             >
               <CustomProductView
+              imgHeight={550}
+              imgWidth={390}
                 discountPercentage={product.discountPercentage}
                 title={product.title}
                 imgVal={product.imgVal}

@@ -36,9 +36,9 @@ const CustomCartItem = () => {
       display={"flex"}
       justifyContent={"center"}
       alignItems={"cneter"}
-      width={"65%"}
+      width={'58rem'}
       marginTop={5}
-      height={"20rem"}
+      height={"15rem"}
       marginLeft={2}
     >
       <Card>

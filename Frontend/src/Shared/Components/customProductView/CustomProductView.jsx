@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
-import CustomProductCard from "./CustomProductCard";
+import CustomProductCard from "../CustomProductCard/CustomProductCard";
 import "../../Styles/ProductTypeStyle.css";
 
 const CustomProductView = ({
@@ -10,14 +10,18 @@ const CustomProductView = ({
   imgVal,
   price,
   discountPercentage,
+  imgHeight,
+  imgWidth,
+  //boxHeight,
   // brandName,
   isProduct,
 }) => {
   const commonCardProps = {
     img: imgVal,
     discountPercentage,
-    imgHeight: 550,
-    imgWidth: 390,
+    imgHeight: imgHeight,
+    imgWidth: imgWidth,
+    //boxHeight:boxHeight
   };
 
   return (
@@ -28,8 +32,8 @@ const CustomProductView = ({
             boxHeight={400}
             img={imgVal}
             discountPercentage={discountPercentage}
-            imgHeight={550}
-            imgWidth={390}
+            imgHeight={imgHeight}
+            imgWidth={imgWidth}
           />
 
           <Box display="flex" position={"relative"} justifyContent="center">
@@ -43,11 +47,11 @@ const CustomProductView = ({
           </Box>
         </Grid>
       ) : (
-        <>
-          <Grid height={550} width={390}>
+        < Box>
+          <Grid height={350} width={290}>
             <CustomProductCard {...commonCardProps} />
           </Grid>
-          <Box border={"2px solid black"}>
+          <Box>
             <Box display="flex" justifyContent="start">
               <Typography fontSize={"30px"} fontFamily={"poppins"}>
                 {title}
@@ -81,7 +85,7 @@ const CustomProductView = ({
               </Typography>
             </Box>
           </Box>
-        </>
+        </Box>
       )}
     </Box>
   );
@@ -90,6 +94,9 @@ CustomProductView.propTypes = {
   title: PropTypes.string,
   imgVal: PropTypes.string,
   price: PropTypes.string,
+ // boxHeight:PropTypes.number,
+  imgHeight:PropTypes.number,
+  imgWidth:PropTypes.number,
   discountPercentage: PropTypes.string,
   brandName: PropTypes.string,
   isProduct: PropTypes.bool,
