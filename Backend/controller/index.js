@@ -1,5 +1,7 @@
-import { inquiryModelSchema } from "../db/index.js";
+import { addressModelSchema, userModelSchema } from "../db/index.js";
 import { hashPassword, verifyPassword } from "../utils/passWordUtils.js";
+import mongoose from "mongoose";
+
 import jwt from "jsonwebtoken";
 
 // Use Postman to Test
@@ -20,7 +22,7 @@ export const userSignup = async (req, res) => {
 
   try {
     // Check if the user already exists
-    const existingUser = await inquiryModelSchema.findOne({ userName });
+    const existingUser = await userModelSchema.findOne({ userName });
     if (existingUser) {
       return res.status(403).json({ error: "User already exists" }); // 409 Conflict status code for existing user
     }
@@ -28,7 +30,7 @@ export const userSignup = async (req, res) => {
     // Hash the password
     const hashedPassword = await hashPassword(passWord);
     // Create a new user inquiry
-    const newUser = new inquiryModelSchema({
+    const newUser = new userModelSchema({
       firstName,
       lastName,
       // age,
@@ -66,7 +68,7 @@ export const userLogin = async (req, res) => {
         .json({ message: "Username and password are required" });
     }
 
-    const user = await inquiryModelSchema.findOne({ userName });
+    const user = await userModelSchema.findOne({ userName });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -96,4 +98,35 @@ export const userLogin = async (req, res) => {
     console.error("Login error:", error.response);
     res.status(500).json({ message: "An unexpected error occurred" });
   }
+};
+
+export const userAddress = async (req, res) => {
+  try {
+    const { fullName, email, contactInfo, city, pincode, address } = req.body;
+    const newAddress = new addressModelSchema({
+      fullName,
+      email,
+      contactInfo,
+      city,
+      pincode,
+      address,
+    });
+    await newAddress.save();
+    res.status(200).json({ message: "Address Saved", newAddress });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      // Handle Mongoose validation errors
+      const errors = Object.values(error.errors).map((err) => err.message);
+      res.status(400).json({ error: `${errors.join(", ")}` });
+    } else {
+      // Handle other errors
+      res.status(500).json({ error: `Error saving address: ${error.message}` });
+    }
+  }
+};
+
+export const updateAddress = async (req, res) => {
+  try {
+    const { fullName, email, contactInfo, city, pincode, address } = req.body;
+  } catch (error) {}
 };

@@ -1,156 +1,60 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ReplayIcon from "@mui/icons-material/Replay";
 import PinDropIcon from "@mui/icons-material/PinDrop";
-const WebInfo = () => {
-  return (
-    <>
-      <Grid>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "10px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "10px",
 
-              marginBottom: "50px",
-            }}
+const webInfoData = [
+  {
+    name: "Secure Payments",
+    description:
+      "Shop with confidence knowing that your transactions are safeguarded.",
+    IconComponent: LockIcon,
+    path: "/SignIn",
+  },
+  {
+    name: "Free Shipping",
+    description:
+      "Shopping with no extra charges – savor the liberty of complimentary shipping on every order.",
+    IconComponent: LocalShippingIcon,
+    path: "/SignUp",
+  },
+  {
+    name: "Easy Returns",
+    description:
+      "With our hassle-free Easy Returns, changing your mind has never been more convenient.",
+    IconComponent: ReplayIcon,
+  },
+  {
+    name: "Order Tracking",
+    description:
+      "Stay in the loop with our Order Tracking feature - from checkout to your doorstep.",
+    IconComponent: PinDropIcon,
+  },
+];
+
+const WebInfo = () => (
+  <Grid container justifyContent="center" spacing={4} sx={{ mt: 3, mb: 6 }}>
+    {webInfoData.map((item, index) => (
+      <Grid item xs={12} sm={6} md={3} key={index}>
+        <Box textAlign="center">
+          <item.IconComponent style={{ color: "black", fontSize: 40 }} />
+          <Typography
+            variant="h5"
+            gutterBottom
+            fontWeight="bold"
+            fontStyle="italic"
+            color="textPrimary"
           >
-            <Grid item xs={3}>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-              >
-                <LockIcon style={{color:'black'}} />
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-                fontWeight="bold"
-                fontStyle="italic"
-                style={{color:'black'}}
-              >
-                Secure Payments
-              </Typography>
-              <Typography
-                align="center"
-                // paragraph={'true'}
-                color={"grey"}
-                variant="h7"
-                gutterBottom
-              >
-                Shop with confidence knowing that your transactions are
-                safeguarded.
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-              >
-                <LocalShippingIcon  style={{color:'black'}} />
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-                fontWeight="bold"
-                fontStyle="italic"
-                style={{color:'black'}}
-              >
-                Free Shipping
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h7"
-                gutterBottom
-                // paragraph="true"
-              >
-                Shopping with no extra charges – savor the liberty of
-                complimentary shipping on every order.
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-              >
-                <ReplayIcon  style={{color:'black'}} />
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-                  fontWeight='bold'
-                 fontStyle='italic'
-                 style={{color:'black'}}
-              >
-                Easy Returns
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h7"
-                gutterBottom
-                // paragraph="true"
-              >
-                With our hassle-free Easy Returns, changing your mind has never
-                been more convenient.
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-              >
-                <PinDropIcon  style={{color:'black'}} />
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h5"
-                gutterBottom
-                fontWeight="bold"
-                fontStyle="italic"
-                style={{color:'black'}}
-              >
-                Order Tracking
-              </Typography>
-              <Typography
-                align="center"
-                color={"grey"}
-                variant="h7"
-                gutterBottom
-                // paragraph="true"
-              >
-                Stay in the loop with our Order Tracking feature - from checkout
-                to your doorstep.
-              </Typography>
-            </Grid>
-          </div>
-        </div>
+            {item.name}
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            {item.description}
+          </Typography>
+        </Box>
       </Grid>
-    </>
-  );
-};
+    ))}
+  </Grid>
+);
+
 export default WebInfo;

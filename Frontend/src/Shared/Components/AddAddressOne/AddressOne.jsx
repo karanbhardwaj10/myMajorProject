@@ -7,17 +7,20 @@ import Tooltip from "@mui/material/Tooltip";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import CustomTextField from "../CustomTextField/CustomTextField";
 import CustomPriceDetails from "../PriceDetails/CustomPriceDetails";
+import { useDispatch } from "react-redux";
+import { saveAddress } from "./Features/addressSlice";
+
 const formFields = [
-  [{ id: "Name", label: "Full name" }],
+  [{ id: "fullName", label: "Full name" }],
   [
-    { id: "Email", label: "Enter your Email Address" },
-    { id: "Phone Number", label: "Enter your contact information" },
+    { id: "email", label: "Enter your Email Address" },
+    { id: "contactInfo", label: "Enter your contact information" },
   ],
   [
-    { id: "City", label: "City" },
-    { id: "Pincode", label: "Pincode" },
+    { id: "city", label: "City" },
+    { id: "pincode", label: "Pincode" },
   ],
-  [{ id: "Address", label: "Address" }],
+  [{ id: "address", label: "Address" }],
 ];
 const FieldRow = ({ fields }) => (
   <div
@@ -54,6 +57,7 @@ FieldRow.propTypes = {
   ).isRequired,
 };
 const AddressOne = ({ onAddAddress }) => {
+  const dispatch = useDispatch();
   const [forms, setForms] = useState([formFields]);
   // eslint-disable-next-line no-unused-vars
   const [submittedAddresses, setSubmittedAddresses] = useState([]);
@@ -71,10 +75,24 @@ const AddressOne = ({ onAddAddress }) => {
     const formData = new FormData(form);
     const newAddedAddress = {
       addressType: "Home", // You might want to add a field for this in your form
-      customerName: formData.get("Name"),
-      customerAddress: formData.get("Address"),
-      city: formData.get("City"),
+      customerName: formData.get("fullName"),
+      customerAddress: formData.get("address"),
+      city: formData.get("city"),
     };
+    const newAddress = {
+      fullName: formData.get("fullName"),
+      email: formData.get("email"),
+      contactInfo: JSON.parse(formData.get("contactInfo")),
+      city: formData.get("city"),
+      pincode: JSON.parse(formData.get("pincode")),
+      address: formData.get("address"),
+    };
+console.log(typeof newAddress.contactInfo,"type of contact of" );
+
+    if (newAddress) {
+      dispatch(saveAddress(newAddress));
+    }
+
     let finalAns = [];
     finalAns.push(newAddedAddress);
     // Add the new address to the submitted addresses
@@ -94,6 +112,7 @@ const AddressOne = ({ onAddAddress }) => {
     // console.log(submittedAddresses, "submitted addresses");
     onAddAddress(newAddress);
   }, [newAddress]);
+
   return (
     <div
       style={{
@@ -175,7 +194,7 @@ const AddressOne = ({ onAddAddress }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height:'600px',
+          height: "600px",
           overflow: "hidden",
         }}
       >
