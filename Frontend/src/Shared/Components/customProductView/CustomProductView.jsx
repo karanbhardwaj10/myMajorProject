@@ -11,10 +11,12 @@ const CustomProductView = ({
   price,
   discountPercentage,
   imgHeight,
+  discountedPrice,
   imgWidth,
   //boxHeight,
-  // brandName,
+   brandName,
   isProduct,
+  productRating
 }) => {
   const commonCardProps = {
     img: imgVal,
@@ -23,7 +25,10 @@ const CustomProductView = ({
     imgWidth: imgWidth,
     //boxHeight:boxHeight
   };
-
+function calculateDiscountedPrice(price,discountPercentage){
+  discountedPrice = price - (price * (discountPercentage / 100));
+  return discountedPrice.toFixed(2);
+}
   return (
     <Box my={4}>
       {!isProduct ? (
@@ -47,7 +52,7 @@ const CustomProductView = ({
           </Box>
         </Grid>
       ) : (
-        < Box>
+        <Box>
           <Grid height={350} width={290}>
             <CustomProductCard {...commonCardProps} />
           </Grid>
@@ -64,7 +69,7 @@ const CustomProductView = ({
                 fontWeight={"bold"}
                 fontFamily={"poppins"}
               >
-                H&M
+                {brandName}
               </Typography>
               <Typography
                 marginLeft={"5px"}
@@ -73,15 +78,21 @@ const CustomProductView = ({
                 fontWeight={"bold"}
                 fontFamily={"poppins"}
               >
-                4.8
+                {productRating}
               </Typography>
+              
             </Box>
             <Box display="flex" justifyContent="start">
               <Typography fontWeight={"bold"} fontSize={"20px"}>
-                {price}
+              ₹  {calculateDiscountedPrice(price,discountPercentage)}
               </Typography>
-              <Typography fontSize={"20px"} color={"grey"} marginLeft={"5px"}>
-                DiscountedPrice
+              <Typography
+                fontSize={"20px"}
+                color={"grey"}
+                marginLeft={"5px"}
+                sx={{ textDecoration: "line-through" }}
+              >
+               ₹   {price}
               </Typography>
             </Box>
           </Box>
@@ -94,11 +105,13 @@ CustomProductView.propTypes = {
   title: PropTypes.string,
   imgVal: PropTypes.string,
   price: PropTypes.string,
- // boxHeight:PropTypes.number,
-  imgHeight:PropTypes.number,
-  imgWidth:PropTypes.number,
+  // boxHeight:PropTypes.number,
+  imgHeight: PropTypes.number,
+  discountedPrice: PropTypes.string,
+  imgWidth: PropTypes.number,
   discountPercentage: PropTypes.string,
   brandName: PropTypes.string,
   isProduct: PropTypes.bool,
+  productRating:PropTypes.string,
 };
 export default CustomProductView;

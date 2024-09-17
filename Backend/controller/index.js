@@ -2,7 +2,7 @@ import { addressModelSchema, userModelSchema } from "../db/index.js";
 import { hashPassword, verifyPassword } from "../utils/passWordUtils.js";
 import mongoose from "mongoose";
 
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 
 // Use Postman to Test
 
@@ -65,10 +65,11 @@ export const userLogin = async (req, res) => {
     if (!userName || !passWord) {
       return res
         .status(400)
-        .json({ message: "Username and password are required" });
+        .json({ message: "Username and password are required", res });
     }
 
     const user = await userModelSchema.findOne({ userName });
+    console.log(user, "user");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -92,12 +93,45 @@ export const userLogin = async (req, res) => {
 
     // Proceed with login (e.g., generate a token)
     if (userName && passWord) {
-      res.status(200).json({ message: "Login successful", token });
+      // console.log(res);
+
+      res.status(200).json({ message: "Login successful", token, user });
     }
   } catch (error) {
     console.error("Login error:", error.response);
     res.status(500).json({ message: "An unexpected error occurred" });
   }
+};
+
+export const getAddress = async (req, res) => {
+  try {
+    const userToken = req.headers.authorization.split(" ")[1];
+    console.log(userToken, "user token from controller");
+    const decodeduserName = jwt.decode(userToken).username;
+    console.log(decodeduserName, "decoded token");
+    if (decodeduserName) {
+      console.log("inside if get address");
+
+      const user = await userModelSchema.findOne({ userName: decodeduserName });
+      if (user) {
+        console.log("user found",user);
+
+        const userAddresses = await user.populate('addresses');
+        console.log("user address populate after populate");
+        if (userAddresses) {
+          try {
+            res
+              .status(200)
+              .json({ message: `User addresses ${userAddresses}` });
+          } catch (error) {
+            res
+              .status(500)
+              .json({ message: `error getting address :${error}` });
+          }
+        }
+      }
+    }
+  } catch (error) {}
 };
 
 export const userAddress = async (req, res) => {
@@ -111,6 +145,22 @@ export const userAddress = async (req, res) => {
       pincode,
       address,
     });
+    const userToken = req.headers.authorization.split(" ")[1];
+    console.log(userToken, "user token from controller");
+    const decodeduserName = jwt.decode(userToken).username;
+    console.log(decodeduserName, "decoded token");
+    if (decodeduserName) {
+      const user = await userModelSchema.findOne({ userName: decodeduserName });
+      if (user) {
+        try {
+          user.addresses.push(newAddress);
+          await user.save();
+          //res.status(200).json({ message: "Address added successfully" });
+        } catch (error) {
+          res.status(500).json({ message: `error save address :${error}` });
+        }
+      }
+    }
     await newAddress.save();
     res.status(200).json({ message: "Address Saved", newAddress });
   } catch (error) {
@@ -127,6 +177,31 @@ export const userAddress = async (req, res) => {
 
 export const updateAddress = async (req, res) => {
   try {
-    const { fullName, email, contactInfo, city, pincode, address } = req.body;
-  } catch (error) {}
+    const userAddress = await addressModelSchema.findByIdAndUpdate(
+      req.params.addressId,
+      req.body,
+      { new: true }
+    );
+    if (userAddress) {
+      res.json({ message: "userAddress updated successfully" });
+    } else {
+      res.status(404).json({ message: "userAddress not found" });
+    }
+  } catch (error) {
+    throw new Error("error occured ", error);
+  }
+};
+export const deleteUserAddress = async (req, res) => {
+  try {
+    const deletedUserAddress = await addressModelSchema.deleteOne({
+      _id: req.params.addressId,
+    });
+    if (deletedUserAddress.acknowledged === true) {
+      res.json({ message: "userAddress deleted successfully" });
+    } else {
+      res.status(404).json({ message: "userAddress not found" });
+    }
+  } catch (error) {
+    res.status(404).json({ message: `userAddress not found ${error}` });
+  }
 };

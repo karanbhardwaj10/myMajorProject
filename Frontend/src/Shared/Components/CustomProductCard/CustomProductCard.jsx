@@ -33,7 +33,7 @@ const CustomProductCard = ({
         color="green"
         fontFamily="poppins"
       >
-        {discountPercentage}
+        {discountPercentage}%Off
       </Typography>
     </Box>
   </Box>

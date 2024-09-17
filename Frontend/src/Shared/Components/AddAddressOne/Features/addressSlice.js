@@ -14,6 +14,8 @@ export const saveAddress = createAsyncThunk(
   "saveAddress",
   async (data, { rejectWithValue }) => {
     try {
+      console.log(data,"data from slice");
+      
       const response = await saveUserAddress(data);
       console.log(response, "response after request in async thunk");
       if (response.errStatusCode) {

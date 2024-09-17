@@ -2,13 +2,9 @@ import Navbar from "../../Shared/Components/HeaderComponent/Header";
 import Footer from "../../Shared/Components/FooterComponent/Footer";
 import QnA from "../QnA/QnA";
 import ProductType from "../Products/ProductType";
-import CustomCartItem from "../../Shared/Components/CustomCardItems/CustomCartItem";
-import CustomProductDetails from "../../Shared/Components/CustomProductDetails/CustomProductDetails";import LandingComponent from "../LandingComponent/LandingComponent";
+import LandingComponent from "../LandingComponent/LandingComponent";
 import NewsLetter from "../NewsLetter/NewsLetter";
 import WebInfo from "../WebInfo/WebInfo";
-import AddressDetails from "../Address/AddressDetails";
-import CustomPaymentCard from "../../Shared/Components/AddPaymentCards/CustomPaymentCard";
-
 const Homepage = () => {
   return (
     <>
@@ -23,16 +19,10 @@ const Homepage = () => {
       >
         <Navbar />
         <LandingComponent />
-        <CustomProductDetails/>
-        {/* <CustomCartItem /> */}
         <ProductType />
         <WebInfo />
         <NewsLetter />
-        {/* <div style={{ flex: 1, overflow: "auto" }}> */}
-        {/* <CustomPaymentCard />
-        <AddressDetails /> */}
         <QnA />
-        {/* </div> */}
         <Footer />
       </div>
     </>

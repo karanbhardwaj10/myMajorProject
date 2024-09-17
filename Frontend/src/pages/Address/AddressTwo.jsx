@@ -1,9 +1,8 @@
 
-import { Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import CustomAddressTwo from "../../Shared/Components/AddressTwo/CustomAddressTwo";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-
 const AddressRow = ({ fields }) => (
   <div
     style={{
@@ -45,7 +44,7 @@ const AddressTwo = ({ sharedState }) => {
   const [newAddress, setNewAddress] = useState([]);
   // setNewAddress([...newAddress, sharedState]);
   useEffect(() => {
-  
+   
     if (sharedState) {
       setNewAddress(prevAddresses => {
         // Check if sharedState is already in the array
@@ -60,12 +59,12 @@ const AddressTwo = ({ sharedState }) => {
   console.log(newAddress, "new address");
   return (
     <>
-      <Grid>
-        <div></div>
+      <Box >
+       
         {newAddress.map((row, index) => (
           <AddressRow fields={row} key={index} />
         ))}
-      </Grid>
+      </Box>
     </>
   );
 };

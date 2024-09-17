@@ -9,7 +9,7 @@ const userSignUpSchema = new mongoose.Schema({
   gender: { type: String, enum: ["Male", "Female", "Other"] },
   userName: String,
   passWord: { type: String, require: true },
-  addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "UserAddress" }],
+  addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: "userAddress" }],
 });
 
 const addressSchema = new mongoose.Schema({
@@ -37,7 +37,7 @@ const addressSchema = new mongoose.Schema({
     },
   },
   address: String,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  //user: { type: mongoose.Schema.Types.ObjectId, ref: "userData" },
 });
 
 export const addressModelSchema = mongoose.model("userAddress", addressSchema);

@@ -87,10 +87,15 @@ const AddressOne = ({ onAddAddress }) => {
       pincode: JSON.parse(formData.get("pincode")),
       address: formData.get("address"),
     };
-console.log(typeof newAddress.contactInfo,"type of contact of" );
+    console.log(typeof newAddress.contactInfo, "type of contact of");
 
-    if (newAddress) {
-      dispatch(saveAddress(newAddress));
+    const userToken = localStorage.getItem("token");
+    if (newAddress && userToken) {
+      const data = {
+        userToken: userToken,
+        newAddress: newAddress,
+      };
+      dispatch(saveAddress(data));
     }
 
     let finalAns = [];

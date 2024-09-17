@@ -1,56 +1,141 @@
-import { Box,Typography, Grid, Checkbox, Tooltip } from "@mui/material";
+import { Box, Typography, Checkbox, Tooltip } from "@mui/material";
+import {  useState } from "react";
 import PropTypes from "prop-types";
 import TripOriginIcon from "@mui/icons-material/TripOrigin";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import "./Style.css";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 const CustomAddressTwo = ({
   label,
   addressType,
   customerName,
   customerAddress,
   ...props
-}) => (
-  <Box>
-    <Grid
-      border="1px solid grey"
-      borderRadius="5px"
-      minHeight="90px"
-      marginLeft="50px"
-      width="48%"
-      container
-      alignItems="center"
-    >
-      <Grid item xs>
-        <Grid container alignItems="center">
+}) => {
+  const [checked, setChecked] = useState(false);
+  function handleChange(e) {
+    console.log(checked, "before set");
+    if (checked) {
+      console.log(checked, "inside if");
+    }
+    console.log(e.target.value, "from checked");
+    checked === false ? setChecked(true) : setChecked(false);
+
+    console.log(checked, "checked from state");
+  }
+
+  return (
+    <Box sx={{ display: "flex", ml: 7, width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          border: "1px solid grey",
+          borderRadius: "5px",
+          minHeight: "90px",
+          width: "100%",
+          maxWidth: "600px",
+          padding: "10px",
+          boxSizing: "border-box",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
           <Checkbox
             icon={<TripOriginIcon />}
-            style={{ marginLeft: "15px" }}
             {...label}
-            sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+            checked={checked}
+            onClick={handleChange}
+            sx={{
+              marginRight: "15px",
+              "& .MuiSvgIcon-root": { fontSize: 28 },
+            }}
           />
-          <Grid item marginLeft={"15px"}>
-            <Typography marginBottom={"8px"} fontWeight="bold" {...props}>
+          <Box>
+            <Typography
+              sx={{
+                marginBottom: "8px",
+                fontWeight: "bold",
+                wordBreak: "break-word",
+              }}
+              {...props}
+            >
               {customerName} ({addressType})
             </Typography>
-            <Typography color="grey" {...props}>
+            <Typography
+              sx={{
+                color: "grey",
+                wordBreak: "break-word",
+              }}
+              {...props}
+            >
               {customerAddress}
             </Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item>
-        <Tooltip title="Check Delivery status for this address">
-          <Box
-            style={{ marginRight: "50px", marginTop: "10px" }}
-            className="bounce"
-          >
-            <LocalShippingIcon />
           </Box>
-        </Tooltip>
-      </Grid>
-    </Grid>
-  </Box>
-);
+        </Box>
+        <Box display={"flex"} flexDirection={"row"}>
+          {checked ? (
+            <Box display={"flex"} flexDirection={"row"}>
+              <Tooltip title="Edit this address">
+                <Box
+                  sx={{
+                    marginRight: "10px",
+                    color: "#005685",
+                  }}
+                >
+                  <EditOutlinedIcon />
+                </Box>
+              </Tooltip>
+              <Tooltip title="Delete this address">
+                <Box
+                  sx={{
+                    marginRight: "10px",
+                    color: "red",
+                  }}
+                >
+                  <DeleteOutlineOutlinedIcon />
+                </Box>
+              </Tooltip>
+            </Box>
+          ) : (
+            <Tooltip title="Edit this address">
+              <Box
+              display={"flex"}
+              flexDirection={'row'}
+                sx={{
+                  marginRight: "10px",
+                  color: "#005685",
+                }}
+              >
+                <EditOutlinedIcon />
+              </Box>
+            </Tooltip>
+          )}
+          <Tooltip title="Check Delivery status for this address">
+            <Box
+              sx={{
+                marginRight: "10px",
+                ml:1,
+                cursor: "pointer",
+                "&:hover": {
+                  animation: "bounce 0.5s infinite",
+                },
+                "@keyframes bounce": {
+                  "0%, 100%": { transform: "translateY(0)" },
+                  "50%": { transform: "translateY(-5px)" },
+                },
+              }}
+            >
+              <LocalShippingIcon />
+            </Box>
+          </Tooltip>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
 CustomAddressTwo.propTypes = {
   label: PropTypes.string,
   addressType: PropTypes.string.isRequired,

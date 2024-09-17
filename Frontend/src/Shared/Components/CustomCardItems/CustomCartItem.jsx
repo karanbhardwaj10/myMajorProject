@@ -1,6 +1,5 @@
 import {
   Box,
-  Grid,
   Card,
   Checkbox,
   Input,
@@ -35,145 +34,112 @@ const CustomCartItem = () => {
     <Box
       display={"flex"}
       justifyContent={"center"}
-      alignItems={"cneter"}
-      width={'58rem'}
+      alignItems={"center"}
+      width={"100%"}
       marginTop={5}
-      height={"15rem"}
-      marginLeft={2}
     >
-      <Card>
-        <Grid item container spacing={2} columns={18}>
-          <Grid item xs={1}>
-            <Box height={"13rem"} display={"flex"} alignItems={"center"}>
-              <Checkbox defaultChecked size="large" />
-            </Box>
-          </Grid>
-          <Grid item xs={5}>
-            <Box marginTop={"5px"}>
-              <img
-                style={{
-                  // border: "1px solid black",
-                  maxHeight: "200px",
-                  width: "auto",
+      <Card sx={{ width: "92%", height: "15rem" }}>
+        <Box display="flex" alignItems="center" height="100%">
+          {/* Checkbox */}
+          <Box width={"5%"} display={"flex"} alignItems={"center"}>
+            <Checkbox defaultChecked size="large" />
+          </Box>
+
+          {/* Image Section */}
+          <Box width={"20%"} display={"flex"} justifyContent={"center"}>
+            <img
+              style={{
+                maxHeight: "200px",
+                width: "auto",
+              }}
+              src={Product}
+              alt="product img"
+            />
+          </Box>
+          <Box
+            width={"60%"}
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+            paddingLeft={2}
+          >
+            {productDescription.map((typoRow) => (
+              <div key={typoRow[0].id}>
+                {typoRow[0].id === "deliveryAvailability" ||
+                typoRow[0].id === "stockAvailability" ? (
+                  <Typography marginTop={"5px"}>
+                    {typoRow[0].value}
+                    <Button sx={{ paddingLeft: "0px" }}>
+                      <WhereToVoteIcon htmlColor="green" />
+                    </Button>
+                  </Typography>
+                ) : (
+                  <Typography
+                    marginTop={2}
+                    fontWeight={"400"}
+                    lineHeight={"23px"}
+                    fontStyle={"normal"}
+                    fontFamily={"sans-serif"}
+                    fontSize={"15px"}
+                    color={"#0f1111"}
+                  >
+                    {typoRow[0].value}
+                  </Typography>
+                )}
+              </div>
+            ))}
+
+            {/* Quantity Section */}
+            <Box display="flex" alignItems="center" marginTop={2}>
+              <RemoveIcon
+                sx={{ marginRight: 1 }}
+                onClick={() => {
+                  setQuantity(quantity === 0 ? 0 : quantity - 1);
                 }}
-                src={Product}
-                alt="product img"
+              />
+              <Input
+                id="outlined-basic"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                sx={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  width: "40px",
+                  height: "30px",
+                  "& .MuiInputBase-input": {
+                    textAlign: "center",
+                  },
+                }}
+              />
+              <AddIcon
+                sx={{ marginLeft: 1 }}
+                onClick={() => {
+                  setQuantity(quantity + 1);
+                }}
               />
             </Box>
-          </Grid>
-          <Grid item xs={10}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="start"
-              height="100%"
+          </Box>
+
+          {/* Price Section */}
+          <Box
+            width={"15%"}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height={"100%"}
+          >
+            <Typography
+              fontWeight="bold"
+              fontFamily={"poppins"}
+              fontSize={"20px"}
             >
-              {productDescription.map((typoRow) => {
-                return (
-                  <div key={typoRow[0].id}>
-                    {typoRow[0].id === "deliveryAvailability" ||
-                    typoRow[0].id === "stockAvailability" ? (
-                      <Typography marginTop={'5px'}>
-                        {typoRow[0].value}
-                        <Button sx={{paddingLeft:'0px'}}>
-                          <WhereToVoteIcon htmlColor="green" />
-                        </Button>
-                      </Typography>
-                    ) : (
-                      <Typography
-                        marginTop={2}
-                        fontWeight={"400"}
-                        lineHeight={"23px"}
-                        fontStyle={"normal"}
-                        fontFamily={"sans-serif"}
-                        fontSize={"15px"}
-                        color={"#0f1111"}
-                      >
-                        {typoRow[0].value}
-                      </Typography>
-                    )}
-                  </div>
-                );
-              })}
-              <Box
-                marginRight={5}
-                display={"flex"}
-                justifyContent={"start"}
-                alignItems={"start"}
-              >
-                {/* <Button
-                size="small"
-                  onClick={() => {
-                    quantity === 0 ? setQuantity(0) : setQuantity(quantity - 1);
-                  }}
-                > */}
-                <RemoveIcon
-                  sx={{ margin: "6px 6px 6px 0px" }}
-                  onClick={() => {
-                    quantity === 0 ? setQuantity(0) : setQuantity(quantity - 1);
-                  }}
-                />
-                {/* </Button> */}
-                <Input
-                  id="outlined-basic"
-                  label="Qty."
-                  variant="outlined"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    "& .MuiInputBase-input": {
-                      textAlign: "center",
-                      fontWeight:'bold',
-                      fontFamily:'sans',
-                      // color:'#005685' // Centers the text horizontally
-                    },
-                    height: "30px",
-                    width: "40px", // Adjust the height as needed
-                  }}
-                  //   InputProps={{
-                  //     sx: ,
-                  //   }}
-                  value={quantity}
-                  onChange={async (e) => {
-                    setQuantity(e.target.value);
-                    console.log(quantity, "qty");
-                  }}
-                />
-                {/* <Button
-                  onClick={() => {
-                    setQuantity(quantity + 1);
-                  }}
-                > */}
-                <AddIcon
-                  sx={{ margin: "6px" }}
-                  onClick={() => {
-                    setQuantity(quantity + 1);
-                  }}
-                />
-                {/* </Button> */}
-              </Box>
-              {/* You can add more product details here */}
-            </Box>
-          </Grid>
-          <Grid item xs={2}>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height={"100%"}
-            >
-              <Typography
-                fontWeight="bold"
-                fontFamily={"poppins"}
-                fontSize={"20px"}
-              >
-                ₹ 7500
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
+              ₹ 7500
+            </Typography>
+          </Box>
+        </Box>
       </Card>
     </Box>
   );
 };
+
 export default CustomCartItem;

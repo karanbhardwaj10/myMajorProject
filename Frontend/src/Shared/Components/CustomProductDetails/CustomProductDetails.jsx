@@ -1,52 +1,28 @@
-// import fashionImage from "../../../assets/fashionImage.jpg";
 import PropTypes from "prop-types";
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate, useParams } from "react-router-dom";
-import {
-  Grid,
-  Box,
-  Button,
-  Typography,
-  Divider,
-  IconButton,
-} from "@mui/material";
+import { Box, Button, Typography, Divider } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from "@mui/material/Rating";
-import { getSelectedProducts } from "../../../pages/Products/state/productActions";
+// import { getSelectedProducts } from "../../../pages/Products/state/productActions";
+
 const CustomProductDetails = ({
   description,
   title,
   price,
   img,
-  // precisionRatingVal,
   ratingVal,
   orderCount,
+  discountedPrice,
+  discountedPercentage,
 }) => {
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const { loading, status, singleProductData } = useSelector(
-  //   (state) => state.getSelectedProductSlice
-  // );
-  // const { id } = useParams();
-  // useEffect(() => {
-  //   if (id) {
-  //     console.log(singleProductData, "useeffect");
-  //   }
-  // }, [id, singleProductData]);
-  // useEffect(() => {
-  //   if (id) {
-  //     console.log("inside customproductdetailsid");
+  // async function getSingledata() {
+  //   const response = getSelectedProducts(1);
+  //   console.log(response);
+  // }
 
-  //     dispatch(getSelectedProducts(id));
-  //     console.log("after dispatch");
-  //   }
-  // }, [id]);
-  async function getSingledata() {
-    const response = getSelectedProducts(1);
-    console.log(response);
-    // console.log(id, "this id is from params");
+  function calculateDiscountedPrice(price, discountPercentage) {
+    discountedPrice = price - price * (discountPercentage / 100);
+    return discountedPrice.toFixed(2);
   }
   const sizeButtons = [
     { id: "xsSize", sizeName: "XS" },
@@ -56,30 +32,33 @@ const CustomProductDetails = ({
     { id: "xLSize", sizeName: "XL" },
     { id: "xxLSize", sizeName: "XXL" },
   ];
+
   return (
-    <Box>
-      <Grid
-        container
-        maxWidth="xxl"
-        style={{ marginTop: "5rem" }}
-        spacing={2}
-        overflow={"hidden"}
+    <>
+      <Box
+        display="flex"
+        flexDirection="column"
+        marginTop="3rem"
+        padding="16px 16px 16px 0px"
       >
-        <Grid
-          item
-          xs={5}
-          // style={{ border: "2px solid black" }}
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", md: "row" }}
+          justifyContent="space-between"
+          alignItems="center"
+          marginBottom="2rem"
         >
+          {/* Product Image */}
           <Box
-            width={"100%"}
-            height={"600px"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            width={{ xs: "100%", md: "40%" }}
+            height={{ xs: "300px", md: "600px" }}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
           >
             <img
               src={img}
-              alt="SignUp Page"
+              alt="Product"
               style={{
                 maxWidth: "100%",
                 maxHeight: "100%",
@@ -87,56 +66,58 @@ const CustomProductDetails = ({
               }}
             />
           </Box>
-        </Grid>
-        <Grid item xs={6}>
+
+          {/* Product Details */}
           <Box
-            flexDirection={"column"}
-            width={"100%"}
-            height={"600px"}
-            display={"flex"}
-            justifyContent={"space-evenly"}
+            width={{ xs: "80%", md: "50%" }}
+            padding="16px"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-evenly"
           >
-            <Typography
-              width={"900px"}
-              display={"flex"}
-              justifyContent={"start"}
-              variant="h3"
-              fontFamily={"ember"}
-            >
+            <Typography variant="h3" fontFamily="ember">
               {title}
             </Typography>
-            <Typography variant="h6" fontFamily={"ember"} color={"grey"}>
+            <Typography variant="h6" fontFamily="ember" color="grey">
               {description}
             </Typography>
+
+            {/* Price Section */}
             <Box
-              marginTop={"1rem"}
-              display={"flex"}
-              justifyContent={"space-evenly"}
-              width={"35%"}
-              margin={"10px 10px 10px 10px"}
+              display="flex"
+              // justifyContent="space-between"
+              margin={"10px"}
+              marginTop="1rem"
+              width={{ xs: "100%", md: "45%" }}
             >
-              <Typography variant="h5">₹ {price}</Typography>
+              <Typography variant="h5" sx={{ mr: 2 }}>
+                ₹ {calculateDiscountedPrice(price, discountedPercentage)}
+              </Typography>
+
               <Typography
                 variant="h5"
-                sx={{ textDecoration: "line-through", color: "grey" }}
+                sx={{ textDecoration: "line-through", color: "grey", mr: 2 }}
               >
-                ₹ {price}
+                ₹{price}
               </Typography>
-              <Typography variant="h5" color={"green"}>
-                (58% Off)
+
+              <Typography variant="h5" color="green">
+                {discountedPercentage}% Off
               </Typography>
             </Box>
-            <Typography variant="h5" style={{ marginLeft: "15px" }}>
+
+            {/* Size Selection */}
+            <Typography variant="h5" marginTop="1rem">
               Select Size
             </Typography>
             <Divider />
             <Box
               display="flex"
               flexDirection="row"
-              width="70%"
+              flexWrap="wrap"
               justifyContent="start"
-              gap={"30px"}
-              margin={"10px 10px 10px 10px"}
+              gap="10px"
+              margin="10px 0"
             >
               {sizeButtons.map(({ id, sizeName }) => (
                 <Button
@@ -144,80 +125,85 @@ const CustomProductDetails = ({
                   sx={{
                     border: "2px solid black",
                     borderRadius: "50%",
-                    width: "50px", // Use a fixed width for consistency
-                    height: "50px", // Increase height here
-                    minWidth: "unset", // Prevents the button from expanding based on text length
+                    width: "50px",
+                    height: "50px",
+                    minWidth: "unset",
                   }}
                 >
                   {sizeName}
                 </Button>
               ))}
             </Box>
-            <Box display={"flex"}>
-              <Rating
-                name="half-rating"
-                readOnly
-                defaultValue={ratingVal}
-                // precision={precisionRatingVal}
-              />
+
+            {/* Rating and Order Count */}
+            <Box margin={"10px"} display="flex" alignItems="center">
+              <Rating name="read-only" readOnly value={ratingVal} />
               <Typography sx={{ ml: 2 }}>{orderCount}</Typography>
             </Box>
+
+            {/* Action Buttons */}
             <Box
-              display={"flex"}
-              justifyContent={"space-evenly"}
-              width={"60%"}
-              gap={"30px"}
-              margin={"10px 10px 10px 10px"}
+              display="flex"
+              flexDirection={{ xs: "column", sm: "row" }}
+              justifyContent="space-between"
+              gap="10px"
+              marginTop="1rem"
             >
               <Button
                 sx={{
                   display: "flex",
-                  width: "90%",
+                  width: "100%",
                   border: "2px solid black",
                   color: "black",
                   backgroundColor: "#005685",
+                  "&:hover": { backgroundColor: "#005685" },
                   justifyContent: "center",
-                  "&:hover":{backgroundColor:'#005685'}
+                  alignItems: "center",
                 }}
               >
-                <Box sx={{mt:'10px',mr:'5px'}} color={'white'}>
-                  <AddShoppingCartIcon />
-                </Box>
-                <Typography color={'white'}>Add to cart</Typography>
+                <AddShoppingCartIcon sx={{ color: "white", mr: 1 }} />
+                <Typography color="white">Add to cart</Typography>
               </Button>
 
               <Button
                 sx={{
                   display: "flex",
-                  width: "90%",
+                  width: "100%",
                   color: "black",
                   backgroundColor: "white",
                   border: "1px solid black",
                   justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <Box sx={{mt:'10px',mr:'5px'}} color="red">
-                  <FavoriteBorderIcon />
-                </Box>
+                <FavoriteBorderIcon sx={{ color: "red", mr: 1 }} />
                 <Typography>Add to Wishlist</Typography>
               </Button>
             </Box>
-            <Divider />
-            <Typography onClick={getSingledata}>T&C</Typography>
+
+            <Divider sx={{ marginTop: "1rem" }} />
+            <Typography
+              // onClick={getSingledata}
+              sx={{ cursor: "pointer", marginTop: "1rem" }}
+            >
+              T&C
+            </Typography>
           </Box>
-        </Grid>
-      </Grid>
-    </Box>
+        </Box>
+      </Box>
+    </>
   );
 };
+
 CustomProductDetails.propTypes = {
   description: PropTypes.string,
   title: PropTypes.string,
   img: PropTypes.string,
   price: PropTypes.number,
-  precisionRatingVal: PropTypes.number,
   ratingVal: PropTypes.number,
   orderCount: PropTypes.string,
+  discountedPrice: PropTypes.string,
+  discountedPercentage: PropTypes.string,
 };
 
 export default CustomProductDetails;

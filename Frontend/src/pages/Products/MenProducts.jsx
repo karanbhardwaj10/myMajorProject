@@ -5,6 +5,7 @@ import { Button, Box, Typography } from "@mui/material";
 import CustomProductView from "../../Shared/Components/CustomProductView/CustomProductView";
 import { useNavigate } from "react-router-dom";
 import { getSelectedProducts } from "./state/productActions";
+import ResponsiveAppBar from "../../Shared/Components/HeaderComponent/Header";
 
 const MenProducts = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const MenProducts = () => {
   async function getProductDetials(id, title) {
     console.log(id, "getproduct details");
     dispatch(getSelectedProducts(id));
+    localStorage.setItem('productId',id);
     navigate(`/product/${id}/${title}`);
   }
   useEffect(() => {
@@ -23,7 +25,7 @@ const MenProducts = () => {
     if (status !== 200) {
       dispatch(getProducts());
     }
-  }, [loading, status, productData, dispatch]);
+  }, [ status]);
   return (
     <Box
       style={{
@@ -32,7 +34,7 @@ const MenProducts = () => {
         alignItems: "center",
       }}
     >
-      <h2>Men Products Page</h2>
+      <ResponsiveAppBar />
 
       <Box
         display={"flex"}
@@ -44,7 +46,7 @@ const MenProducts = () => {
       >
         {/* {!loading && JSON.stringify(productData)} */}
         {productData.length > 0 &&
-          productData.map(({ id, title, images, price }, index) => (
+          productData.map(({ id, title, images, price,discountPercentage,brand ,rating}, index) => (
             <Box
               key={id}
               flexBasis="calc(25% - 16px)" // Each item will take 25% width minus the gap
@@ -58,9 +60,12 @@ const MenProducts = () => {
                 <CustomProductView
                   imgHeight={350}
                   imgWidth={320}
-                  discountPercentage={"50% Off"}
+                  discountPercentage={JSON.stringify(discountPercentage)}
                   title={title}
+                  brandName={brand}
+                  productRating={JSON.stringify(rating)}
                   imgVal={images[0]}
+                  // discountedPrice={JSON.stringify(discountPercentage)}
                   price={JSON.stringify(price)}
                   isProduct={true}
                 />

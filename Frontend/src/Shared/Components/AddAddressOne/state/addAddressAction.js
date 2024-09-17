@@ -1,13 +1,17 @@
 import axios from "axios";
 
-export const saveUserAddress = async (userAddress) => {
+export const saveUserAddress = async (data) => {
   try {
+    console.log(data, "data from actions given to it by slice");
+    const headers = {
+      Authorization: `Bearer ${data.userToken}`,
+    };
     const response = await axios.post(
       "http://localhost:4000/addAddress",
-      userAddress
+      data.newAddress,
+      { headers: headers }
     );
-    console.log(response,"actions response");
-    
+    console.log(response, "actions response");
     return response;
   } catch (error) {
     console.log(error);
@@ -18,7 +22,12 @@ export const saveUserAddress = async (userAddress) => {
         errStatusCode: error.response.status,
         errMessage: error.response.data || error.message,
       };
-      console.log(resErrorObj.errStatusCode, " err status code for address",resErrorObj,"res error obj");
+      console.log(
+        resErrorObj.errStatusCode,
+        " err status code for address",
+        resErrorObj,
+        "res error obj"
+      );
       return resErrorObj;
     } else {
       console.log("Network or unexpected error", error.message);
