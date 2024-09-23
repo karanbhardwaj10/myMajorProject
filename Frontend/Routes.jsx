@@ -16,6 +16,7 @@ const MyRoutes = () => {
     { path: "/product/:id/:title", element: <ProductDetials /> },
     { path: "/Checkout", element: <Checkout /> },
     { path: "/Wishlist", element: <Wishlist /> },
+    
   ]);
   return element;
 };

@@ -1,18 +1,56 @@
-import { Box, Typography, Checkbox, Tooltip } from "@mui/material";
-import {  useState } from "react";
+import {
+  Box,
+  Typography,
+  Checkbox,
+  Tooltip,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import TripOriginIcon from "@mui/icons-material/TripOrigin";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import "./Style.css";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+// import { deleteUserAddress } from "./State/deleteAddress";
+import { useNavigate } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAddress } from "./Features/deleteUserAddressSlice";
 const CustomAddressTwo = ({
   label,
   addressType,
   customerName,
   customerAddress,
+  userAddressId,
   ...props
 }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, deleteAddressStatusCode } = useSelector(
+    (state) => state.deleteAddressSlice
+  );
+  const [open, setOpen] = useState(false);
+
+  const handleDeleteIconOpen = () => {
+    setOpen(true);
+  };
+  const handleDeleteDialogNoClick = () => {
+    setOpen(false);
+  };
+  const handleDeleteDialogClose = () => {
+    setOpen(false);
+  };
+  const handleDeleteDialogCloseYesClick = () => {
+    handleDeleteAddress()
+    window.location.reload();
+    setOpen(false);
+  };
   const [checked, setChecked] = useState(false);
   function handleChange(e) {
     console.log(checked, "before set");
@@ -24,9 +62,21 @@ const CustomAddressTwo = ({
 
     console.log(checked, "checked from state");
   }
+  function handleDeleteAddress() {
+    console.log(userAddressId, "rowId");
+    dispatch(deleteAddress(userAddressId));
+    
+    //await deleteUserAddress(userAddressId);
+  }
+
+  useEffect(() => {
+    if (deleteAddressStatusCode === 200) {
+      navigate("/checkout");
+    }
+  }, [deleteAddressStatusCode, navigate]);
 
   return (
-    <Box sx={{ display: "flex", ml: 7, width: "100%" }}>
+    <Box sx={{ display: "flex", ml: 7, width: "650px" }}>
       <Box
         sx={{
           display: "flex",
@@ -77,10 +127,14 @@ const CustomAddressTwo = ({
         <Box display={"flex"} flexDirection={"row"}>
           {checked ? (
             <Box display={"flex"} flexDirection={"row"}>
-              <Tooltip title="Edit this address">
+              <Tooltip
+                title="Edit this address"
+                sx={{
+                  width: "10px",
+                }}
+              >
                 <Box
                   sx={{
-                    marginRight: "10px",
                     color: "#005685",
                   }}
                 >
@@ -93,16 +147,48 @@ const CustomAddressTwo = ({
                     marginRight: "10px",
                     color: "red",
                   }}
+                 // onClick={handleDeleteAddress}
                 >
-                  <DeleteOutlineOutlinedIcon />
+                  <Button
+                    sx={{
+                      width: 0,
+                      mr: -2,
+                      p: 0,
+                      color: "red",
+                    }}
+                    onClick={handleDeleteIconOpen}
+                  >
+                    <DeleteOutlineOutlinedIcon />
+                  </Button>
                 </Box>
               </Tooltip>
+                <Dialog
+                  open={open}
+                  onClose={handleDeleteDialogClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    Delete Address 
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                     Are you sure you want to delete this address ?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button variant="contained" onClick={handleDeleteDialogNoClick}>No</Button>
+                    <Button variant="contained" sx={{backgroundColor:'red'}} onClick={handleDeleteDialogCloseYesClick} autoFocus>
+                      Yes
+                    </Button>
+                  </DialogActions>
+                </Dialog>
             </Box>
           ) : (
             <Tooltip title="Edit this address">
               <Box
-              display={"flex"}
-              flexDirection={'row'}
+                display={"flex"}
+                flexDirection={"row"}
                 sx={{
                   marginRight: "10px",
                   color: "#005685",
@@ -116,7 +202,7 @@ const CustomAddressTwo = ({
             <Box
               sx={{
                 marginRight: "10px",
-                ml:1,
+                ml: 1,
                 cursor: "pointer",
                 "&:hover": {
                   animation: "bounce 0.5s infinite",

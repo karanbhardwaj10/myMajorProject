@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 import CustomProductCard from "../CustomProductCard/CustomProductCard";
 import "../../Styles/ProductTypeStyle.css";
+import Rating from "@mui/material/Rating";
 
 const CustomProductView = ({
   title,
@@ -62,7 +63,7 @@ function calculateDiscountedPrice(price,discountPercentage){
                 {title}
               </Typography>
             </Box>
-            <Box display="flex" justifyContent="start">
+            <Box display="flex" >
               <Typography
                 fontSize={"20px"}
                 color={"grey"}
@@ -71,8 +72,11 @@ function calculateDiscountedPrice(price,discountPercentage){
               >
                 {brandName}
               </Typography>
+              <Box marginTop={'3.5px'} marginLeft={'15px'}>
+              <Rating max={1} name="read-only" readOnly value={productRating}  />
+            </Box>
               <Typography
-                marginLeft={"5px"}
+               marginLeft={'10px'}
                 fontSize={"20px"}
                 color={"black"}
                 fontWeight={"bold"}
@@ -112,6 +116,6 @@ CustomProductView.propTypes = {
   discountPercentage: PropTypes.string,
   brandName: PropTypes.string,
   isProduct: PropTypes.bool,
-  productRating:PropTypes.string,
+  productRating:PropTypes.number,
 };
 export default CustomProductView;

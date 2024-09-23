@@ -1,7 +1,7 @@
-import { Box, TextField, Button, Checkbox, Typography } from "@mui/material";
+import { Box, TextField, Button, Checkbox, Typography,Autocomplete } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Autocomplete from "@mui/material/Autocomplete";
+// import Autocomplete from "@mui/material/Autocomplete";
 import signUpImage from "../../assets/SignUpPageImg.jpg";
 import Grid from "@mui/material/Grid";
 import { signUpFields, Occupation, gender } from "./state/signUpVars";

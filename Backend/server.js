@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { errorHandler } from "./middleware/errorHandler.js";
@@ -9,6 +10,7 @@ const port = 4000;
 const server = () => {
   const app = express();
   app.use(cors());
+  // app.use(fs);
   app.use(bodyParser.json());
   async function main() {
     await mongoose.connect(

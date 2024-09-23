@@ -13,7 +13,7 @@ const userSignUpSchema = new mongoose.Schema({
 });
 
 const addressSchema = new mongoose.Schema({
-  fullname: String,
+  fullName: String,
   email: String,
   contactInfo: {
     type: Number,
@@ -37,6 +37,7 @@ const addressSchema = new mongoose.Schema({
     },
   },
   address: String,
+  addressType:String
   //user: { type: mongoose.Schema.Types.ObjectId, ref: "userData" },
 });
 

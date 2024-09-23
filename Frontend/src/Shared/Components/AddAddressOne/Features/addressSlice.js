@@ -8,6 +8,7 @@ const initialAddressVal = {
   city: "",
   pincode: undefined,
   address: "",
+  addressStatusCode:undefined
 };
 
 export const saveAddress = createAsyncThunk(
@@ -63,6 +64,7 @@ export const addressSlice = createSlice({
         state.city=action.payload;
         state.pincode=action.payload;
         state.address=action.payload;
+        state.addressStatusCode=action.payload.status;
         console.log(action.payload, "status value from state form create slice");
       })
       .addCase(saveAddress.rejected, (state, action) => {

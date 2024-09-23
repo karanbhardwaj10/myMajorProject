@@ -21,8 +21,14 @@ const ProductDetials = () => {
     if (id) {
       dispatch(getSelectedProducts(id)); 
     }
-  
-  }, [id]);
+    if(data.length !== 0){
+      console.log(data,"daata after != condition");
+      
+    //  const rating= parseInt(data.rating.toString().split(".")[0])
+    //  console.log(rating,"useEffect ratinf");
+     
+    }
+  }, [id,status]);
   return (
     <Box>
       <ResponsiveAppBar />
@@ -32,12 +38,12 @@ const ProductDetials = () => {
         description={data.description}
         title={data.title}
         // ratingVal={
-        //   data.rating ? parseInt(data.rating.toString().split(".")[0]) : 0
+        //   status ===200 || data.rating ? parseInt(data.rating.toString().split(".")[0]) : 0
         // }
         discountedPercentage={JSON.stringify(data.discountPercentage)}
         img={data.images ? data.images[0] : ""}
         // precisionRatingVal={`0.+${parseInt(
-        //   data.rating.toString().split(".")[1]?.charAt(0) || 0
+        //   status ===200 || data.rating.toString().split(".")[1]?.charAt(0) || 0
         // )}`}
       />
       <TermsAndConditions />

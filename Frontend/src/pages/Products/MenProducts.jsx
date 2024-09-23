@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getSelectedProducts } from "./state/productActions";
 import ResponsiveAppBar from "../../Shared/Components/HeaderComponent/Header";
 
+
 const MenProducts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -57,13 +58,15 @@ const MenProducts = () => {
               }}
             >
               <Button>
+             
                 <CustomProductView
                   imgHeight={350}
                   imgWidth={320}
                   discountPercentage={JSON.stringify(discountPercentage)}
                   title={title}
                   brandName={brand}
-                  productRating={JSON.stringify(rating)}
+                 productRating={JSON.parse(rating.toFixed(1))}
+                //  productRating={JSON.stringify(rating.split('.')[1])}
                   imgVal={images[0]}
                   // discountedPrice={JSON.stringify(discountPercentage)}
                   price={JSON.stringify(price)}

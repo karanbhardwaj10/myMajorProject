@@ -1,14 +1,17 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography,Autocomplete ,TextField,Tooltip} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
+// import IconButton from "@mui/material/IconButton";
+// import  from "@mui/material/Tooltip";
+// import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import CustomTextField from "../CustomTextField/CustomTextField";
-import CustomPriceDetails from "../PriceDetails/CustomPriceDetails";
-import { useDispatch } from "react-redux";
+// import CustomPriceDetails from "../PriceDetails/CustomPriceDetails";
+import { useDispatch, useSelector } from "react-redux";
 import { saveAddress } from "./Features/addressSlice";
+import { getAddress } from "./Features/getAddressSlice";
+import { getUserAddress } from "./state/getUserAddressAction";
+import { useNavigate } from "react-router-dom";
 
 const formFields = [
   [{ id: "fullName", label: "Full name" }],
@@ -22,6 +25,13 @@ const formFields = [
   ],
   [{ id: "address", label: "Address" }],
 ];
+
+const addressType = [
+  { id: "Home", label: "Home", name: "Home" },
+  { id: "Office", label: "Office", name: "Office" },
+  { id: "Other", label: "Other", name: "Other" },
+];
+
 const FieldRow = ({ fields }) => (
   <div
     style={{
@@ -58,27 +68,41 @@ FieldRow.propTypes = {
 };
 const AddressOne = ({ onAddAddress }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [addressTypeVal, setAddressType] = useState(null);
+  const { addressStatusCode } = useSelector((state) => state.addressSlice);
   const [forms, setForms] = useState([formFields]);
   // eslint-disable-next-line no-unused-vars
   const [submittedAddresses, setSubmittedAddresses] = useState([]);
   const [newAddress, setNewAddress] = useState(null);
+  // const [newUserAddress, setnewUserAddress] = useState(null);
+  // const [getUserToken,setToken]=useState(null);
   const addNewForm = () => {
     if (formFields.length <= 1) {
       setForms([...forms, formFields]);
     }
   };
+
+  // async function getAddressCall() {
+  //   const userToken = localStorage.getItem("token");
+  //   if(userToken){
+
+  //     await getUserAddress(userToken);
+  //   }
+  // }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission
     // Collect form data
     const form = event.target;
     const formData = new FormData(form);
-    const newAddedAddress = {
-      addressType: "Home", // You might want to add a field for this in your form
-      customerName: formData.get("fullName"),
-      customerAddress: formData.get("address"),
-      city: formData.get("city"),
-    };
+    // const newAddedAddress = {
+    //   addressType: "Home", // You might want to add a field for this in your form
+    //   customerName: formData.get("fullName"),
+    //   customerAddress: formData.get("address"),
+    //   city: formData.get("city"),
+    // };
     const newAddress = {
       fullName: formData.get("fullName"),
       email: formData.get("email"),
@@ -86,37 +110,43 @@ const AddressOne = ({ onAddAddress }) => {
       city: formData.get("city"),
       pincode: JSON.parse(formData.get("pincode")),
       address: formData.get("address"),
+      addressType:addressTypeVal ,
     };
-    console.log(typeof newAddress.contactInfo, "type of contact of");
-
+    console.log( newAddress, "full new address info")
     const userToken = localStorage.getItem("token");
     if (newAddress && userToken) {
       const data = {
         userToken: userToken,
         newAddress: newAddress,
       };
+
       dispatch(saveAddress(data));
+      
+      dispatch(getAddress(userToken))
+      window.location.reload();
     }
 
-    let finalAns = [];
-    finalAns.push(newAddedAddress);
-    // Add the new address to the submitted addresses
-    setNewAddress(finalAns);
+    // let finalAns = [];
+    // finalAns.push(newAddedAddress);
+    // // Add the new address to the submitted addresses
+    // setNewAddress(finalAns);
     // setSubmittedAddresses([...submittedAddresses, newAddress]);
 
     // Reset the form
+   
     event.target.reset();
   };
 
   // The functional form is generally safer when the new state depends on the previous state. It ensures that you’re working with the most recent state, even if multiple state updates are queued.
-  useEffect(() => {
-    if (newAddress) {
-      console.log(newAddress, "form given json");
-      setSubmittedAddresses((prevAddresses) => [...prevAddresses, newAddress]);
-    }
-    // console.log(submittedAddresses, "submitted addresses");
-    onAddAddress(newAddress);
-  }, [newAddress]);
+  // useEffect(() => {
+  //   if (newAddress) {
+  //     console.log(addressStatusCode, "address status code");
+  //     console.log(newAddress, "form given json");
+  //     setSubmittedAddresses((prevAddresses) => [...prevAddresses, newAddress]);
+  //   }
+  //   // console.log(submittedAddresses, "submitted addresses");
+  //   onAddAddress(newAddress);
+  // }, [newAddress]);
 
   return (
     <div
@@ -157,13 +187,27 @@ const AddressOne = ({ onAddAddress }) => {
             Shipping Information
           </Typography>
 
-          <Tooltip placement="left" title="Add New Address">
-            <IconButton onClick={addNewForm} aria-label="add to shopping cart">
+          {/* <Tooltip placement="left" title="Add New Address"> */}
+            {/* <IconButton onClick={addNewForm} aria-label="add to shopping cart">
               <ControlPointIcon
                 style={{ fontSize: "35px", color: "#1b2833" }}
               />
-            </IconButton>
-          </Tooltip>
+            </IconButton> */}
+                     <Autocomplete
+                  onChange={(event, newAddressType) =>
+                    setAddressType(
+                      newAddressType ? newAddressType.label : null
+                    )
+                  }
+                  style={{ marginRight: "5px",width:'180px' }}
+                  disablePortal
+                  id="AddressType"
+                  options={addressType}
+                  renderInput={(params) => (
+                    <TextField {...params} label="AddressType" />
+                  )}
+                />
+          {/* </Tooltip> */}
         </div>
         <Divider
           style={{
@@ -192,38 +236,13 @@ const AddressOne = ({ onAddAddress }) => {
           Add Address
         </Button>
       </Box>
+      
 
-      <div
-        style={{
-          width: "50%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "600px",
-          overflow: "hidden",
-        }}
-      >
-        {/* <Divider style={{
-          marginRight:'40px'
-        }} orientation="vertical" flexItem /> */}
-        {/* <Divider
-          style={{
-            marginRight: "20px",
-          }}
-          orientation="vertical"
-          flexItem
-        /> */}
-        <CustomPriceDetails />
-        {/* <img
-          src={test6}
-          alt="SignUp Page"
-          style={{ maxWidth: "100%", maxHeight: "600px", objectFit: "cover" }}
-        /> */}
-      </div>
+
     </div>
   );
 };
-AddressOne.propTypes = {
-  onAddAddress: PropTypes.func.isRequired,
-};
+// AddressOne.propTypes = {
+//   onAddAddress: PropTypes.func.isRequired,
+// };
 export default AddressOne;

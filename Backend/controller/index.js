@@ -1,5 +1,8 @@
 import { addressModelSchema, userModelSchema } from "../db/index.js";
 import { hashPassword, verifyPassword } from "../utils/passWordUtils.js";
+import * as fs from 'fs';
+import * as path from 'path';
+
 import mongoose from "mongoose";
 
 import jwt, { decode } from "jsonwebtoken";
@@ -114,15 +117,13 @@ export const getAddress = async (req, res) => {
 
       const user = await userModelSchema.findOne({ userName: decodeduserName });
       if (user) {
-        console.log("user found",user);
+        console.log("user found", user);
 
-        const userAddresses = await user.populate('addresses');
+        const userAddresses = await user.populate("addresses");
         console.log("user address populate after populate");
         if (userAddresses) {
           try {
-            res
-              .status(200)
-              .json({ message: `User addresses ${userAddresses}` });
+            res.status(200).json({ data: userAddresses.addresses });
           } catch (error) {
             res
               .status(500)
@@ -131,12 +132,22 @@ export const getAddress = async (req, res) => {
         }
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(`Error in Get Address service${error}`);
+  }
 };
 
 export const userAddress = async (req, res) => {
   try {
-    const { fullName, email, contactInfo, city, pincode, address } = req.body;
+    const {
+      fullName,
+      email,
+      contactInfo,
+      city,
+      pincode,
+      address,
+      addressType,
+    } = req.body;
     const newAddress = new addressModelSchema({
       fullName,
       email,
@@ -144,6 +155,7 @@ export const userAddress = async (req, res) => {
       city,
       pincode,
       address,
+      addressType,
     });
     const userToken = req.headers.authorization.split(" ")[1];
     console.log(userToken, "user token from controller");
@@ -204,4 +216,61 @@ export const deleteUserAddress = async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: `userAddress not found ${error}` });
   }
+};
+
+export const getFemaleProducts = async (req, res) => {
+  const filePath = path.join("D:", "Test", "flipkart_com-ecommerce_sample.json");
+
+  // Read the JSON file asynchronously
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Error reading the file", error: err });
+    }
+    // Parse and send the JSON data
+    try {
+      const jsonData = JSON.parse(data);
+      const womenClothingProducts=[];
+      jsonData.forEach(productCatagory => {
+        for (let value in productCatagory) {
+            //console.log(`${productCatagory['product_category_tree'].split(">>")[1]}`)
+            if(productCatagory['product_category_tree'].split(">>")[1].replace(/\s/g, '') === "Women'sClothing"){
+              //console.log('yes',productCatagory);
+              womenClothingProducts.push(productCatagory)
+            }
+          }
+          res.json(womenClothingProducts);
+    })
+      //res.json(womenClothingProducts);
+    } catch (parseErr) {
+      res
+        .status(500)
+        .json({ message: "Error parsing the JSON file", error: parseErr });
+    }
+  });
+};
+export const getMaleProducts = async (req, res) => {
+  const filePath = path.join("D:", "Test", "flipkart_com-ecommerce_sample.json");
+
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Error reading the file", error: err });
+    }
+
+    try {
+      const jsonData = JSON.parse(data);
+      const menClothingProducts = [];
+      
+      jsonData.forEach(productCategory => {
+        if (productCategory['product_category_tree'].split(">>")[1].replace(/\s/g, '') === "Men'sClothing") {
+          menClothingProducts.push(productCategory);
+        }
+      });
+      
+      res.json(menClothingProducts); // Moved outside the loop
+    } catch (parseErr) {
+      res.status(500).json({ message: "Error parsing the JSON file", error: parseErr });
+    }
+  });
 };

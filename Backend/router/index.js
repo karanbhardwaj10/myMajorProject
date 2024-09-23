@@ -1,4 +1,4 @@
-import { userSignup, userLogin, userAddress } from "../controller/index.js";
+import { userSignup, userLogin, userAddress, getFemaleProducts,getMaleProducts } from "../controller/index.js";
 import { userSignUpConfig } from "../config/userConfig.js";
 import { validationHandler } from "../middleware/errorHandler.js";
 import { authenticateJwt } from "../middleware/authenticateJWT.js";
@@ -6,13 +6,17 @@ import { getAddress } from "../controller/index.js";
 import { addressConfig } from "../config/addressConfig.js";
 import { updateAddress } from "../controller/index.js";
 import { deleteUserAddress } from "../controller/index.js";
+
 const router = (app) => {
   app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
   app.post("/signIn", userLogin);
   app.get("/getAddress",getAddress)
   app.post("/addAddress",validationHandler(addressConfig),authenticateJwt,userAddress);
   app.put("/updateAddress/:addressId",validationHandler(addressConfig),updateAddress);
-  app.delete("/deleteUserAddress/:addressId",deleteUserAddress)
+  app.delete("/deleteUserAddress/:addressId",deleteUserAddress);
+  app.get('/read-json',getFemaleProducts);
+  app.get('/menProducts',getMaleProducts);
+
 };
 
 // const userSignConfig = [
