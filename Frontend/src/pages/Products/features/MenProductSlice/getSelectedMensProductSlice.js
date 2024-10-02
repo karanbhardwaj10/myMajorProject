@@ -8,11 +8,11 @@ const initialProductVal = {
     image: "",
     id: "",
   },
-  rating:0,
+  rating: 0,
   status: "",
 };
 
-const getSelectedProductReducer = (state = initialProductVal, action) => {
+const getSelectedMaleProductReducer = (state = initialProductVal, action) => {
   switch (action.type) {
     case "FETCH_DATA_REQUEST":
       return { ...state, loading: true, error: null };
@@ -21,7 +21,7 @@ const getSelectedProductReducer = (state = initialProductVal, action) => {
       return {
         ...state,
         data: action.payload.data,
-        rating:action.payload.rating,
+        rating: action.payload.rating,
         loading: false,
         status: "success",
       };
@@ -37,10 +37,10 @@ const getSelectedProductReducer = (state = initialProductVal, action) => {
   }
 };
 
-export default getSelectedProductReducer;
+export default getSelectedMaleProductReducer;
 
 // import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { getSelectedProducts } from "../state/productActions";
+// import { getSelectedMaleProduct } from "../state/menProductActions";
 
 // const initialProductVal = {
 //   loading: false,
@@ -60,7 +60,7 @@ export default getSelectedProductReducer;
 //     "selectedProduct",
 //     async (productId, { rejectWithValue }) => {
 //       try {
-//         const response = await getSelectedProducts(productId);
+//         const response = await getSelectedMaleProduct(productId);
 //         console.log(response, "Response from createAsyncThunk");
 
 //         return response.data;  // Return only the product data
@@ -69,8 +69,8 @@ export default getSelectedProductReducer;
 //       }
 //     }
 //   );
-// // export const getSelectedProductSlice = createSlice({
-// //   name: "getSelectedProductSlice",
+// // export const getSelectedMaleProductlice = createSlice({
+// //   name: "getSelectedMaleProductlice",
 // //   initialState: initialProductVal,
 // //   reducers: {},
 // //   extraReducers: (builder) => {
@@ -91,7 +91,7 @@ export default getSelectedProductReducer;
 // //       });
 // //   },
 // // });
-// const getSelectedProductReducer = (state = initialProductVal, action) => {
+// const getSelectedMaleProductReducer = (state = initialProductVal, action) => {
 //     switch (action.type) {
 //       case 'FETCH_DATA_REQUEST':
 //         return { ...state, loading: true, error: null };
@@ -108,5 +108,5 @@ export default getSelectedProductReducer;
 
 //   };
 
-// export default getSelectedProductReducer.reducer;
-// // export const getSelectedProductReducerActions = getSelectedProductReducer.actions;
+// export default getSelectedMaleProductReducer.reducer;
+// // export const getSelectedMaleProductReducerActions = getSelectedMaleProductReducer.actions;

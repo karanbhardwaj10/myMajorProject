@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
+import { Typography, Rating } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import CustomProductCard from "../CustomProductCard/CustomProductCard";
 import "../../Styles/ProductTypeStyle.css";
-import Rating from "@mui/material/Rating";
 
 const CustomProductView = ({
   title,
@@ -14,8 +13,7 @@ const CustomProductView = ({
   imgHeight,
   discountedPrice,
   imgWidth,
-  //boxHeight,
-   brandName,
+  brandName,
   isProduct,
   productRating
 }) => {
@@ -24,98 +22,106 @@ const CustomProductView = ({
     discountPercentage,
     imgHeight: imgHeight,
     imgWidth: imgWidth,
-    //boxHeight:boxHeight
   };
-function calculateDiscountedPrice(price,discountPercentage){
-  discountedPrice = price - (price * (discountPercentage / 100));
-  return discountedPrice.toFixed(2);
-}
+
   return (
     <Box my={4}>
       {!isProduct ? (
-        <Grid className="zoomProductType">
-          <CustomProductCard
-            boxHeight={400}
-            img={imgVal}
-            discountPercentage={discountPercentage}
-            imgHeight={imgHeight}
-            imgWidth={imgWidth}
-          />
-
-          <Box display="flex" position={"relative"} justifyContent="center">
+        <Grid
+          container
+          className="zoomProductType"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid xs={12} sm={8} md={6} lg={4}>
+            <CustomProductCard {...commonCardProps} boxHeight={400} />
+          </Grid>
+          <Grid xs={12} display="flex" justifyContent="center">
             <Typography
-              marginRight={5}
-              fontSize={"50px"}
+              fontSize={{ xs: "30px", sm: "40px", md: "50px" }}
               fontFamily={"poppins"}
             >
               {title}
             </Typography>
-          </Box>
+          </Grid>
         </Grid>
       ) : (
-        <Box>
-          <Grid height={350} width={290}>
+        <Grid container direction="column" alignItems="start" spacing={2}>
+          <Grid>
             <CustomProductCard {...commonCardProps} />
           </Grid>
-          <Box>
-            <Box display="flex" justifyContent="start">
-              <Typography fontSize={"30px"} fontFamily={"poppins"}>
-                {title}
-              </Typography>
-            </Box>
-            <Box display="flex" >
+          <Grid>
+            <Typography
+              fontSize={{ xs: "18px", sm: "24px", md: "20px" }}
+              fontFamily={"poppins"}
+            >
+              {title}
+            </Typography>
+          </Grid>
+          <Grid>
+            <Box display="flex" alignItems="center" marginLeft={'5px'} >
               <Typography
-                fontSize={"20px"}
-                color={"grey"}
-                fontWeight={"bold"}
-                fontFamily={"poppins"}
+                fontSize={{ xs: "14px", sm: "18px", md: "20px" }}
+                color="grey"
+                fontWeight="bold"
+                fontFamily="poppins"
               >
                 {brandName}
               </Typography>
-              <Box marginTop={'3.5px'} marginLeft={'15px'}>
-              <Rating max={1} name="read-only" readOnly value={productRating}  />
-            </Box>
+              <Rating
+                max={1}
+                name="read-only"
+                readOnly
+                value={productRating}
+                sx={{ ml: 2, mt: "3px" }}
+              />
               <Typography
-               marginLeft={'10px'}
-                fontSize={"20px"}
-                color={"black"}
-                fontWeight={"bold"}
-                fontFamily={"poppins"}
+                fontSize={{ xs: "14px", sm: "18px", md: "20px" }}
+                color="black"
+                fontWeight="bold"
+                fontFamily="poppins"
+                ml={1}
               >
                 {productRating}
               </Typography>
-              
             </Box>
-            <Box display="flex" justifyContent="start">
-              <Typography fontWeight={"bold"} fontSize={"20px"}>
-              ₹  {calculateDiscountedPrice(price,discountPercentage)}
+          </Grid>
+          <Grid>
+            <Box display="flex" alignItems="center">
+              <Typography
+                fontWeight="bold"
+                fontSize={{ xs: "16px", sm: "18px", md: "20px" }}
+              >
+                ₹ {discountedPrice}
               </Typography>
               <Typography
-                fontSize={"20px"}
-                color={"grey"}
-                marginLeft={"5px"}
+                fontSize={{ xs: "14px", sm: "18px", md: "20px" }}
+                color="grey"
+                ml={1}
                 sx={{ textDecoration: "line-through" }}
               >
-               ₹   {price}
+                ₹ {price}
               </Typography>
             </Box>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       )}
     </Box>
   );
 };
+
 CustomProductView.propTypes = {
   title: PropTypes.string,
   imgVal: PropTypes.string,
   price: PropTypes.string,
-  // boxHeight:PropTypes.number,
   imgHeight: PropTypes.number,
-  discountedPrice: PropTypes.string,
+  discountedPrice: PropTypes.number,
   imgWidth: PropTypes.number,
   discountPercentage: PropTypes.string,
   brandName: PropTypes.string,
   isProduct: PropTypes.bool,
-  productRating:PropTypes.number,
+  productRating: PropTypes.number,
 };
+
 export default CustomProductView;

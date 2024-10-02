@@ -5,13 +5,13 @@ import { useEffect } from "react";
 import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSelectedProducts } from "./state/productActions";
+import { getSelectedMaleProduct } from "./state/menProductActions";
 import TermsAndConditions from "../../Shared/Components/TermsAndConditionsProducts/TermsAndConditions";
 
-const ProductDetials = () => {
+const SelectedMaleProductDetails = () => {
   const dispatch = useDispatch();
   const { loading, status, data } = useSelector(
-    (state) => state.getSelectedProductSlice
+    (state) => state.getSelectedMaleProductlice
   );
   const { id } = useParams();
   console.log("before use effect");
@@ -19,16 +19,15 @@ const ProductDetials = () => {
   useEffect(() => {
     // const prodId=localStorage.getItem('productId');
     if (id) {
-      dispatch(getSelectedProducts(id)); 
+      dispatch(getSelectedMaleProduct(id));
     }
-    if(data.length !== 0){
-      console.log(data,"daata after != condition");
-      
-    //  const rating= parseInt(data.rating.toString().split(".")[0])
-    //  console.log(rating,"useEffect ratinf");
-     
+    if (data.length !== 0) {
+      console.log(data.price, "daata after != condition");
+
+      //  const rating= parseInt(data.rating.toString().split(".")[0])
+      //  console.log(rating,"useEffect ratinf");
     }
-  }, [id,status]);
+  }, [id, status]);
   return (
     <Box>
       <ResponsiveAppBar />
@@ -37,11 +36,12 @@ const ProductDetials = () => {
         price={parseInt(data.price)}
         description={data.description}
         title={data.title}
+        discountedPrice={data.discounted_price}
         // ratingVal={
         //   status ===200 || data.rating ? parseInt(data.rating.toString().split(".")[0]) : 0
         // }
         discountedPercentage={JSON.stringify(data.discountPercentage)}
-        img={data.images ? data.images[0] : ""}
+        img={data.images ? JSON.parse(data.images)[0] : ""}
         // precisionRatingVal={`0.+${parseInt(
         //   status ===200 || data.rating.toString().split(".")[1]?.charAt(0) || 0
         // )}`}
@@ -50,4 +50,4 @@ const ProductDetials = () => {
     </Box>
   );
 };
-export default ProductDetials;
+export default SelectedMaleProductDetails;

@@ -6,7 +6,8 @@ import { getAddress } from "../controller/index.js";
 import { addressConfig } from "../config/addressConfig.js";
 import { updateAddress } from "../controller/index.js";
 import { deleteUserAddress } from "../controller/index.js";
-
+import { getSingleMaleProduct } from "../controller/index.js";
+import { getSingleFemaleProduct } from "../controller/index.js";
 const router = (app) => {
   app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
   app.post("/signIn", userLogin);
@@ -14,8 +15,11 @@ const router = (app) => {
   app.post("/addAddress",validationHandler(addressConfig),authenticateJwt,userAddress);
   app.put("/updateAddress/:addressId",validationHandler(addressConfig),updateAddress);
   app.delete("/deleteUserAddress/:addressId",deleteUserAddress);
-  app.get('/read-json',getFemaleProducts);
+  app.get('/femaleProducts',getFemaleProducts);
   app.get('/menProducts',getMaleProducts);
+  app.get('/singleMaleProduct',getSingleMaleProduct);
+  app.get('/singleFemaleProduct',getSingleFemaleProduct);
+
 
 };
 

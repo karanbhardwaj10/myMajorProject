@@ -1,7 +1,7 @@
 import { addressModelSchema, userModelSchema } from "../db/index.js";
 import { hashPassword, verifyPassword } from "../utils/passWordUtils.js";
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 import mongoose from "mongoose";
 
@@ -217,9 +217,18 @@ export const deleteUserAddress = async (req, res) => {
     res.status(404).json({ message: `userAddress not found ${error}` });
   }
 };
-
 export const getFemaleProducts = async (req, res) => {
-  const filePath = path.join("D:", "Test", "flipkart_com-ecommerce_sample.json");
+  const page = parseInt(req.query.page); // Parse page as an integer, defaulting to 1
+  console.log(page, "from service");
+
+  const limit = parseInt(req.query.limit, 10) || 15; // Parse limit as an integer, defaulting to 10
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const filePath = path.join(
+    "D:",
+    "Test",
+    "flipkart_com-ecommerce_sample.json"
+  );
 
   // Read the JSON file asynchronously
   fs.readFile(filePath, "utf8", (err, data) => {
@@ -228,21 +237,41 @@ export const getFemaleProducts = async (req, res) => {
         .status(500)
         .json({ message: "Error reading the file", error: err });
     }
+
     // Parse and send the JSON data
     try {
       const jsonData = JSON.parse(data);
-      const womenClothingProducts=[];
-      jsonData.forEach(productCatagory => {
-        for (let value in productCatagory) {
-            //console.log(`${productCatagory['product_category_tree'].split(">>")[1]}`)
-            if(productCatagory['product_category_tree'].split(">>")[1].replace(/\s/g, '') === "Women'sClothing"){
-              //console.log('yes',productCatagory);
-              womenClothingProducts.push(productCatagory)
+      const womenClothingProduct = [];
+
+      jsonData.forEach((product) => {
+        const categoryTreeStr = product["product_category_tree"];
+
+        // Ensure category tree exists and is a string
+        if (categoryTreeStr && typeof categoryTreeStr === "string") {
+          try {
+            const categoryTree = JSON.parse(categoryTreeStr); // Parse the stringified array
+
+            if (categoryTree.length > 0) {
+              // Check if the second item in the category chain is "Women's Clothing"
+              const categoryPath = categoryTree[0].split(">>");
+              const secondCategory =
+                categoryPath.length > 1 ? categoryPath[1].trim() : null;
+
+              if (secondCategory === "Women's Clothing") {
+                womenClothingProduct.push(product);
+              }
             }
+          } catch (categoryParseError) {
+            // Log the error but continue processing
+            console.error("Error parsing category tree:", categoryParseError);
           }
-          res.json(womenClothingProducts);
-    })
-      //res.json(womenClothingProducts);
+        }
+      });
+
+      res.status(200).json({
+        data: womenClothingProduct.slice(startIndex, endIndex),
+        totalProducts: womenClothingProduct.length,
+      });
     } catch (parseErr) {
       res
         .status(500)
@@ -250,27 +279,290 @@ export const getFemaleProducts = async (req, res) => {
     }
   });
 };
-export const getMaleProducts = async (req, res) => {
-  const filePath = path.join("D:", "Test", "flipkart_com-ecommerce_sample.json");
 
+// export const getFemaleProducts = async (req, res) => {
+//   const filePath = path.join("D:", "Test", "flipkart_com-ecommerce_sample.json");
+
+//   // Read the JSON file asynchronously
+//   fs.readFile(filePath, "utf8", (err, data) => {
+//     if (err) {
+//       return res
+//         .status(500)
+//         .json({ message: "Error reading the file", error: err });
+//     }
+//     // Parse and send the JSON data
+//     try {
+//       const jsonData = JSON.parse(data);
+//       const womenClothingProducts=[];
+//       jsonData.forEach(productCatagory => {
+//         for (let value in productCatagory) {
+//             //console.log(`${productCatagory['product_category_tree'].split(">>")[1]}`)
+//             if(productCatagory['product_category_tree'].split(">>")[1].replace(/\s/g, '') === "Women'sClothing"){
+//               //console.log('yes',productCatagory);
+//               womenClothingProducts.push(productCatagory)
+//             }
+//           }
+//         })
+//         res.status(200).json(womenClothingProducts);
+//       //res.json(womenClothingProducts);
+//     } catch (parseErr) {
+//       res
+//         .status(500)
+//         .json({ message: "Error parsing the JSON file", error: parseErr });
+//     }
+//   });
+// };
+export const getMaleProducts = async (req, res) => {
+  const page = parseInt(req.query.page); // Parse page as an integer, defaulting to 1
+  console.log(page, "from service");
+
+  const limit = parseInt(req.query.limit, 10) || 15; // Parse limit as an integer, defaulting to 10
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const filePath = path.join(
+    "D:",
+    "Test",
+    "flipkart_com-ecommerce_sample.json"
+  );
+
+  // Read the JSON file asynchronously
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
-      return res.status(500).json({ message: "Error reading the file", error: err });
+      return res
+        .status(500)
+        .json({ message: "Error reading the file", error: err });
     }
 
+    // Parse and send the JSON data
     try {
       const jsonData = JSON.parse(data);
-      const menClothingProducts = [];
-      
-      jsonData.forEach(productCategory => {
-        if (productCategory['product_category_tree'].split(">>")[1].replace(/\s/g, '') === "Men'sClothing") {
-          menClothingProducts.push(productCategory);
+      const menClothingProduct = [];
+
+      jsonData.forEach((product) => {
+        const categoryTreeStr = product["product_category_tree"];
+
+        // Ensure category tree exists and is a string
+        if (categoryTreeStr && typeof categoryTreeStr === "string") {
+          try {
+            const categoryTree = JSON.parse(categoryTreeStr); // Parse the stringified array
+
+            if (categoryTree.length > 0) {
+              // Check if the second item in the category chain is "Women's Clothing"
+              const categoryPath = categoryTree[0].split(">>");
+              const secondCategory =
+                categoryPath.length > 1 ? categoryPath[1].trim() : null;
+
+              if (secondCategory === "Men's Clothing") {
+                menClothingProduct.push(product);
+              }
+            }
+          } catch (categoryParseError) {
+            // Log the error but continue processing
+            console.error("Error parsing category tree:", categoryParseError);
+          }
         }
       });
-      
-      res.json(menClothingProducts); // Moved outside the loop
+
+      res.status(200).json({
+        data: menClothingProduct.slice(startIndex, endIndex),
+        totalProducts: menClothingProduct.length,
+      });
     } catch (parseErr) {
-      res.status(500).json({ message: "Error parsing the JSON file", error: parseErr });
+      res
+        .status(500)
+        .json({ message: "Error parsing the JSON file", error: parseErr });
     }
   });
 };
+
+export const getSingleMaleProduct = async (req, res) => {
+  const maleProductId = req.query.productId;
+  const filePath = path.join(
+    "D:",
+    "Test",
+    "flipkart_com-ecommerce_sample.json"
+  );
+
+  // Read the JSON file asynchronously
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Error reading the file", error: err });
+    }
+
+    // Parse and send the JSON data
+    try {
+      const jsonData = JSON.parse(data);
+      const menClothingProduct = [];
+
+      jsonData.forEach((product) => {
+        const categoryTreeStr = product["product_category_tree"];
+        // Ensure category tree exists and is a string
+        if (categoryTreeStr && typeof categoryTreeStr === "string") {
+          try {
+            const categoryTree = JSON.parse(categoryTreeStr); // Parse the stringified array
+
+            if (categoryTree.length > 0) {
+              // Check if the second item in the category chain is "Women's Clothing"
+              const categoryPath = categoryTree[0].split(">>");
+              const secondCategory =
+                categoryPath.length > 1 ? categoryPath[1].trim() : null;
+
+              if (secondCategory === "Men's Clothing") {
+                menClothingProduct.push(product);
+              }
+            }
+          } catch (categoryParseError) {
+            // Log the error but continue processing
+            console.error("Error parsing category tree:", categoryParseError);
+          }
+        }
+      });
+
+      const getSingleMaleProduct = menClothingProduct.find(
+        (product) => product.id === maleProductId
+      );
+      getSingleMaleProduct
+        ? res.status(200).json(getSingleMaleProduct)
+        : res
+            .status(404)
+            .json({ message: "Product not available or wrong productid" });
+    } catch (parseErr) {
+      res
+        .status(500)
+        .json({ message: "Error parsing the JSON file", error: parseErr });
+    }
+  });
+};
+export const getSingleFemaleProduct = async (req, res) => {
+  const femaleProductId = req.query.productId;
+  const filePath = path.join(
+    "D:",
+    "Test",
+    "flipkart_com-ecommerce_sample.json"
+  );
+
+  // Read the JSON file asynchronously
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Error reading the file", error: err });
+    }
+
+    // Parse and send the JSON data
+    try {
+      const jsonData = JSON.parse(data);
+      const womenClothingProduct = [];
+
+      jsonData.forEach((product) => {
+        const categoryTreeStr = product["product_category_tree"];
+        // Ensure category tree exists and is a string
+        if (categoryTreeStr && typeof categoryTreeStr === "string") {
+          try {
+            const categoryTree = JSON.parse(categoryTreeStr); // Parse the stringified array
+
+            if (categoryTree.length > 0) {
+              // Check if the second item in the category chain is "Women's Clothing"
+              const categoryPath = categoryTree[0].split(">>");
+              const secondCategory =
+                categoryPath.length > 1 ? categoryPath[1].trim() : null;
+
+              if (secondCategory === "Women's Clothing") {
+                womenClothingProduct.push(product);
+              }
+            }
+          } catch (categoryParseError) {
+            // Log the error but continue processing
+            console.error("Error parsing category tree:", categoryParseError);
+          }
+        }
+      });
+
+      const getSingleFemaleProduct = womenClothingProduct.find(
+        (product) => product.id === femaleProductId
+      );
+      getSingleFemaleProduct
+        ? res.status(200).json(getSingleFemaleProduct)
+        : res
+            .status(404)
+            .json({ message: "Product not available or wrong productid" });
+    } catch (parseErr) {
+      res
+        .status(500)
+        .json({ message: "Error parsing the JSON file", error: parseErr });
+    }
+  });
+};
+// export const getSingleFemaleProduct = async (req, res) => {
+//   const femaleProductId = req.query.productId;
+
+//   const limit = parseInt(req.query.limit, 10) || 15; // Parse limit as an integer, defaulting to 10
+//   const filePath = path.join(
+//     "D:",
+//     "Test",
+//     "flipkart_com-ecommerce_sample.json"
+//   );
+
+//   // Read the JSON file asynchronously
+//   fs.readFile(filePath, "utf8", (err, data) => {
+//     if (err) {
+//       return res
+//         .status(500)
+//         .json({ message: "Error reading the file", error: err });
+//     }
+
+//     // Parse and send the JSON data
+//     try {
+//       const jsonData = JSON.parse(data);
+//       const womenClothingProducts = [];
+
+//       jsonData.forEach((product) => {
+//         const categoryTreeStr = product["product_category_tree"];
+
+//         // Ensure category tree exists and is a string
+//         if (categoryTreeStr && typeof categoryTreeStr === "string") {
+//           try {
+//             const categoryTree = JSON.parse(categoryTreeStr); // Parse the stringified array
+
+//             if (categoryTree.length > 0) {
+//               // Check if the second item in the category chain is "Women's Clothing"
+//               const categoryPath = categoryTree[0].split(">>");
+//               const secondCategory =
+//                 categoryPath.length > 1 ? categoryPath[1].trim() : null;
+
+//               if (secondCategory === "Women's Clothing") {
+//                 womenClothingProducts.push(product);
+//               }
+//             }
+//           } catch (categoryParseError) {
+//             // Log the error but continue processing
+//             console.error("Error parsing category tree:", categoryParseError);
+//           }
+//         }
+//       });
+//       const getSingleFemaleProduct = womenClothingProducts.find(
+//         (product) => product.id === femaleProductId
+//       );
+//       getSingleFemaleProduct
+//         ? res.status(200).json({
+//             data: getSingleFemaleProduct,
+//           })
+//         : res
+//             .status(404)
+//             .json({ message: "Product not available or wrong productid" });
+//       // if (getSingleFemaleProduct) {
+//       //   res.status(200).json(getSingleFemaleProduct);
+//       // } else {
+//       //   res
+//       //     .status(404)
+//       //     .json({ message: "Product not available or wrong productid" });
+//       // }
+//     } catch (parseErr) {
+//       res
+//         .status(500)
+//         .json({ message: "Error parsing the JSON file", error: parseErr });
+//     }
+//   });
+// };

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMaleProducts } from "./features/MenProductSlice/getAllMensProductSlice";
-import { Button, Box, Pagination, Typography } from "@mui/material";
+import { getAllFemaleProducts } from "./features/WomenProducSlice/getAllWomenProductSlice";
+import { Button, Box, Pagination } from "@mui/material";
 import CustomProductView from "../../Shared/Components/CustomProductView/CustomProductView";
 import { useNavigate } from "react-router-dom";
-import { getSelectedMaleProduct } from "./state/menProductActions";
 import ResponsiveAppBar from "../../Shared/Components/HeaderComponent/Header";
+import { getSelectedFemaleProduct } from "./state/womenProductActions";
 
-const MenProducts = () => {
+const FemaleProducts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -15,23 +15,23 @@ const MenProducts = () => {
   const handlePage = (page) => {
     setPage(page);
     console.log(page, "page value");
-    dispatch(getAllMaleProducts(page));
+    dispatch(getAllFemaleProducts(page));
   };
-  const { loading, totalProducts, status, productData } = useSelector(
-    (state) => state.maleProductSlice
+  const {  totalWomenProducts, status, womenProductData } = useSelector(
+    (state) => state.womenProductSlice
   );
 
   async function getProductDetials(id, title) {
     console.log(id, "getproduct details");
-    dispatch(getSelectedMaleProduct(id));
+    dispatch(getSelectedFemaleProduct(id));
     localStorage.setItem("productId", id);
     navigate(`/product/${id}/${title}`);
   }
   useEffect(() => {
-    console.log("Product state changed:", productData, "staus", status);
-    console.log("useEffect triggered. Page:", page, "Status:", status);
+    console.log("Product state changed:", womenProductData, "staus", status);
+    console.log("useEffect triggered. Page:", page, "Status:", status,'totalProducts',totalWomenProducts);
     if (status !== 200 && page) {
-      dispatch(getAllMaleProducts(page));
+      dispatch(getAllFemaleProducts(page));
     }
   }, [status, page]);
   return (
@@ -52,9 +52,9 @@ const MenProducts = () => {
         gap={1}
         marginTop={2}
       >
-        {/* {!loading && JSON.stringify(productData)} */}
-        {productData.length > 0 &&
-          productData.map(
+        {/* {!loading && JSON.stringify(womenProductData)} */}
+        {womenProductData.length > 0 &&
+          womenProductData.map(
             (
               {
                 id,
@@ -64,9 +64,9 @@ const MenProducts = () => {
                 price,
                 discountPercentage,
                 brand,
-                rating,
+             
               },
-              index
+              
             ) => (
               <Box
                 key={id}
@@ -100,11 +100,11 @@ const MenProducts = () => {
       <Box marginBottom={"20px"}>
         <Pagination
           onChange={(event, value) => handlePage(value)}
-          count={totalProducts}
+          count={totalWomenProducts}
         />
       </Box>
     </Box>
   );
 };
 
-export default MenProducts;
+export default FemaleProducts;

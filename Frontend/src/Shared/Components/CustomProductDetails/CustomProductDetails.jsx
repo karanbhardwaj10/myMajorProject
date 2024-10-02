@@ -2,28 +2,29 @@ import PropTypes from "prop-types";
 import { Box, Button, Typography, Divider } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Rating from "@mui/material/Rating";
-// import { getSelectedProducts } from "../../../pages/Products/state/productActions";
+// import Rating from "@mui/material/Rating";
 
 const CustomProductDetails = ({
   description,
   title,
   price,
   img,
-  ratingVal,
-  orderCount,
+  // ratingVal,
+  // orderCount,
   discountedPrice,
-  discountedPercentage,
+  //discountedPercentage,
 }) => {
   // async function getSingledata() {
-  //   const response = getSelectedProducts(1);
+  //   const response = getSelectedMaleProduct(1);
   //   console.log(response);
   // }
 
-  function calculateDiscountedPrice(price, discountPercentage) {
-    discountedPrice = price - price * (discountPercentage / 100);
-    return discountedPrice.toFixed(2);
+  function calculateDiscountPercentage(originalPrice, discountedPrice) {
+    const discountPercentage =
+      ((originalPrice - discountedPrice) / originalPrice) * 100;
+    return discountPercentage.toFixed(2); // Return the percentage with 2 decimal places
   }
+
   const sizeButtons = [
     { id: "xsSize", sizeName: "XS" },
     { id: "sSize", sizeName: "S" },
@@ -91,7 +92,7 @@ const CustomProductDetails = ({
               width={{ xs: "100%", md: "45%" }}
             >
               <Typography variant="h5" sx={{ mr: 2 }}>
-                ₹ {calculateDiscountedPrice(price, discountedPercentage)}
+                ₹ {discountedPrice}
               </Typography>
 
               <Typography
@@ -102,7 +103,7 @@ const CustomProductDetails = ({
               </Typography>
 
               <Typography variant="h5" color="green">
-                {discountedPercentage}% Off
+                {calculateDiscountPercentage(price, discountedPrice)}% Off
               </Typography>
             </Box>
 
@@ -136,10 +137,10 @@ const CustomProductDetails = ({
             </Box>
 
             {/* Rating and Order Count */}
-            <Box margin={"10px"} display="flex" alignItems="center">
+            {/* <Box margin={"10px"} display="flex" alignItems="center">
               <Rating name="read-only" readOnly value={ratingVal} />
               <Typography sx={{ ml: 2 }}>{orderCount}</Typography>
-            </Box>
+            </Box> */}
 
             {/* Action Buttons */}
             <Box
@@ -202,7 +203,7 @@ CustomProductDetails.propTypes = {
   price: PropTypes.number,
   ratingVal: PropTypes.number,
   orderCount: PropTypes.string,
-  discountedPrice: PropTypes.string,
+  discountedPrice: PropTypes.number,
   discountedPercentage: PropTypes.string,
 };
 

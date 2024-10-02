@@ -2,11 +2,15 @@ import axios from "axios";
 
 // import signInServices from "../services/signInServices";
 
-export const getAllProducts = async () => {
-  console.log("inside product action");
+export const getAllMenProducts = async (pageVal) => {
+  console.log("inside women product product action");
 
   try {
-    const response = await axios.get("https://dummyjson.com/products");
+    console.log(pageVal, "action");
+
+    const response = await axios.get(
+      `http://localhost:4000/menProducts?page=${pageVal}`
+    );
     console.log("request done", response);
     return response;
   } catch (error) {
@@ -39,12 +43,12 @@ export const fetchDataFailure = (error) => ({
   payload: error,
 });
 
-export const getSelectedProducts = (productId) => {
+export const getSelectedMaleProduct = (productId) => {
   return async (dispatch) => {
     dispatch(fetchDataRequest());
     try {
       const response = await axios.get(
-        `https://dummyjson.com/products/${productId}`
+        `http://localhost:4000/singleMaleProduct?productId=${productId}`
       );
       console.log(response);
 
@@ -56,7 +60,7 @@ export const getSelectedProducts = (productId) => {
     }
   };
 };
-// export const getSelectedProducts = async (productId) => {
+// export const getSelectedMaleProduct = async (productId) => {
 //   console.log("inside product action of single prodct");
 
 //   try {
