@@ -36,8 +36,8 @@ const Footer = () => {
     },
   ];
   return (
-    <Box  height={"100%"} >
-    {/* <Box display={'flex'} height={"100%"} justifyContent={"center"}> */}
+    <Box height={"100%"}>
+      {/* <Box display={'flex'} height={"100%"} justifyContent={"center"}> */}
       <Grid container spacing={2} sx={{ flexGrow: 1 }}>
         <Grid item xs={6}>
           <Box
@@ -60,7 +60,7 @@ const Footer = () => {
                   display="flex"
                   alignItems="center"
                 >
-                  <LocalMallIcon sx={{ marginRight: "8px" }} /> CoolName+
+                  <LocalMallIcon sx={{ marginRight: "8px" }} /> FashionStreet
                 </Typography>
               </Box>
               <Box sx={{ width: "80%" }}>
@@ -78,7 +78,7 @@ const Footer = () => {
                   alignItems="center"
                 >
                   <EmailOutlinedIcon sx={{ marginRight: "8px" }} />
-                  slimShady@gmail.com
+                  karan.bhardwaj.7917@gmail.com
                 </Typography>
               </Box>
             </Box>

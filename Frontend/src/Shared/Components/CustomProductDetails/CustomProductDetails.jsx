@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import { Box, Button, Typography, Divider } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useState } from "react";
 // import Rating from "@mui/material/Rating";
-
 const CustomProductDetails = ({
   description,
   title,
@@ -12,12 +12,20 @@ const CustomProductDetails = ({
   // ratingVal,
   // orderCount,
   discountedPrice,
+  handleAddToCart
   //discountedPercentage,
 }) => {
   // async function getSingledata() {
   //   const response = getSelectedMaleProduct(1);
   //   console.log(response);
   // }
+
+  const [size, setSize] = useState("");
+
+  function handleSizeButtonClick(sizeName) {
+    console.log(sizeName);
+    setSize(sizeName)
+  }
 
   function calculateDiscountPercentage(originalPrice, discountedPrice) {
     const discountPercentage =
@@ -123,6 +131,7 @@ const CustomProductDetails = ({
               {sizeButtons.map(({ id, sizeName }) => (
                 <Button
                   key={id}
+                  onClick={() => handleSizeButtonClick(sizeName)}
                   sx={{
                     border: "2px solid black",
                     borderRadius: "50%",
@@ -163,7 +172,9 @@ const CustomProductDetails = ({
                 }}
               >
                 <AddShoppingCartIcon sx={{ color: "white", mr: 1 }} />
-                <Typography color="white">Add to cart</Typography>
+                <Typography color="white">
+                  <Button onClick={()=>handleAddToCart(size)}>Add to cart</Button>
+                </Typography>
               </Button>
 
               <Button
@@ -201,10 +212,11 @@ CustomProductDetails.propTypes = {
   title: PropTypes.string,
   img: PropTypes.string,
   price: PropTypes.number,
-  ratingVal: PropTypes.number,
-  orderCount: PropTypes.string,
+  // ratingVal: PropTypes.number,
+  // orderCount: PropTypes.string,
   discountedPrice: PropTypes.number,
   discountedPercentage: PropTypes.string,
+  handleAddToCart: PropTypes.func,
 };
 
 export default CustomProductDetails;

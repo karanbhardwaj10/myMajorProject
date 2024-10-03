@@ -4,10 +4,24 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+
 } from "@mui/material";
+import { useState } from "react";
 import backgroundImage from "../../assets/backgroundImageForNewsLetter.jpg";
 
 const NewsLetter = () => {
+  const [open, setOpen] = useState(false);
+  // const handleDeleteIconOpen = () => {
+  //   setOpen(true);
+  // };
+  const handleSendUpdatesOkClick = () => {
+    setOpen(false);
+  };
   return (
     <div
       style={{
@@ -79,13 +93,45 @@ const NewsLetter = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Button variant="contained" color="primary">
+                  <Button variant="contained" color="primary" onClick={()=>setOpen(true)}>
                     Send Me Updates
                   </Button>
                 </InputAdornment>
               ),
             }}
           />
+          <Dialog
+            open={open}
+            // onClose={handleDeleteDialogClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              <Typography fontFamily={'poppins'} fontSize={'25px'} fontWeight={'bold'} >Welcome to the Fashion Street Family</Typography>
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                <Typography fontFamily={'poppins'}>
+
+                Welcome to the fashion street family , you have subscribed to our news letter that means , we will be sending you updates regarding our latest collection 
+                <br/> Happy Shopping :D
+                </Typography>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" onClick={handleSendUpdatesOkClick}>
+               closeResources
+              </Button>
+              {/* <Button
+                variant="contained"
+                sx={{ backgroundColor: "red" }}
+                //onClick={handleDeleteDialogCloseYesClick}
+                autoFocus
+              >
+                Yes
+              </Button> */}
+            </DialogActions>
+          </Dialog>
         </div>
       </Box>
     </div>

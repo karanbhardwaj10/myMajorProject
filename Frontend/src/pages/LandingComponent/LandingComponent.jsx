@@ -4,6 +4,15 @@ import Stack from "@mui/joy/Stack";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import PercentIcon from "@mui/icons-material/Percent";
 const LandingComponent = () => {
+  function handleShopNowClick(){
+    setTimeout(() => {
+      var elmntToView = document.getElementById("ProductsTypes");
+      console.log(elmntToView, "element to view");
+      if (elmntToView) {
+        elmntToView.scrollIntoView();
+      }
+    }, 100);
+  }
   return (
     <Box
       sx={{
@@ -22,9 +31,9 @@ const LandingComponent = () => {
           borderRadius={"15px"}
           sx={{ backgroundColor: "white" }}
         >
-          <Button sx={{ color: "black" }}>
+          <Button fullWidth sx={{ color: "black" ,display:'flex',justifyContent:'start' , borderRadius:'15px' }}>
             <PercentIcon />
-            <Typography variant="h6" fontWeight={'bold'}>Enjoy 50% OFF in Our Summer Super Sale!</Typography>
+            <Typography  variant="h6" fontWeight={'bold'}>Enjoy 50% OFF in Our Summer Super Sale!</Typography>
           </Button>
         </Box>
         <Box width={"60%"}>
@@ -47,7 +56,7 @@ const LandingComponent = () => {
           borderRadius={"15px"}
           sx={{ backgroundColor: "white" }}
         >
-          <Button>
+          <Button fullWidth sx={{borderRadius:'12px'}} onClick={handleShopNowClick}>
             Shop Now <ArrowRightAltIcon />
           </Button>
         </Box>

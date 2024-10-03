@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import CustomProductDetails from "../../Shared/Components/CustomProductDetails/CustomProductDetails";
 import ResponsiveAppBar from "../../Shared/Components/HeaderComponent/Header";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSelectedMaleProduct } from "./state/menProductActions";
 import TermsAndConditions from "../../Shared/Components/TermsAndConditionsProducts/TermsAndConditions";
+import Footer from "../../Shared/Components/FooterComponent/Footer";
 
 const SelectedMaleProductDetails = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,14 @@ const SelectedMaleProductDetails = () => {
   );
   const { id } = useParams();
   console.log("before use effect");
-
+  const [maleProductDescriptoon, setMaleProductDescriptoon] = useState({});
+  function getPriceOfProduct(size) {
+    console.log("add to cart clicked", size, data.discounted_price);
+    setMaleProductDescriptoon({
+      price: data.discounted_price,
+      sizeSelected: size,
+    });
+  }
   useEffect(() => {
     // const prodId=localStorage.getItem('productId');
     if (id) {
@@ -37,6 +45,7 @@ const SelectedMaleProductDetails = () => {
         description={data.description}
         title={data.title}
         discountedPrice={data.discounted_price}
+        handleAddToCart={getPriceOfProduct}
         // ratingVal={
         //   status ===200 || data.rating ? parseInt(data.rating.toString().split(".")[0]) : 0
         // }
@@ -47,6 +56,10 @@ const SelectedMaleProductDetails = () => {
         // )}`}
       />
       <TermsAndConditions />
+      <Box marginTop={4}>
+
+      <Footer/>
+      </Box>
     </Box>
   );
 };

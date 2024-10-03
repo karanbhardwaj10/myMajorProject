@@ -16,7 +16,10 @@ const SelectedFemaleProductDetails = () => {
   );
   const { id } = useParams();
   console.log("before use effect");
-
+  function getPriceOfProduct(size) {
+    console.log("add to cart clicked",size,data.discounted_price);
+    
+  }
   useEffect(() => {
     // const prodId=localStorage.getItem('productId');
     if (id) {
@@ -38,6 +41,7 @@ const SelectedFemaleProductDetails = () => {
         description={data.description}
         title={data.title}
         discountedPrice={data.discounted_price}
+        handleAddToCart={getPriceOfProduct}
         // ratingVal={
         //   status ===200 || data.rating ? parseInt(data.rating.toString().split(".")[0]) : 0
         // }

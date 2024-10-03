@@ -48,10 +48,10 @@ const ResponsiveAppBar = () => {
   function handleNavbarClick(event) {
     const targetId = event.target.id;
     console.log(targetId);
-  
+
     if (targetId === "Products") {
       console.log("inside targetid if");
-  navigate('/')
+      navigate("/");
       setTimeout(() => {
         var elmntToView = document.getElementById("ProductsTypes");
         console.log(elmntToView, "element to view");
@@ -85,7 +85,7 @@ const ResponsiveAppBar = () => {
                   textDecoration: "none",
                 }}
               >
-                CoolName+
+                FashionStreet
               </Typography>
             </Button>
           </Box>
