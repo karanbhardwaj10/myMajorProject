@@ -120,7 +120,7 @@ const NewsLetter = () => {
             </DialogContent>
             <DialogActions>
               <Button variant="contained" onClick={handleSendUpdatesOkClick}>
-               closeResources
+               Close
               </Button>
               {/* <Button
                 variant="contained"

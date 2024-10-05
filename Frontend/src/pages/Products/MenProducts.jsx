@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMaleProducts } from "./features/MenProductSlice/getAllMensProductSlice";
-import { Button, Box, Pagination, Typography } from "@mui/material";
+import { Button, Box, Pagination } from "@mui/material";
 import CustomProductView from "../../Shared/Components/CustomProductView/CustomProductView";
 import { useNavigate } from "react-router-dom";
 import { getSelectedMaleProduct } from "./state/menProductActions";

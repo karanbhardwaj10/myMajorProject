@@ -10,57 +10,59 @@ const ProductType = () => {
     {
       title: "M e n",
       imgVal: test8,
-      price: "Rs. " + 1999 + "*",
+      price: "1999",
       path: "/men",
       discountPercentage: "Heavy Discounts",
-      // isProduct: false,
+      isProduct: false,
     },
     {
       title: "W o m e n",
       imgVal: test11,
-      price: "Rs. " + 2999 + "*",
+      price: "2999",
       path: "/women",
       discountPercentage: "Heavy Discounts",
+      isProduct: false,
     },
     {
       title: "Coming Soon",
       imgVal: test12,
-      price: "Rs. " + 3999 + "*",
+      price: "3999",
       path: "/coming-soon",
       discountPercentage: "Heavy Discounts",
+      isProduct: false,
     },
   ];
   return (
     <Container
-    id="ProductsTypes"
+      id="ProductsTypes"
       maxWidth="xl"
-      style={{
+      sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        py: 4, // Add some vertical padding
       }}
     >
       <Box
-        display={"flex"}
-        flexDirection={"row"}
-        width={"88%"}
-        height={"640px"}
-        justifyContent={"space-around"}
-        alignItems={"start"}
+        display="flex"
+        flexDirection="row"
+        width="100%"
+        justifyContent="space-between"
+        alignItems="stretch"
       >
         {products.map((product, index) => (
-          <Box key={index}>
+          <Box key={index} width="50%"> {/* Adjust width as needed */}
             <Link
               to={product.path}
               style={{ textDecoration: "none", color: "black" }}
             >
               <CustomProductView
-              imgHeight={550}
-              imgWidth={390}
+                imgHeight={550}
+                imgWidth={390}
                 discountPercentage={product.discountPercentage}
                 title={product.title}
                 imgVal={product.imgVal}
-                price={product.price}
+                price={`Rs. ${product.price}*`}
                 isProduct={product.isProduct}
               />
             </Link>

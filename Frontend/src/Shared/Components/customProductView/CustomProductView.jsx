@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { Typography, Rating } from "@mui/material";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid2";
 import CustomProductCard from "../CustomProductCard/CustomProductCard";
 import "../../Styles/ProductTypeStyle.css";
 
@@ -15,7 +15,7 @@ const CustomProductView = ({
   imgWidth,
   brandName,
   isProduct,
-  productRating
+  productRating,
 }) => {
   const commonCardProps = {
     img: imgVal,
@@ -25,7 +25,7 @@ const CustomProductView = ({
   };
 
   return (
-    <Box my={4}>
+    <Box my={4} position="relative">
       {!isProduct ? (
         <Grid
           container
@@ -34,16 +34,28 @@ const CustomProductView = ({
           alignItems="center"
           spacing={2}
         >
-          <Grid xs={12} sm={8} md={6} lg={4}>
-            <CustomProductCard {...commonCardProps} boxHeight={400} />
-          </Grid>
-          <Grid xs={12} display="flex" justifyContent="center">
-            <Typography
-              fontSize={{ xs: "30px", sm: "40px", md: "50px" }}
-              fontFamily={"poppins"}
+          <Grid xs={12} sm={8} md={6} lg={4} position="relative">
+            <CustomProductCard {...commonCardProps} boxHeight={540} />
+            <Box
+              position="absolute"
+              bottom={0}
+              left={0}
+              right={0}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              {title}
-            </Typography>
+              <Typography
+                fontSize={{ xs: "24px", sm: "40px", md: "50px" }}
+                fontFamily="poppins"
+                color="black"
+                textAlign="center"
+              >
+                {title}
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
       ) : (
@@ -60,7 +72,7 @@ const CustomProductView = ({
             </Typography>
           </Grid>
           <Grid>
-            <Box display="flex" alignItems="center" marginLeft={'5px'} >
+            <Box display="flex" alignItems="center" marginLeft={"5px"}>
               <Typography
                 fontSize={{ xs: "14px", sm: "18px", md: "20px" }}
                 color="grey"
