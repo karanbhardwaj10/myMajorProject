@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFemaleProducts } from "./features/WomenProducSlice/getAllWomenProductSlice";
 import { Button, Box, Pagination } from "@mui/material";
-import CustomProductView from "../../Shared/Components/CustomProductView/CustomProductView";
+import CustomProductView from "../../Shared/Components/customProductView/CustomProductView";
 import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "../../Shared/Components/HeaderComponent/Header";
 import { getSelectedFemaleProduct } from "./state/womenProductActions";
@@ -17,7 +17,7 @@ const FemaleProducts = () => {
     console.log(page, "page value");
     dispatch(getAllFemaleProducts(page));
   };
-  const {  totalWomenProducts, status, womenProductData } = useSelector(
+  const { totalWomenProducts, status, womenProductData } = useSelector(
     (state) => state.womenProductSlice
   );
 
@@ -29,7 +29,14 @@ const FemaleProducts = () => {
   }
   useEffect(() => {
     console.log("Product state changed:", womenProductData, "staus", status);
-    console.log("useEffect triggered. Page:", page, "Status:", status,'totalProducts',totalWomenProducts);
+    console.log(
+      "useEffect triggered. Page:",
+      page,
+      "Status:",
+      status,
+      "totalProducts",
+      totalWomenProducts
+    );
     if (status !== 200 && page) {
       dispatch(getAllFemaleProducts(page));
     }
@@ -55,19 +62,15 @@ const FemaleProducts = () => {
         {/* {!loading && JSON.stringify(womenProductData)} */}
         {womenProductData.length > 0 &&
           womenProductData.map(
-            (
-              {
-                id,
-                title,
-                images,
-                discounted_price,
-                price,
-                discountPercentage,
-                brand,
-             
-              },
-              
-            ) => (
+            ({
+              id,
+              title,
+              images,
+              discounted_price,
+              price,
+              discountPercentage,
+              brand,
+            }) => (
               <Box
                 key={id}
                 flexBasis="calc(25% - 16px)" // Each item will take 25% width minus the gap

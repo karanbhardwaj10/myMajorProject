@@ -1,4 +1,4 @@
-import CustomProductView from "../../Shared/Components/CustomProductView/CustomProductView";
+import CustomProductView from "../../Shared/Components/customProductView/CustomProductView"
 import { Container, Box } from "@mui/material";
 import test8 from "../../assets/test8.jpg";
 import test11 from "../../assets/test11.jpg";
