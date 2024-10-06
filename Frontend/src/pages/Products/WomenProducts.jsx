@@ -25,7 +25,7 @@ const FemaleProducts = () => {
     console.log(id, "getproduct details");
     dispatch(getSelectedFemaleProduct(id));
     localStorage.setItem("productId", id);
-    navigate(`/product/${id}/${title}`);
+    navigate(`/womenProduct/${id}/${title}`);
   }
   useEffect(() => {
     console.log("Product state changed:", womenProductData, "staus", status);

@@ -1,13 +1,22 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import MyRoutes from "../Routes";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./Routes/PrivateRoutes";
+import AuthRoutes from "./Routes/AuthRoute";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 function App() {
   return (
-    <>
-      <Router>
-        <MyRoutes />
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/auth/*" element={<AuthRoutes />} />
+
+        {/* Protected routes */}
+        <Route path="/*" element={<PrivateRoute />} />
+
+        {/* Page not found route */}
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

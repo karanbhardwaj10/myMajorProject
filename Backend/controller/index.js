@@ -220,7 +220,7 @@ export const deleteUserAddress = async (req, res) => {
 export const getFemaleProducts = async (req, res) => {
   const page = parseInt(req.query.page); // Parse page as an integer, defaulting to 1
   console.log(page, "from service");
-
+  const userToken = req.headers.authorization.split(" ")[1];
   const limit = parseInt(req.query.limit, 10) || 15; // Parse limit as an integer, defaulting to 10
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;

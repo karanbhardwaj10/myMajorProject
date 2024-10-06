@@ -11,14 +11,14 @@ import { getSingleFemaleProduct } from "../controller/index.js";
 const router = (app) => {
   app.post("/signUp", validationHandler(userSignUpConfig), userSignup);
   app.post("/signIn", userLogin);
-  app.get("/getAddress",getAddress)
+  app.get("/getAddress",authenticateJwt,getAddress)
   app.post("/addAddress",validationHandler(addressConfig),authenticateJwt,userAddress);
-  app.put("/updateAddress/:addressId",validationHandler(addressConfig),updateAddress);
-  app.delete("/deleteUserAddress/:addressId",deleteUserAddress);
-  app.get('/femaleProducts',getFemaleProducts);
-  app.get('/menProducts',getMaleProducts);
-  app.get('/singleMaleProduct',getSingleMaleProduct);
-  app.get('/singleFemaleProduct',getSingleFemaleProduct);
+  app.put("/updateAddress/:addressId",validationHandler(addressConfig),authenticateJwt,updateAddress);
+  app.delete("/deleteUserAddress/:addressId",authenticateJwt,deleteUserAddress);
+  app.get('/femaleProducts',authenticateJwt,getFemaleProducts);
+  app.get('/menProducts',authenticateJwt,getMaleProducts);
+  app.get('/singleMaleProduct',authenticateJwt,getSingleMaleProduct);
+  app.get('/singleFemaleProduct',authenticateJwt,getSingleFemaleProduct);
 
 
 };

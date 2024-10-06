@@ -7,7 +7,12 @@ export const getAllWomenProducts = async (pageVal) => {
     console.log(pageVal, "action");
 
     const response = await axios.get(
-      `http://localhost:4000/femaleProducts?page=${pageVal}`
+      `http://localhost:4000/femaleProducts?page=${pageVal}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     console.log("request done", response);
     return response;
@@ -31,7 +36,12 @@ export const getSelectedFemaleProduct = (productId) => {
     dispatch(fetchDataRequest());
     try {
       const response = await axios.get(
-        `http://localhost:4000/singleFemaleProduct?productId=${productId}`
+        `http://localhost:4000/singleFemaleProduct?productId=${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       console.log(response);
 
