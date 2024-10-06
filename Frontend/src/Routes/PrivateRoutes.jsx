@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import Homepage from "../pages/Homepage/Homepage";
 import MenProducts from "../pages/Products/MenProducts";
@@ -8,23 +9,60 @@ import SelectedFemaleProductDetails from "../pages/Products/selectedFemaleProduc
 import Checkout from "../pages/Checkout/Checkout";
 import Wishlist from "../pages/Wishlist/Wishlist";
 
-const PrivateRoute = () => {
-  let isAuthenticated = false;
-  const userToken = localStorage.getItem("token");
+const getTokenExpirationTime = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
 
-  if (userToken) {
-    try {
-      //   jwt.verify(userToken, "SECr3t");
-      isAuthenticated = true;
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      localStorage.removeItem("token"); // Clear the token if verification fails
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    if (payload.exp) {
+      return payload.exp * 1000;
     }
-  } else {
-    console.warn("No token found in local storage.");
+  } catch (error) {
+    console.error("Error parsing token:", error);
   }
 
-  return isAuthenticated ? (
+  return null;
+};
+
+const isTokenValid = () => {
+  const expirationTime = getTokenExpirationTime();
+  return expirationTime ? expirationTime > Date.now() : false;
+};
+
+const PrivateRoute = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(isTokenValid());
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const isValid = isTokenValid();
+      setIsAuthenticated(isValid);
+
+      if (!isValid) {
+        localStorage.removeItem("token");
+        navigate("/auth/SignIn");
+      }
+    };
+
+    checkAuth(); // Check immediately on component mount
+
+    const expirationTime = getTokenExpirationTime();
+    if (expirationTime) {
+      const timeUntilExpiration = expirationTime - Date.now();
+      if (timeUntilExpiration > 0) {
+        // Set a timeout to check auth when the token is about to expire
+        const timerId = setTimeout(checkAuth, timeUntilExpiration);
+        return () => clearTimeout(timerId);
+      }
+    }
+  }, [navigate]);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/SignIn" replace />;
+  }
+
+  return (
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/men" element={<MenProducts />} />
@@ -41,8 +79,6 @@ const PrivateRoute = () => {
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
-  ) : (
-    <Navigate to="/auth/SignIn" />
   );
 };
 
