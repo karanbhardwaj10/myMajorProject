@@ -45,13 +45,12 @@ const PrivateRoute = () => {
       }
     };
 
-    checkAuth(); // Check immediately on component mount
+    checkAuth();
 
     const expirationTime = getTokenExpirationTime();
     if (expirationTime) {
       const timeUntilExpiration = expirationTime - Date.now();
       if (timeUntilExpiration > 0) {
-        // Set a timeout to check auth when the token is about to expire
         const timerId = setTimeout(checkAuth, timeUntilExpiration);
         return () => clearTimeout(timerId);
       }

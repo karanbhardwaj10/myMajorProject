@@ -12,7 +12,7 @@ import { termsAndConditions } from "./state/signInVars";
 import Tooltip from "@mui/material/Tooltip";
 import CustomAlert from "../../Shared/Components/CustomAlert/CustomAlert";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, resetStatus } from "./features/sigInSlice";
+import { getUser } from "./features/sigInSlice";
 const formFields = [
   [{ id: "username", label: "Username", name: "username" }],
   [{ id: "password", label: "Password", type: "password", name: "password" }],
@@ -164,7 +164,7 @@ const SignInForm = () => {
         >
           <Typography style={{ marginTop: "8px" }} gutterBottom>
             Don&apos;t have an account ?{" "}
-            <Link to="/signUp" style={{ marginRight: "10px" }}>
+            <Link to="/auth/signUp" style={{ marginRight: "10px" }}>
               SignUp
             </Link>{" "}
             or Signin with google
