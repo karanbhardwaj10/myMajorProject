@@ -5,6 +5,7 @@ import ProductType from "../Products/ProductType";
 import LandingComponent from "../LandingComponent/LandingComponent";
 import NewsLetter from "../NewsLetter/NewsLetter";
 import WebInfo from "../WebInfo/WebInfo";
+import InfiniteCarousel from "../../Shared/Components/infiniteCarousel/InfiniteCarousel";
 const Homepage = () => {
   return (
     <>
@@ -29,3 +30,4 @@ const Homepage = () => {
   );
 };
 export default Homepage;
+
