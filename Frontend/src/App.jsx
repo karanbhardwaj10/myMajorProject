@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./Routes/PrivateRoutes";
 import AuthRoutes from "./Routes/AuthRoute";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import Breadcrumnbs from "./Shared/Components/Breadcrumbs";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         {/* Page not found route */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+        <Breadcrumnbs/>
     </Router>
   );
 }
