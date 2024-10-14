@@ -1,4 +1,10 @@
-import { Box, Button, Typography,Autocomplete ,TextField,Tooltip} from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Divider from "@mui/material/Divider";
@@ -10,8 +16,6 @@ import CustomTextField from "../CustomTextField/CustomTextField";
 import { useDispatch, useSelector } from "react-redux";
 import { saveAddress } from "./Features/addressSlice";
 import { getAddress } from "./Features/getAddressSlice";
-import { getUserAddress } from "./state/getUserAddressAction";
-import { useNavigate } from "react-router-dom";
 
 const formFields = [
   [{ id: "fullName", label: "Full name" }],
@@ -68,7 +72,6 @@ FieldRow.propTypes = {
 };
 const AddressOne = ({ onAddAddress }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [addressTypeVal, setAddressType] = useState(null);
   const { addressStatusCode } = useSelector((state) => state.addressSlice);
   const [forms, setForms] = useState([formFields]);
@@ -103,28 +106,29 @@ const AddressOne = ({ onAddAddress }) => {
     //   customerAddress: formData.get("address"),
     //   city: formData.get("city"),
     // };
-    const newAddress = {
+    const newAddressVal = {
       fullName: formData.get("fullName"),
       email: formData.get("email"),
       contactInfo: JSON.parse(formData.get("contactInfo")),
       city: formData.get("city"),
       pincode: JSON.parse(formData.get("pincode")),
       address: formData.get("address"),
-      addressType:addressTypeVal ,
+      addressType: addressTypeVal,
     };
-    console.log( newAddress, "full new address info")
-    const userToken = localStorage.getItem("token");
-    if (newAddress && userToken) {
-      const data = {
-        userToken: userToken,
-        newAddress: newAddress,
-      };
+    console.log(newAddressVal, "full new address info");
+    setNewAddress(newAddressVal);
+    //const userToken = localStorage.getItem("token");
+    // if (newAddress && userToken) {
+    //   const data = {
+    //     userToken: userToken,
+    //     newAddress: newAddress,
+    //   };
 
-      dispatch(saveAddress(data));
-      
-      dispatch(getAddress(userToken))
-      window.location.reload();
-    }
+    //   dispatch(saveAddress(data));
+
+    //   dispatch(getAddress(userToken));
+    //   // window.location.reload();
+    // }
 
     // let finalAns = [];
     // finalAns.push(newAddedAddress);
@@ -133,10 +137,23 @@ const AddressOne = ({ onAddAddress }) => {
     // setSubmittedAddresses([...submittedAddresses, newAddress]);
 
     // Reset the form
-   
+
     event.target.reset();
   };
+  useEffect(() => {
+    if (newAddress || addressStatusCode === 200) {
+      const data = {
+        userToken: localStorage.getItem("token"),
+        newAddress: newAddress,
+      };
 
+      dispatch(saveAddress(data));
+
+      dispatch(getAddress(localStorage.getItem("token")));
+      setNewAddress(null)
+      // window.location.reload();
+    }
+  }, [addressStatusCode,newAddress, dispatch]);
   // The functional form is generally safer when the new state depends on the previous state. It ensures that you’re working with the most recent state, even if multiple state updates are queued.
   // useEffect(() => {
   //   if (newAddress) {
@@ -188,25 +205,23 @@ const AddressOne = ({ onAddAddress }) => {
           </Typography>
 
           {/* <Tooltip placement="left" title="Add New Address"> */}
-            {/* <IconButton onClick={addNewForm} aria-label="add to shopping cart">
+          {/* <IconButton onClick={addNewForm} aria-label="add to shopping cart">
               <ControlPointIcon
                 style={{ fontSize: "35px", color: "#1b2833" }}
               />
             </IconButton> */}
-                     <Autocomplete
-                  onChange={(event, newAddressType) =>
-                    setAddressType(
-                      newAddressType ? newAddressType.label : null
-                    )
-                  }
-                  style={{ marginRight: "5px",width:'180px' }}
-                  disablePortal
-                  id="AddressType"
-                  options={addressType}
-                  renderInput={(params) => (
-                    <TextField {...params} label="AddressType" />
-                  )}
-                />
+          <Autocomplete
+            onChange={(event, newAddressType) =>
+              setAddressType(newAddressType ? newAddressType.label : null)
+            }
+            style={{ marginRight: "5px", width: "180px" }}
+            disablePortal
+            id="AddressType"
+            options={addressType}
+            renderInput={(params) => (
+              <TextField {...params} label="AddressType" />
+            )}
+          />
           {/* </Tooltip> */}
         </div>
         <Divider
@@ -236,9 +251,6 @@ const AddressOne = ({ onAddAddress }) => {
           Add Address
         </Button>
       </Box>
-      
-
-
     </div>
   );
 };

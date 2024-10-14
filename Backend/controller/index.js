@@ -270,7 +270,7 @@ export const getFemaleProducts = async (req, res) => {
 
       res.status(200).json({
         data: womenClothingProduct.slice(startIndex, endIndex),
-        totalProducts: womenClothingProduct.length,
+        totalProducts: 100,
       });
     } catch (parseErr) {
       res

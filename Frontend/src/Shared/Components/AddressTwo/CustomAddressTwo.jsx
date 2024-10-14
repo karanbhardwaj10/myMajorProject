@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Box,
   Typography,
@@ -27,6 +28,7 @@ const CustomAddressTwo = ({
   addressType,
   customerName,
   customerAddress,
+  // eslint-disable-next-line react/prop-types
   userAddressId,
   ...props
 }) => {
@@ -47,7 +49,7 @@ const CustomAddressTwo = ({
     setOpen(false);
   };
   const handleDeleteDialogCloseYesClick = () => {
-    handleDeleteAddress()
+    
     window.location.reload();
     setOpen(false);
   };
@@ -70,7 +72,7 @@ const CustomAddressTwo = ({
   }
 
   useEffect(() => {
-    if (deleteAddressStatusCode === 200) {
+    if (deleteAddressStatusCode == 200) {
       navigate("/checkout");
     }
   }, [deleteAddressStatusCode, navigate]);

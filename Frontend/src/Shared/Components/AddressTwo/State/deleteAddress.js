@@ -7,10 +7,14 @@ export const deleteUserAddress = async (userAddressId) => {
     //   Authorization: `Bearer ${userToken}`,
     // };
     // console.log(headers,"headers from get address");
-    
+
     const response = await axios.delete(
       `http://localhost:4000/deleteUserAddress/${userAddressId}`,
-    //   { headers: headers }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     console.log(response, "actions response from delete address");
     return response;

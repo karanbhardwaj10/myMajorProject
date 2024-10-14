@@ -1,8 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Snackbar, Alert } from "@mui/material";
 import PropTypes from "prop-types";
 import GoogleIcon from "@mui/icons-material/Google";
 import IconButton from "@mui/material/IconButton";
-// import SigninPageImg from "../../assets/SigninPageImg.jpg";
 import test6 from "../../assets/test6.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import CustomTextField from "../../Shared/Components/CustomTextField/CustomTextField";
@@ -10,7 +9,6 @@ import CustomPopup from "../../Shared/Components/CustomPopup/CustomPopup";
 import { useState, useEffect } from "react";
 import { termsAndConditions } from "./state/signInVars";
 import Tooltip from "@mui/material/Tooltip";
-import CustomAlert from "../../Shared/Components/CustomAlert/CustomAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./features/sigInSlice";
 const formFields = [
@@ -40,7 +38,6 @@ FieldRow.propTypes = {
       label: PropTypes.string.isRequired,
       type: PropTypes.string,
       fullWidth: PropTypes.bool,
-      // Add any other field properties you expect
     })
   ).isRequired,
 };
@@ -50,6 +47,7 @@ const SignInForm = () => {
   const dispatch = useDispatch();
   const [termsModalOpen, setTermsModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false); // state to show Snackbar
 
   const userNameVal = useSelector(
     (state) => state.signInSliceVal.user.userName || "username not found"
@@ -63,29 +61,15 @@ const SignInForm = () => {
   );
 
   useEffect(() => {
-    const signInUser = async () => {
-      if (userSigninVal.userName && userSigninVal.passWord) {
-        console.log(userSigninVal, "use state");
-        // Dispatch the async thunk to handle sign-in
-        dispatch(
-          getUser({
-            userName: userSigninVal.userName,
-            passWord: userSigninVal.passWord,
-          })
-        );
+    if (status === 200) {
+      localStorage.setItem("token", alldata.token);
+      navigate("/");
+    } else if (status === 404) {
+      // Show snackbar for unsuccessful login attempts
+      setShowSnackbar(true);
+    }
+  }, [status, navigate, alldata]);
 
-        if (status && status === 200) {
-          console.log(alldata, "all data from use effect");
-
-          localStorage.setItem("token", alldata.token);
-          navigate("/");
-          // dispatch(resetStatus());
-        }
-      }
-    };
-
-    signInUser();
-  }, [userSigninVal, dispatch, status, navigate, alldata]);
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -96,9 +80,15 @@ const SignInForm = () => {
       userName,
       passWord,
     });
+
+    // Trigger the sign-in action immediately on form submission
+    dispatch(getUser({ userName, passWord }));
   };
 
-  console.log(userNameVal, status, "status and username");
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") return;
+    setShowSnackbar(false);
+  };
   return (
     <div
       style={{
@@ -116,7 +106,6 @@ const SignInForm = () => {
         style={{
           width: "50%",
           padding: "20px",
-          //   overflowY: "auto",
           maxHeight: "100vh",
         }}
         noValidate
@@ -129,6 +118,7 @@ const SignInForm = () => {
         {formFields.map((row, index) => (
           <FieldRow key={index} fields={row} />
         ))}
+
         <div
           style={{
             display: "flex",
@@ -142,6 +132,7 @@ const SignInForm = () => {
             <Link to="/signIn">Forgot Password ?</Link>
           </Tooltip>
         </div>
+
         <Button
           style={{
             width: "100%",
@@ -153,6 +144,7 @@ const SignInForm = () => {
         >
           Signin
         </Button>
+
         <div
           style={{
             display: "flex",
@@ -163,19 +155,20 @@ const SignInForm = () => {
           }}
         >
           <Typography style={{ marginTop: "8px" }} gutterBottom>
-            Don&apos;t have an account ?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/auth/signUp" style={{ marginRight: "10px" }}>
               SignUp
             </Link>{" "}
             or Signin with google
           </Typography>
 
-          <IconButton color="primary" aria-label="add to shopping cart">
+          <IconButton color="primary" aria-label="google-signin">
             <Tooltip placement="right-start" title="Coming Soon 😃">
-              <GoogleIcon style={{ margin: "0px", padding: "0px" }} />
+              <GoogleIcon />
             </Tooltip>
           </IconButton>
         </div>
+
         <div
           style={{
             display: "flex",
@@ -184,55 +177,56 @@ const SignInForm = () => {
             marginBottom: "20px",
             fontSize: "20px",
             borderTop: "2px solid lightgrey",
+            
           }}
         >
           <Typography
             style={{ marginTop: "8px", marginRight: "25px", color: "gray" }}
             gutterBottom
-            onClick={() => {
-              setTermsModalOpen(true);
-            }}
+            onClick={() => setTermsModalOpen(true)}
           >
             Terms & Conditions
           </Typography>
+
           {termsModalOpen && (
             <CustomPopup
               content={termsAndConditions}
               heading={"Terms & Conditions"}
-              onClose={() => {
-                setTermsModalOpen(false);
-              }}
+              onClose={() => setTermsModalOpen(false)}
             />
           )}
+
           <Typography
             style={{ marginTop: "8px", color: "gray" }}
             gutterBottom
-            onClick={() => {
-              setPrivacyModalOpen(true);
-            }}
+            onClick={() => setPrivacyModalOpen(true)}
           >
             Privacy Policy
           </Typography>
+
           {privacyModalOpen && (
             <CustomPopup
               content={termsAndConditions}
               heading={"Privacy Policy"}
-              onClose={() => {
-                setPrivacyModalOpen(false);
-              }}
+              onClose={() => setPrivacyModalOpen(false)}
             />
           )}
         </div>
-        <Box height={50} width={50}>
-          {status != 200 && (
-            <CustomAlert
-              severity="error"
-              alertMessage="Sign-in failed"
-              variant="filled"
-              // handleAlertClose={handleAlertClose}
-            />
-          )}
-        </Box>
+
+        {/* Snackbar to show error messages */}
+        <Snackbar
+          open={showSnackbar}
+          autoHideDuration={4000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity="error"
+            variant="filled"
+          >
+            Sign-in failed. Please check your username and password.
+          </Alert>
+        </Snackbar>
       </Box>
 
       <div
@@ -257,4 +251,5 @@ const SignInForm = () => {
     </div>
   );
 };
+
 export default SignInForm;

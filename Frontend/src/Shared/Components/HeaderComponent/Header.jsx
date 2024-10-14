@@ -11,7 +11,10 @@ import {
   Button,
   Tooltip,
   MenuItem,
-  getLinearProgressUtilityClass,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import {
   LocalMall as LocalMallIcon,
@@ -20,7 +23,7 @@ import {
   ShoppingCartCheckoutSharp as ShoppingCartCheckoutSharpIcon,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import "./styles/HeaderStyle.css";
 
 const pages = ["Products", "Blog", "About Us", "Contact Us"];
@@ -28,48 +31,72 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
   const navigate = useNavigate();
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [openSettingsDialog, setOpenSettingsDialog] = useState(false); // Controls the dialog open state
+  const [dialogContent, setDialogContent] = useState({ title: "", content: "" });
+  //const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const userName = useSelector(
-    (state) => state.signInSliceVal.user.userName || ""
-  );
-  const handleCloseNavMenu = () => setAnchorElNav(null);
+  //const userName = useSelector((state) => state.signInSliceVal.user.userName || "");
+
+  // Function to handle the opening of the settings dialog based on the setting clicked
+  const handleOpenSettingsDialog = (settingName) => {
+    if (settingName === "Logout") {
+      setDialogContent({
+        title: "Confirm Logout",
+        content: "Are you sure you want to logout?",
+      });
+    } else {
+      setDialogContent({
+        title: `Selected: ${settingName}`,
+        content: `You have selected the ${settingName} option.`,
+      });
+    }
+    setOpenSettingsDialog(true);
+  };
+
+  // Function to close the settings dialog
+  const handleCloseDialog = () => {
+    setOpenSettingsDialog(false);
+  };
+
+  const handleLogoutClick = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+
+  //const handleCloseNavMenu = () => setAnchorElNav(null);
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
-  function handleTitleClick() {
-    console.log("inside the navigate");
 
+  function handleTitleClick() {
     navigate("/");
   }
+
   function navigateToCheckout() {
     navigate("/Checkout");
   }
+
   function handleNavbarClick(event) {
     const targetId = event.target.id;
-    console.log(targetId);
-
     if (targetId === "Products") {
-      console.log("inside targetid if");
       navigate("/");
       setTimeout(() => {
-        var elmntToView = document.getElementById("ProductsTypes");
-        console.log(elmntToView, "element to view");
+        const elmntToView = document.getElementById("ProductsTypes");
         if (elmntToView) {
           elmntToView.scrollIntoView();
         }
-      }, 100); // Small delay (100ms) to ensure the component is rendered
+      }, 100);
     }
   }
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "#005685" }}>
       <Container maxWidth="xxl">
         <Toolbar disableGutters>
+          {/* Brand and logo */}
           <Box display={"flex"} onClick={handleTitleClick}>
             <Button style={{ color: "white" }}>
-              <LocalMallIcon
-                sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-              />
+              <LocalMallIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
               <Typography
                 variant="h6"
                 noWrap
@@ -108,6 +135,7 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
 
+          {/* Navigation Links */}
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
             {pages.map((page) => (
               <Button
@@ -122,6 +150,7 @@ const ResponsiveAppBar = () => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
+            {/* Search, Wishlist, and Cart Icons */}
             <Tooltip title="Search">
               <IconButton sx={{ p: 0 }}>
                 <SearchSharpIcon sx={{ marginRight: "20px", color: "white" }} />
@@ -140,11 +169,11 @@ const ResponsiveAppBar = () => {
             </Tooltip>
             <Tooltip title="Checkout" onClick={navigateToCheckout}>
               <IconButton sx={{ p: 0 }}>
-                <ShoppingCartCheckoutSharpIcon
-                  sx={{ marginRight: "20px", color: "white" }}
-                />
+                <ShoppingCartCheckoutSharpIcon sx={{ marginRight: "20px", color: "white" }} />
               </IconButton>
             </Tooltip>
+
+            {/* User Menu */}
             <Tooltip title="Settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="User Avatar" />
@@ -160,15 +189,35 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting, index) => (
-                <MenuItem
-                  key={`${setting}+${index}`}
-                  onClick={handleCloseUserMenu}
-                >
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={() => handleOpenSettingsDialog(setting)}>
+                  {setting}
                 </MenuItem>
               ))}
             </Menu>
+
+            {/* Dialog for Settings */}
+            <Dialog open={openSettingsDialog} onClose={handleCloseDialog}>
+              <DialogTitle>{dialogContent.title}</DialogTitle>
+              <DialogContent>{dialogContent.content}</DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                  No
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (dialogContent.title === "Confirm Logout") {
+                      handleLogoutClick();
+                    } else {
+                      handleCloseDialog();
+                    }
+                  }}
+                  color="primary"
+                >
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         </Toolbar>
       </Container>
