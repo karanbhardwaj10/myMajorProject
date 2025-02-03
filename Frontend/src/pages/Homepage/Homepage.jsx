@@ -5,6 +5,7 @@ import ProductType from "../Products/ProductType";
 import LandingComponent from "../LandingComponent/LandingComponent";
 import NewsLetter from "../NewsLetter/NewsLetter";
 import WebInfo from "../WebInfo/WebInfo";
+import { Box } from "@mui/material";
 import InfiniteCarousel from "../../Shared/Components/infiniteCarousel/InfiniteCarousel";
 const Homepage = () => {
   return (
@@ -21,6 +22,9 @@ const Homepage = () => {
         <Navbar />
         <LandingComponent />
         <ProductType />
+        <Box marginTop={'50'} marginBottom={'50'} height={'500px'}>
+          <InfiniteCarousel />
+        </Box>
         <WebInfo />
         <NewsLetter />
         <QnA />

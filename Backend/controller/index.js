@@ -495,6 +495,70 @@ export const getSingleFemaleProduct = async (req, res) => {
     }
   });
 };
+
+export const getAllRequestedProducts = async (req, res) => {
+//  const productIDs = req.body.productIds;
+  const productIDs = ["c2d766ca982eca8304150849735ffef9","7f7036a6d550aaa89d34c77bd39a5e48","f449ec65dcbc041b6ae5e6a32717d01b","8a546d8f59d4a772c431bed428f8ddbc","73e8f25adc385ef34c66bee7611f0a8a"];
+
+  console.log(productIDs);
+  
+  const filePath = path.join(
+    "D:",
+    "Test",
+    "flipkart_com-ecommerce_sample.json"
+  );
+
+  // Read the JSON file asynchronously
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Error reading the file", error: err });
+    }
+
+    // Parse and send the JSON data
+    try {
+      const jsonData = JSON.parse(data);
+      const requestedProducts = [];
+console.log("json data parsed");
+
+      jsonData.forEach((product) => {
+        // const categoryTreeStr = product["product_category_tree"];
+        // Ensure category tree exists and is a string
+        console.log("inside the for each");
+        
+        if (productIDs.length != 0) {
+          try {
+            // const numbers = [65, 44, 12, 4];
+             productIDs.map(myFunction);
+            console.log("before the callback function");
+            
+            function myFunction(num) {
+              if(num === product.id){
+                console.log(product.id,"productid inside if");
+                
+                requestedProducts.push(product)
+              }
+            }
+          } catch (categoryParseError) {
+            // Log the error but continue processing
+            console.error("Error");
+          }
+        }
+      });
+
+      requestedProducts
+        ? res.status(200).json(requestedProducts)
+        : res
+            .status(404)
+            .json({ message: "Product not available or wrong productid" });
+    } catch (parseErr) {
+      res
+        .status(500)
+        .json({ message: "Error parsing the JSON file", error: parseErr });
+    }
+  });
+};
 // export const getSingleFemaleProduct = async (req, res) => {
 //   const femaleProductId = req.query.productId;
 

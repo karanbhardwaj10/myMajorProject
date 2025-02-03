@@ -24,7 +24,6 @@ const MenProducts = () => {
   async function getProductDetials(id, title) {
     console.log(id, "getproduct details");
     dispatch(getSelectedMaleProduct(id));
-    localStorage.setItem("productId", id);
     navigate(`/menProduct/${id}/${title}`);
   }
   useEffect(() => {

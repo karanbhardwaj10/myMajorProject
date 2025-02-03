@@ -6,30 +6,19 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import Product from "./Product.jpg";
+import PropTypes from "prop-types";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 import { useState } from "react";
-const CustomCartItem = () => {
+
+const CustomCartItem = ({
+  description,
+  images,
+  price,
+}) => {
   const [quantity, setQuantity] = useState(0);
-  const productDescription = [
-    [
-      {
-        id: "description",
-        value: ` JBL Tune 770NC Wireless Over Ear ANC Headphones with Mic, Upto
-                70 Hrs Playtime, Speedcharge, Google Fast Pair, Dual Pairing, BT
-                5.3 LE Audio, Customize on Headphones App (Black)`,
-      },
-    ],
-    [{ id: "stockAvailability", value: "InStock" }],
-    [
-      {
-        id: "deliveryAvailability",
-        value: "Can be delivered to your location ",
-      },
-    ],
-  ];
+
   return (
     <Box
       display={"flex"}
@@ -52,10 +41,12 @@ const CustomCartItem = () => {
                 maxHeight: "200px",
                 width: "auto",
               }}
-              src={Product}
+              src={images}
               alt="product img"
             />
           </Box>
+
+          {/* Description Section */}
           <Box
             width={"60%"}
             display="flex"
@@ -63,31 +54,34 @@ const CustomCartItem = () => {
             justifyContent="start"
             paddingLeft={2}
           >
-            {productDescription.map((typoRow) => (
-              <div key={typoRow[0].id}>
-                {typoRow[0].id === "deliveryAvailability" ||
-                typoRow[0].id === "stockAvailability" ? (
-                  <Typography marginTop={"5px"}>
-                    {typoRow[0].value}
-                    <Button sx={{ paddingLeft: "0px" }}>
-                      <WhereToVoteIcon htmlColor="green" />
-                    </Button>
-                  </Typography>
-                ) : (
-                  <Typography
-                    marginTop={2}
-                    fontWeight={"400"}
-                    lineHeight={"23px"}
-                    fontStyle={"normal"}
-                    fontFamily={"sans-serif"}
-                    fontSize={"15px"}
-                    color={"#0f1111"}
-                  >
-                    {typoRow[0].value}
-                  </Typography>
-                )}
-              </div>
-            ))}
+            {/* Product Description */}
+            <Typography
+              marginTop={2}
+              fontWeight={"400"}
+              lineHeight={"23px"}
+              fontStyle={"normal"}
+              fontFamily={"sans-serif"}
+              fontSize={"15px"}
+              color={"#0f1111"}
+            >
+              {description}
+            </Typography>
+
+            {/* Stock Availability */}
+            <Typography marginTop={"5px"}>
+              Stock Availability
+              <Button sx={{ paddingLeft: "0px" }}>
+                <WhereToVoteIcon htmlColor="green" />
+              </Button>
+            </Typography>
+
+            {/* Delivery Availability */}
+            <Typography marginTop={"5px"}>
+              Delivery Availability
+              <Button sx={{ paddingLeft: "0px" }}>
+                <WhereToVoteIcon htmlColor="green" />
+              </Button>
+            </Typography>
 
             {/* Quantity Section */}
             <Box display="flex" alignItems="center" marginTop={2}>
@@ -133,13 +127,22 @@ const CustomCartItem = () => {
               fontFamily={"poppins"}
               fontSize={"20px"}
             >
-              ₹ 7500
+              ₹ {price}
             </Typography>
           </Box>
         </Box>
       </Card>
     </Box>
   );
+};
+
+CustomCartItem.propTypes = {
+  description: PropTypes.string.isRequired,
+  images: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  discountedPrice: PropTypes.number,
+  discountedPercentage: PropTypes.string,
+  handleAddToCart: PropTypes.func,
 };
 
 export default CustomCartItem;

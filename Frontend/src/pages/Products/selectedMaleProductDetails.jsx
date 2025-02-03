@@ -18,7 +18,11 @@ const SelectedMaleProductDetails = () => {
   console.log("before use effect");
   const [maleProductDescriptoon, setMaleProductDescriptoon] = useState({});
   function getPriceOfProduct(size) {
-    console.log("add to cart clicked", size, data.discounted_price);
+    console.log("add to cart clicked", size, data.id);
+    localStorage.setItem("productIds",[]);
+    const getlength=localStorage.getItem("productIds");
+    console.log(getlength.length);
+    
     setMaleProductDescriptoon({
       price: data.discounted_price,
       sizeSelected: size,
